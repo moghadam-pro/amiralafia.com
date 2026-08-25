@@ -11,6 +11,52 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.2.4] - 2026-08-25
+
+### Fixed
+
+- JSON-LD carried literal HTML entities. `wp_get_document_title()` returns
+  entity-encoded text, which is right for an HTML attribute and wrong inside a
+  `<script>` block, where no parser decodes it — every structured-data title
+  read "Al Mouj Marina Apartment &#8211; Amir Al AFIA". Decoded on the way in.
+
+## [1.2.3] - 2026-08-25
+
+### Fixed
+
+- **10px of horizontal scroll on phones.** The `.sr-right` reveal translates an
+  element 30px right before showing it; on the team photo, which already fills
+  the container, that pushed it past the viewport edge. Below 960px the reveal
+  is vertical, and the root element gets `overflow-x: clip` as a backstop —
+  `clip` rather than `hidden`, because `hidden` on the root makes it a scroll
+  container and breaks the sticky header.
+- **The navbar wrapped to two lines between 769px and 1180px**, where the logo,
+  five links and three labelled buttons stop fitting. In that band the buttons
+  keep their icons and drop their labels; tap targets are unchanged.
+- The team photo column shrinks below 1100px instead of holding 420px.
+- The Oman archive takes its title from the section heading rather than the
+  post type's bare label, which is what a shared link was showing.
+
+## [1.2.2] - 2026-08-25
+
+### Fixed
+
+- Place photos imported in 1.1.0 had no 1200x630 share crop, because WordPress
+  only generates intermediate sizes at upload time and that size arrived in
+  1.2.0. The importer now rebuilds missing sizes for its own attachments,
+  skipping originals too small to crop. Media the office uploaded is untouched.
+
+## [1.2.1] - 2026-08-25
+
+### Fixed
+
+- `og:image` fell back to the full image when the source was too small to crop,
+  so one page advertised a 1200x558 card. Anything under 600x315 is now
+  rejected in favour of the next candidate, and the importer pulls source files
+  at 2000px so even a wide panorama clears the 630px the crop needs.
+- The front page's `og:title` was the site name alone. A `document_title_parts`
+  filter appends the tagline, falling back to a description of the business.
+
 ## [1.2.0] — 2026-08-25
 
 ### Added
@@ -131,7 +177,11 @@ theme with no plugin or third-party theme dependencies.
 
 See [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) for the full list.
 
-[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.2.4...HEAD
+[1.2.4]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.4
+[1.2.3]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.3
+[1.2.2]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.2
+[1.2.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.1
 [1.2.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.0
 [1.1.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.1.0
 [1.0.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.0.0

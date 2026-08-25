@@ -32,17 +32,21 @@ theme/amir-al-afia/
 │   ├── customizer.php        Every editable string and image
 │   ├── lead-form.php         Validation, storage, notification, both endpoints
 │   ├── property-query.php    Listing queries and the filter AJAX endpoint
-│   ├── seo.php               Meta description, Open Graph, JSON-LD
+│   ├── seo.php               Canonical, robots, Open Graph, Twitter, JSON-LD
 │   ├── demo-content.php      Appearance → Starter Content
 │   └── *-inline.svg          The brand logo and mark
 │
 ├── template-parts/
 │   ├── home/                 One file per landing-page section
-│   └── property/             card.php, empty.php
+│   ├── property/             card.php, empty.php, gallery.php
+│   └── attraction/           tile.php, shared by home, archive and related
 │
 ├── front-page.php            Assembles the landing page from its sections
 ├── archive-property.php      /properties/ — also used by the three taxonomies
 ├── single-property.php       One listing, with specs, gallery and related
+├── archive-attraction.php    /oman/ — the guide index
+├── single-attraction.php     One place, with facts, body and a CTA
+├── screenshot.png            Appearance > Themes card
 ├── header.php  footer.php  index.php  page.php  search.php  404.php
 │
 └── assets/
@@ -51,7 +55,7 @@ theme/amir-al-afia/
     ├── js/main.js            Progressive enhancement only
     ├── js/admin.js           The gallery media picker
     ├── fonts/                Six self-hosted woff2 faces + fonts.css
-    └── img/                  Logo, placeholder, team photo
+    └── img/                  Logo, placeholder, team photo, share card
 ```
 
 ## Data model
@@ -60,12 +64,14 @@ theme/amir-al-afia/
 | --- | --- | --- |
 | `property` | yes | Listings. Archive at `/properties/`, single page per listing. |
 | `agent` | no | Team members. Rendered on the home page only. |
-| `attraction` | no | The Oman tiles. Rendered on the home page only. |
+| `attraction` | yes | The Oman guide. Archive at `/oman/`, a page per place. |
 | `aaa_lead` | no | Contact-form submissions. `create_posts` is denied, so they can only arrive through the form. |
 
-Property meta is a flat set of `_aaa_*` keys, registered with
-`register_post_meta()` so the REST API can read them, and written by one meta
-box rather than a field plugin. Taxonomies: `property_type`, `deal_type`,
+Property meta is a flat set of `_aaa_*` keys written by one meta box rather
+than a field plugin. They are declared with `register_post_meta()` so their
+types and sanitisers live in one place; note that WordPress does not expose
+underscore-prefixed meta through the REST `meta` object, so the meta box is
+the editing path, not the API. Taxonomies: `property_type`, `deal_type`,
 `property_location`. The first two seed fixed terms on activation so the filter
 bar is never empty.
 
@@ -95,6 +101,33 @@ addition rather than a dependency. The same rules are neutralised under
 
 This inverts the mockup, where elements were hidden by default and a script
 failure left the hero permanently blank.
+
+### The gallery is a scroll container first
+
+`template-parts/property/gallery.php` renders one photo as a plain figure and
+more than one as a slider. The slider is a flex row with `scroll-snap-type: x
+mandatory`: swipe, trackpad and keyboard scrolling all work with the script
+blocked, and the arrows ship `hidden` until `main.js` unhides them. The active
+slide is derived from an IntersectionObserver on the track rather than from
+click handlers, so a swipe updates the thumbnails exactly as a click does.
+
+## Sharing and structured data
+
+`inc/seo.php` owns the document head. Two things there are worth knowing:
+
+`og:image:width` and `og:image:height` are not optional. Facebook, WhatsApp and
+Telegram will not block on downloading an image to measure it, so without the
+dimensions the first scrape renders a small thumbnail instead of a large card.
+The theme serves a dedicated 1200×630 `aaa-og` crop, rejects any candidate
+smaller than 600×315 — `wp_get_attachment_image_src()` silently falls back to
+the full image when the source was too small to crop — and finally falls back
+to a bundled brand card so a link always previews with something.
+
+The JSON-LD is one `@graph` whose nodes cross-reference by `@id`, rather than a
+separate script per entity repeating the organisation. Text entering it is run
+through `aaa_schema_text()`, because `wp_get_document_title()` returns
+entity-encoded text that is correct in an HTML attribute and wrong inside a
+`<script>` block.
 
 ## Request path
 

@@ -60,6 +60,17 @@ site, so read what you wrote before shipping it.
 - Check contrast before using `--cyan` on text — it is 1.9:1 on white. Use
   `--cyan-ink`.
 
+## Regenerating the brand images
+
+`screenshot.png` and `assets/img/share-default.png` are generated:
+
+```bash
+python tools/make-brand-images.py
+```
+
+Do not hand-edit them. They are drawn from the theme's own fonts and the
+logo's path vertices so a palette change can be picked up by re-running.
+
 ## Things that will bite
 
 - **`get_the_title()` on the front page** returns whatever the main query left
@@ -74,6 +85,20 @@ site, so read what you wrote before shipping it.
 - **The AJAX filter renders the same template part** as the initial page load.
   Change `template-parts/property/card.php` and both paths follow; do not
   duplicate card markup in JavaScript.
+- **`og:image:width` / `og:image:height` are load-bearing.** Drop them and
+  WhatsApp and Facebook render a thumbnail instead of a large card. Equally,
+  `wp_get_attachment_image_src()` falls back to the *full* image when the
+  source is too small to crop, so the returned dimensions must be checked, not
+  assumed — `aaa_share_image()` does both.
+- **New image sizes are not retroactive.** WordPress only builds intermediate
+  sizes at upload time, so adding an `add_image_size()` leaves every existing
+  attachment without it. `aaa_regenerate_demo_sizes()` repairs the theme's own
+  demo images; anything the office uploaded needs re-uploading.
+- **Entity-encoded text must not go into JSON-LD.** `wp_get_document_title()`
+  returns `&#8211;`, which is right in an attribute and wrong in a `<script>`.
+  Run it through `aaa_schema_text()`.
+- **Renaming a demo item in `aaa_demo_attractions()` creates a duplicate**,
+  because the importer matches on slug. Delete the old post after a rename.
 
 ## Deployment access
 

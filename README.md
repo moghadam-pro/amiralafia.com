@@ -19,7 +19,7 @@ by the theme itself.
 | `theme/amir-al-afia/` | The WordPress theme — the actual product. |
 | `design/` | The original AI-generated mockup, kept verbatim for reference. |
 | `docs/` | Architecture, design system, deployment and the office's content guide. |
-| `tools/` | `build-theme.py` packages the theme, `check-php.py` lints it, `fetch-fonts.sh` refreshes the self-hosted fonts. |
+| `tools/` | `build-theme.py` packages the theme, `check-php.py` lints it, `fetch-fonts.sh` refreshes the self-hosted fonts, `make-brand-images.py` regenerates `screenshot.png` and the share card. |
 | `dist/amir-al-afia.zip` | The build artifact uploaded to WordPress. Tracked deliberately — see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). |
 
 ## Quick start
@@ -46,7 +46,9 @@ creates the demo properties, agents and attractions.
   `/properties/` and a single-listing page.
 - **Agent** — the people in "Meet The Team", with click-to-call, WhatsApp and
   Telegram links.
-- **Attraction** — the "Attractions & Nature of Oman" tiles.
+- **Attraction** — the "Attractions & Nature of Oman" tiles, each a page of its
+  own at `/oman/…`: what the place is, how far it is from Muscat, when to go,
+  and which residential areas sit near it.
 - **Lead** — every contact-form submission, stored so nothing is lost if an
   email notification bounces.
 
@@ -56,8 +58,14 @@ creates the demo properties, agents and attractions.
   the archive so they still filter with JavaScript disabled.
 - The contact form is real: nonce, honeypot, per-IP rate limit, stored lead and
   an email to the office. It posts to `admin-post.php` without JavaScript.
-- Meta description, Open Graph and JSON-LD are emitted by the theme, and are
-  skipped automatically if an SEO plugin is ever installed.
+- A listing with more than one photo renders a gallery slider. The track is a
+  native scroll-snap container, so swipe and keyboard scrolling work with
+  JavaScript blocked; the script adds arrows, thumbnails and a counter.
+- Canonical, robots, Open Graph, Twitter cards and a single JSON-LD `@graph`
+  are emitted by the theme, and are skipped automatically if an SEO plugin is
+  ever installed. Links pasted into WhatsApp or Telegram preview with a
+  1200×630 card; pages with no photo of their own fall back to a bundled
+  brand card.
 
 **Editing without code** — phone numbers, social handles, every section
 heading, the three hero stats, the "Why Oman" cards, the hero collage and the

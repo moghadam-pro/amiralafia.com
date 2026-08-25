@@ -225,6 +225,20 @@ function aaa_head_meta(): void {
 add_action( 'wp_head', 'aaa_head_meta', 3 );
 
 /**
+ * Decode HTML entities for use inside a JSON-LD script block.
+ *
+ * wp_get_document_title() and the excerpt helpers return entity-encoded text,
+ * which is correct for an HTML attribute but wrong inside <script>: a JSON
+ * parser does not decode entities, so a title would carry a literal "&#8211;"
+ * into the structured data.
+ *
+ * @param string $text Encoded text.
+ */
+function aaa_schema_text( string $text ): string {
+	return trim( html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+}
+
+/**
  * The organisation node, referenced by every other JSON-LD node.
  *
  * @return array<string, mixed>
@@ -242,7 +256,7 @@ function aaa_schema_organization(): array {
 	$node = array(
 		'@type'      => 'RealEstateAgent',
 		'@id'        => home_url( '/#organization' ),
-		'name'       => get_bloginfo( 'name' ),
+		'name'       => aaa_schema_text( get_bloginfo( 'name' ) ),
 		'url'        => home_url( '/' ),
 		'telephone'  => aaa_option( 'aaa_phone' ),
 		'areaServed' => array(
@@ -335,7 +349,7 @@ function aaa_schema_breadcrumbs(): ?array {
 		$list[] = array(
 			'@type'    => 'ListItem',
 			'position' => $i + 1,
-			'name'     => $item['name'],
+			'name'     => aaa_schema_text( (string) $item['name'] ),
 			'item'     => $item['url'],
 		);
 	}
@@ -367,7 +381,7 @@ function aaa_schema_entity(): ?array {
 
 		$about = array(
 			'@type' => $kind,
-			'name'  => get_the_title(),
+			'name'  => aaa_schema_text( get_the_title() ),
 		);
 
 		if ( $addr ) {
@@ -396,7 +410,7 @@ function aaa_schema_entity(): ?array {
 			// A listing page, per schema.org, is a RealEstateListing.
 			'@type'      => 'RealEstateListing',
 			'@id'        => get_permalink() . '#listing',
-			'name'       => get_the_title(),
+			'name'       => aaa_schema_text( get_the_title() ),
 			'url'        => get_permalink(),
 			'datePosted' => get_the_date( 'c' ),
 			'about'      => $about,
@@ -429,9 +443,9 @@ function aaa_schema_entity(): ?array {
 		$node = array(
 			'@type'       => 'TouristAttraction',
 			'@id'         => get_permalink() . '#attraction',
-			'name'        => get_the_title(),
+			'name'        => aaa_schema_text( get_the_title() ),
 			'url'         => get_permalink(),
-			'description' => aaa_meta_description(),
+			'description' => aaa_schema_text( aaa_meta_description() ),
 			'touristType' => __( 'Prospective residents and property investors', 'amir-al-afia' ),
 			'address'     => array(
 				'@type'          => 'PostalAddress',
@@ -497,8 +511,8 @@ function aaa_json_ld(): void {
 			'@type'      => 'WebPage',
 			'@id'        => $url . '#webpage',
 			'url'        => $url,
-			'name'       => wp_get_document_title(),
-			'description' => aaa_meta_description(),
+			'name'       => aaa_schema_text( wp_get_document_title() ),
+			'description' => aaa_schema_text( aaa_meta_description() ),
 			'isPartOf'   => array( '@id' => home_url( '/#website' ) ),
 			'about'      => is_front_page() ? array( '@id' => home_url( '/#organization' ) ) : null,
 			'primaryImageOfPage' => array(
@@ -536,7 +550,7 @@ function aaa_json_ld(): void {
 				'@type'    => 'ListItem',
 				'position' => $i,
 				'url'      => get_permalink( $post ),
-				'name'     => get_the_title( $post ),
+				'name'     => aaa_schema_text( get_the_title( $post ) ),
 			);
 		}
 

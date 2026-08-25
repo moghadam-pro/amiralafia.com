@@ -66,11 +66,32 @@ you want one. Then in **Agent Contact**:
 The home page shows up to four, ordered by the **Order** field under Page
 Attributes (lower numbers first).
 
-## The Oman tiles
+## The Oman guide
 
-**Attractions → Add New.** Title is the vertical label, featured image is the
-photo. **Attraction Link** is optional — leave it empty and the tile is not
-clickable. Order is the Page Attributes **Order** field. Six are shown.
+**Attractions → Add New.** Each of these is a real page at `/oman/…`, not just
+a tile on the home page.
+
+- **Title** — also the vertical label on the tile.
+- **Featured image** — the tile photo and the page's hero.
+- **Excerpt** — the sentence under the heading, and the description used when
+  the page is shared.
+- **Content** — the body of the page.
+- **Attraction Facts**: region, drive time from Muscat, best season, the
+  residential areas nearby, latitude and longitude, and an optional external
+  link. Anything left empty is simply not shown.
+
+The home page shows six, ordered by the Page Attributes **Order** field. The
+index at `/oman/` shows them all.
+
+## Sharing a link
+
+Paste any page's URL into WhatsApp, Telegram, Facebook or LinkedIn and it
+previews with a photo, the title and the description. The photo is the page's
+featured image; a page without one falls back to a branded card.
+
+If you change a photo or the text and the old version still shows, the chat app
+has cached it — that cache clears on its own, usually within a day. Facebook's
+Sharing Debugger can force a refresh for Facebook and WhatsApp.
 
 ## Reading enquiries
 

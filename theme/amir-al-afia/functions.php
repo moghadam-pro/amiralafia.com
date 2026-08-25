@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.2.3' );
+define( 'AAA_VERSION', '1.2.4' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
