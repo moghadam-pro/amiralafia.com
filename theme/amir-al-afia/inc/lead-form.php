@@ -57,7 +57,7 @@ function aaa_process_lead( array $input ): array {
 		);
 	}
 
-	$source  = sanitize_text_field( $input['aaa_source'] ?? '' );
+	$source  = esc_url_raw( $input['aaa_source'] ?? '' );
 	$lead_id = wp_insert_post(
 		array(
 			'post_type'   => 'aaa_lead',
@@ -192,7 +192,11 @@ function aaa_lead_detail_box(): void {
 				esc_url( aaa_whatsapp_url( $phone ) ),
 				esc_html__( 'Open in WhatsApp', 'amir-al-afia' )
 			);
-			echo '<p><strong>' . esc_html__( 'Sent from', 'amir-al-afia' ) . ':</strong> ' . esc_html( $source ?: '—' ) . '</p>';
+			printf(
+				'<p><strong>%1$s:</strong> <a href="%2$s" target="_blank" rel="noopener">%2$s</a></p>',
+				esc_html__( 'Sent from', 'amir-al-afia' ),
+				esc_url( $source )
+			);
 		},
 		'aaa_lead',
 		'normal',

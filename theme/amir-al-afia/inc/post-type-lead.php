@@ -81,7 +81,15 @@ function aaa_lead_column_content( string $column, int $post_id ): void {
 
 	if ( 'aaa_source' === $column ) {
 		$source = (string) get_post_meta( $post_id, '_aaa_lead_source', true );
-		echo $source ? esc_html( $source ) : '&mdash;';
+		if ( '' === $source ) {
+			echo '&mdash;';
+			return;
+		}
+		printf(
+			'<a href="%1$s" target="_blank" rel="noopener">%2$s</a>',
+			esc_url( $source ),
+			esc_html( str_replace( home_url(), '', $source ) ?: '/' )
+		);
 	}
 }
 add_action( 'manage_aaa_lead_posts_custom_column', 'aaa_lead_column_content', 10, 2 );

@@ -1,0 +1,82 @@
+# Engineering notes
+
+Working notes for this repository. Read `docs/ARCHITECTURE.md` for how the theme
+is built and `docs/DESIGN-REVIEW.md` for why it departs from the mockup.
+
+## The hard constraint
+
+**No plugins, no parent theme.** This is a client requirement, not a
+preference. Do not solve a problem by suggesting ACF, a listings plugin, an SEO
+plugin or a form plugin. If something needs a plugin's capability, it gets
+written into the theme.
+
+## Before you change PHP
+
+There is **no PHP runtime on this machine** — no `php`, no Docker, no WSL
+distro. `php -l` is not available. Run the bracket checker instead:
+
+```bash
+python tools/check-php.py theme
+```
+
+It skips strings, comments and heredocs and reports unbalanced brackets. It is
+not a parser. A syntax error it cannot see becomes a white screen on a live
+site, so read what you wrote before shipping it.
+
+`tools/build-theme.py` runs the checker and refuses to package on failure.
+
+## Shipping a change
+
+1. Edit under `theme/amir-al-afia/`.
+2. Bump `Version:` in `theme/amir-al-afia/style.css` **and** `VERSION`, and add
+   a `CHANGELOG.md` entry. WordPress compares that header on re-upload; an
+   unchanged version makes the installer treat the zip as identical.
+3. `python tools/build-theme.py`
+4. Commit the source **and** the rebuilt `dist/amir-al-afia.zip` together. The
+   zip is tracked on purpose — see `docs/DEPLOYMENT.md`.
+5. Upload through **Appearance → Themes → Add New → Upload Theme**.
+
+## Conventions
+
+- **Prefix everything `aaa_`.** Functions, meta keys (`_aaa_price`), Customizer
+  settings (`aaa_phone`), AJAX actions. Template-local variables too
+  (`$aaa_price`), because `get_template_part()` shares scope with its caller
+  and an unprefixed `$query` will collide.
+- **WordPress coding standards**: tabs, Yoda conditions, `array()` not `[]`,
+  spaces inside parentheses. Match the surrounding file.
+- **Escape at the point of echo**, never earlier. `esc_html`, `esc_attr`,
+  `esc_url`. The only unescaped output is the theme's own inline SVG files.
+- **New editable text goes in the Customizer**, not a template. The office
+  should never need a code change to reword a heading.
+- **New markup that JavaScript enhances must work without it.** That is the
+  pattern the filters and the contact form already follow; keep it.
+
+## Front-end rules
+
+- One stylesheet, one deferred script. Do not add a library.
+- Nothing may be hidden by default and revealed by JavaScript. Reveal styles are
+  scoped under `.sr-armed`, which only `main.js` adds.
+- Respect `prefers-reduced-motion`.
+- Check contrast before using `--cyan` on text — it is 1.9:1 on white. Use
+  `--cyan-ink`.
+
+## Things that will bite
+
+- **`get_the_title()` on the front page** returns whatever the main query left
+  behind, because `front-page.php` runs no loop. This produced leads labelled
+  "Hello world!". Use an explicit post ID or the request URL.
+- **Featured vs filtered.** `aaa_get_home_properties()` only prefers featured
+  listings when no filter is active. Re-introducing the preference under a
+  filter hides matching properties.
+- **Rewrite rules** flush once per theme version via the `aaa_rewrites_flushed`
+  option. Adding a post type or changing a slug needs a version bump to take
+  effect, or a manual visit to Settings → Permalinks.
+- **The AJAX filter renders the same template part** as the initial page load.
+  Change `template-parts/property/card.php` and both paths follow; do not
+  duplicate card markup in JavaScript.
+
+## Deployment access
+
+Admin is reached through the browser at `https://amiralafia.com/wp-admin`. There
+is no SSH or FTP. Deployment is a manual zip upload; there is no CI and no
+staging site.

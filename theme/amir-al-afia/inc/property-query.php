@@ -69,8 +69,12 @@ function aaa_property_query_args( string $type = 'all', string $deal = 'all', in
 }
 
 /**
- * Run the home-page property query, falling back to the newest listings when
- * nothing has been flagged as featured yet.
+ * Run the home-page property query.
+ *
+ * The featured flag decides what the unfiltered teaser shows. Once a visitor
+ * picks a filter they are asking for matching properties, so featured stops
+ * applying — otherwise "For Rent" would silently hide every rental that
+ * happens not to be flagged.
  *
  * @param string $type     property_type slug or 'all'.
  * @param string $deal     deal_type slug or 'all'.
@@ -78,10 +82,15 @@ function aaa_property_query_args( string $type = 'all', string $deal = 'all', in
  * @return WP_Query
  */
 function aaa_get_home_properties( string $type = 'all', string $deal = 'all', int $per_page = 4 ): WP_Query {
-	$featured = new WP_Query( aaa_property_query_args( $type, $deal, $per_page, true ) );
-	if ( $featured->have_posts() ) {
-		return $featured;
+	$filtered = ( 'all' !== $type && '' !== $type ) || ( 'all' !== $deal && '' !== $deal );
+
+	if ( ! $filtered ) {
+		$featured = new WP_Query( aaa_property_query_args( $type, $deal, $per_page, true ) );
+		if ( $featured->have_posts() ) {
+			return $featured;
+		}
 	}
+
 	return new WP_Query( aaa_property_query_args( $type, $deal, $per_page, false ) );
 }
 

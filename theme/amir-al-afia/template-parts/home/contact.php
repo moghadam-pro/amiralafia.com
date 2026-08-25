@@ -31,7 +31,13 @@ $aaa_message = isset( $_GET['msg'] ) ? sanitize_text_field( rawurldecode( wp_uns
 				action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 
 				<input type="hidden" name="action" value="<?php echo esc_attr( AAA_LEAD_ACTION ); ?>">
-				<input type="hidden" name="aaa_source" value="<?php echo esc_attr( get_the_title() ?: get_bloginfo( 'name' ) ); ?>">
+				<?php
+				// The page the enquiry came from. On a listing this is the
+				// property's own URL, which is what the office wants to know.
+				// Not get_the_title(): front-page.php runs no loop, so that
+				// returns whatever the main query happened to leave behind.
+				?>
+				<input type="hidden" name="aaa_source" value="<?php echo esc_url( home_url( add_query_arg( array() ) ) ); ?>">
 				<?php wp_nonce_field( AAA_LEAD_ACTION, 'aaa_lead_nonce' ); ?>
 
 				<label class="screen-reader-text" for="cf-name"><?php esc_html_e( 'Your name', 'amir-al-afia' ); ?></label>
