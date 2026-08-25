@@ -1,0 +1,9 @@
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# dist/amir-al-afia.zip is deliberately tracked: it is the artifact uploaded to
+# WordPress via Appearance > Themes > Add New > Upload Theme, and it is fetched
+# from this repo during deployment. Rebuild it with tools/build-theme.sh before
+# every release commit so it never drifts from theme/.

@@ -1,0 +1,20 @@
+<svg class="brand-logo" width="179" height="64" role="img" aria-label="Amir Al Afia Real Estate" viewBox="0 0 179 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M25.2933 50.8342C25.1891 51.0025 24.9443 51.0025 24.84 50.8342L1.92364 13.8556C1.81706 13.6836 1.98741 13.4737 2.17765 13.5426L19.4533 19.8019C19.6678 19.8796 19.692 20.1732 19.4932 20.2851L16.2283 22.1216C15.9601 22.2725 15.8748 22.6183 16.0422 22.8765L24.6191 36.1095C24.8293 36.4338 25.304 36.4338 25.5142 36.1095L34.0911 22.8765C34.2585 22.6183 34.1732 22.2725 33.9051 22.1216L30.6401 20.2851C30.4413 20.1732 30.4656 19.8796 30.68 19.8019L47.9557 13.5426C48.1459 13.4737 48.3163 13.6836 48.2097 13.8556L25.2933 50.8342Z" fill="#21ABFC"/>
+<g filter="url(#aaa-logo-shadow)">
+<path d="M31.4667 26.4L36.2667 33.8667L32 40.5333L27.2 32.8L31.4667 26.4Z" fill="#21ABFC"/>
+</g>
+<path d="M38.6267 50.8342C38.5224 51.0025 38.2776 51.0025 38.1733 50.8342L15.257 13.8556C15.1504 13.6836 15.3208 13.4737 15.511 13.5426L32.7867 19.8019C33.0011 19.8796 33.0254 20.1732 32.8266 20.2851L29.5616 22.1216C29.2934 22.2725 29.2082 22.6183 29.3755 22.8765L37.9525 36.1095C38.1627 36.4338 38.6373 36.4338 38.8476 36.1095L47.4245 22.8765C47.5918 22.6183 47.5066 22.2725 47.2384 22.1216L43.9735 20.2851C43.7746 20.1732 43.7989 19.8796 44.0133 19.8019L61.289 13.5426C61.4793 13.4737 61.6496 13.6836 61.543 13.8556L38.6267 50.8342Z" fill="#4ACBF0"/>
+
+<defs>
+<filter id="aaa-logo-shadow" x="22.9333" y="22.1333" width="17.6" height="22.6667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="2.13333"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="aaa-logo-shadow-effect"/>
+<feBlend mode="normal" in="SourceGraphic" in2="aaa-logo-shadow-effect" result="shape"/>
+</filter>
+</defs>
+</svg>

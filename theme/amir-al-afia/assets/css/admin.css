@@ -1,0 +1,44 @@
+/* Property Details and Agent Contact meta boxes. */
+.aaa-fields {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+	margin-top: 8px;
+}
+
+.aaa-field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.aaa-field input[type="text"],
+.aaa-field input[type="number"],
+.aaa-field input[type="url"] {
+	width: 100%;
+}
+
+.aaa-field p.description {
+	margin-top: 4px;
+}
+
+.aaa-gallery {
+	margin-top: 20px;
+	padding-top: 16px;
+	border-top: 1px solid #dcdcde;
+}
+
+.aaa-gallery-preview {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 10px 0;
+}
+
+.aaa-gallery-preview img {
+	width: 72px;
+	height: 72px;
+	object-fit: cover;
+	border-radius: 4px;
+	border: 1px solid #dcdcde;
+}

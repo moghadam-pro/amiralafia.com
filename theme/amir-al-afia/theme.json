@@ -1,0 +1,75 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": false,
+		"useRootPaddingAwareAlignments": false,
+		"layout": {
+			"contentSize": "760px",
+			"wideSize": "1240px"
+		},
+		"color": {
+			"custom": false,
+			"customGradient": false,
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"palette": [
+				{ "slug": "navy",  "color": "#0B2461", "name": "Navy" },
+				{ "slug": "cyan",  "color": "#00CDDE", "name": "Cyan" },
+				{ "slug": "ink",   "color": "#111827", "name": "Ink" },
+				{ "slug": "muted", "color": "#5A6473", "name": "Muted" },
+				{ "slug": "mist",  "color": "#F4F7FB", "name": "Mist" },
+				{ "slug": "white", "color": "#FFFFFF", "name": "White" }
+			]
+		},
+		"typography": {
+			"customFontSize": false,
+			"dropCap": false,
+			"fluid": true,
+			"fontFamilies": [
+				{
+					"slug": "body",
+					"name": "Barlow",
+					"fontFamily": "'Barlow', system-ui, sans-serif"
+				},
+				{
+					"slug": "display",
+					"name": "Barlow Condensed",
+					"fontFamily": "'Barlow Condensed', 'Barlow', sans-serif"
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small",  "size": "13px",   "name": "Small" },
+				{ "slug": "medium", "size": "15.5px", "name": "Medium" },
+				{ "slug": "large",  "size": "22px",   "name": "Large" }
+			]
+		},
+		"spacing": {
+			"customSpacingSize": false,
+			"units": [ "px", "rem", "%" ]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#FFFFFF",
+			"text": "#111827"
+		},
+		"typography": {
+			"fontFamily": "'Barlow', system-ui, sans-serif",
+			"fontSize": "15.5px",
+			"lineHeight": "1.75"
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "#0B2461" }
+			},
+			"heading": {
+				"typography": {
+					"fontFamily": "'Barlow Condensed', 'Barlow', sans-serif",
+					"fontWeight": "800",
+					"textTransform": "uppercase"
+				}
+			}
+		}
+	}
+}
