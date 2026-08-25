@@ -562,6 +562,7 @@ function aaa_run_demo_import(): array {
 		'agents'      => 0,
 		'attractions' => 0,
 		'pruned'      => 0,
+		'regenerated' => 0,
 	);
 
 	// --- Media ---------------------------------------------------------
@@ -722,7 +723,8 @@ function aaa_run_demo_import(): array {
 		}
 	}
 
-	$result['pruned'] = aaa_prune_stale_demo_media();
+	$result['pruned']      = aaa_prune_stale_demo_media();
+	$result['regenerated'] = aaa_regenerate_demo_sizes();
 
 	// The Oman guide is a new archive; make sure its permalinks resolve.
 	flush_rewrite_rules();
@@ -730,6 +732,66 @@ function aaa_run_demo_import(): array {
 	update_option( 'aaa_demo_imported', gmdate( 'c' ) );
 
 	return $result;
+}
+
+/**
+ * Regenerate intermediate sizes for demo attachments that are missing one.
+ *
+ * An image imported before a size was registered never gets that size — which
+ * is exactly what happened to the first batch of place photos when the 1200x630
+ * Open Graph size arrived a version later, leaving them without a share crop.
+ * Core has no UI for this and the brief rules out a regeneration plugin, so the
+ * importer repairs its own images.
+ *
+ * Scoped to attachments carrying a `_aaa_demo_key`; media the office uploaded
+ * is never touched.
+ *
+ * @param string $size Size that must exist.
+ * @return int How many were rebuilt.
+ */
+function aaa_regenerate_demo_sizes( string $size = 'aaa-og' ): int {
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
+	$attachments = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'post_mime_type' => 'image',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'meta_key'       => '_aaa_demo_key',
+		)
+	);
+
+	$rebuilt = 0;
+
+	foreach ( $attachments as $id ) {
+		$id   = (int) $id;
+		$meta = wp_get_attachment_metadata( $id );
+
+		if ( isset( $meta['sizes'][ $size ] ) ) {
+			continue;
+		}
+
+		// Too small to crop to this size at all; nothing to rebuild.
+		$dimensions = wp_get_registered_image_subsizes()[ $size ] ?? null;
+		if ( $dimensions && ( ( $meta['width'] ?? 0 ) < $dimensions['width'] || ( $meta['height'] ?? 0 ) < $dimensions['height'] ) ) {
+			continue;
+		}
+
+		$file = get_attached_file( $id );
+		if ( ! $file || ! file_exists( $file ) ) {
+			continue;
+		}
+
+		$fresh = wp_generate_attachment_metadata( $id, $file );
+		if ( is_array( $fresh ) ) {
+			wp_update_attachment_metadata( $id, $fresh );
+			++$rebuilt;
+		}
+	}
+
+	return $rebuilt;
 }
 
 /**
@@ -808,13 +870,14 @@ function aaa_render_demo_page(): void {
 				<p>
 					<?php
 					printf(
-						/* translators: 1: image count, 2: property count, 3: agent count, 4: attraction count, 5: removed count. */
-						esc_html__( 'Imported %1$d images, %2$d properties, %3$d agents and %4$d attraction pages. Removed %5$d images no longer used.', 'amir-al-afia' ),
+						/* translators: 1: image count, 2: property count, 3: agent count, 4: attraction count, 5: removed count, 6: rebuilt count. */
+						esc_html__( 'Imported %1$d images, %2$d properties, %3$d agents and %4$d attraction pages. Removed %5$d images no longer used, rebuilt sizes for %6$d.', 'amir-al-afia' ),
 						(int) $done['images'],
 						(int) $done['properties'],
 						(int) $done['agents'],
 						(int) $done['attractions'],
-						(int) $done['pruned']
+						(int) $done['pruned'],
+						(int) $done['regenerated']
 					);
 					?>
 				</p>
