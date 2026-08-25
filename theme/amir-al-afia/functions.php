@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.2.0' );
+define( 'AAA_VERSION', '1.2.1' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -149,3 +149,32 @@ function aaa_body_class( array $classes ): array {
 	return $classes;
 }
 add_filter( 'body_class', 'aaa_body_class' );
+
+/**
+ * Give the front page a descriptive title.
+ *
+ * With no tagline set, WordPress titles the home page with the site name
+ * alone — which is what gets shared into WhatsApp and indexed by Google. This
+ * appends the tagline, falling back to a description of the business so the
+ * title is never just the name.
+ *
+ * @param array<string, string> $parts Title parts.
+ * @return array<string, string>
+ */
+function aaa_document_title_parts( array $parts ): array {
+	if ( ! is_front_page() ) {
+		return $parts;
+	}
+
+	$tagline = trim( (string) get_bloginfo( 'description', 'display' ) );
+
+	// WordPress ships this as the default tagline; it is not a description.
+	if ( '' === $tagline || 'Just another WordPress site' === $tagline ) {
+		$tagline = __( 'Property for Sale and Rent in Muscat, Oman', 'amir-al-afia' );
+	}
+
+	$parts['tagline'] = $tagline;
+
+	return $parts;
+}
+add_filter( 'document_title_parts', 'aaa_document_title_parts' );

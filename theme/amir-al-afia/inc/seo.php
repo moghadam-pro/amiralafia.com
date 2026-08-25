@@ -125,6 +125,15 @@ function aaa_share_image(): array {
 		if ( ! $src ) {
 			continue;
 		}
+
+		// wp_get_attachment_image_src() silently falls back to the full image
+		// when the source was too small to crop to 1200x630. A tall-and-thin
+		// or short-and-wide card previews badly in WhatsApp and Telegram, so
+		// fall through to the next candidate instead of shipping it.
+		if ( (int) $src[1] < 600 || (int) $src[2] < 315 ) {
+			continue;
+		}
+
 		return array(
 			'url'    => $src[0],
 			'width'  => (int) $src[1],

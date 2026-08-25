@@ -19,9 +19,10 @@ defined( 'ABSPATH' ) || exit;
  * Build a Wikimedia Commons file URL, scaled server-side.
  *
  * @param string $file Commons file name, without the "File:" prefix.
- * @param int    $width Target width in pixels.
+ * @param int    $width Target width. 2000 so that even a wide panorama still
+ *                      clears the 630px height the Open Graph crop needs.
  */
-function aaa_commons_url( string $file, int $width = 1600 ): string {
+function aaa_commons_url( string $file, int $width = 2000 ): string {
 	return 'https://commons.wikimedia.org/wiki/Special:FilePath/' . rawurlencode( $file ) . '?width=' . $width;
 }
 
@@ -213,7 +214,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Luxury Villa — Qurum',
-			'image'   => 'om-khuwair',
+			'image'   => 'om-house',
 			'price'   => 1250000,
 			'beds'    => '6',
 			'baths'   => '6',
@@ -237,7 +238,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Garden Villa — Madinat Sultan Qaboos',
-			'image'   => 'om-house',
+			'image'   => 'om-khuwair',
 			'price'   => 32000,
 			'beds'    => '4',
 			'baths'   => '4',
