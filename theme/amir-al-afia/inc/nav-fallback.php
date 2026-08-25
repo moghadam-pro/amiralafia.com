@@ -20,20 +20,22 @@ function aaa_default_primary_menu( $args = array() ): void {
 	$class = $args['menu_class'] ?? 'nav-links';
 	$home  = is_front_page() ? '' : home_url( '/' );
 
+	// Properties and the Oman guide are real archives now, so they get real
+	// URLs; the rest stay as anchors into the landing page.
 	$items = array(
-		'#properties' => __( 'Properties', 'amir-al-afia' ),
-		'#investors'  => __( 'Why Oman', 'amir-al-afia' ),
-		'#team'       => __( 'Our Team', 'amir-al-afia' ),
-		'#attractions' => __( 'Oman', 'amir-al-afia' ),
-		'#contact'    => __( 'Contact', 'amir-al-afia' ),
+		array( get_post_type_archive_link( 'property' ) ?: $home . '#properties', __( 'Properties', 'amir-al-afia' ) ),
+		array( $home . '#investors', __( 'Why Oman', 'amir-al-afia' ) ),
+		array( $home . '#team', __( 'Our Team', 'amir-al-afia' ) ),
+		array( get_post_type_archive_link( 'attraction' ) ?: $home . '#attractions', __( 'Oman', 'amir-al-afia' ) ),
+		array( $home . '#contact', __( 'Contact', 'amir-al-afia' ) ),
 	);
 
 	printf( '<ul class="%s">', esc_attr( $class ) );
-	foreach ( $items as $anchor => $label ) {
+	foreach ( $items as $item ) {
 		printf(
 			'<li><a href="%1$s">%2$s</a></li>',
-			esc_url( $home . $anchor ),
-			esc_html( $label )
+			esc_url( (string) $item[0] ),
+			esc_html( $item[1] )
 		);
 	}
 	echo '</ul>';
@@ -49,15 +51,15 @@ function aaa_default_footer_menu( $args = array() ): void {
 	$home  = is_front_page() ? '' : home_url( '/' );
 
 	$items = array(
-		get_post_type_archive_link( 'property' ) ?: $home . '#properties' => __( 'Properties', 'amir-al-afia' ),
-		$home . '#team'    => __( 'About us', 'amir-al-afia' ),
-		$home . '#investors' => __( 'Why Oman', 'amir-al-afia' ),
-		$home . '#contact' => __( 'Contact us', 'amir-al-afia' ),
+		array( get_post_type_archive_link( 'property' ) ?: $home . '#properties', __( 'Properties', 'amir-al-afia' ) ),
+		array( get_post_type_archive_link( 'attraction' ) ?: $home . '#attractions', __( 'Explore Oman', 'amir-al-afia' ) ),
+		array( $home . '#team', __( 'About us', 'amir-al-afia' ) ),
+		array( $home . '#contact', __( 'Contact us', 'amir-al-afia' ) ),
 	);
 
 	printf( '<ul class="%s">', esc_attr( $class ) );
-	foreach ( $items as $url => $label ) {
-		printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( $url ), esc_html( $label ) );
+	foreach ( $items as $item ) {
+		printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( (string) $item[0] ), esc_html( $item[1] ) );
 	}
 	echo '</ul>';
 }

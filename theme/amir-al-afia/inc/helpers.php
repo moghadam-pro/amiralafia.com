@@ -102,3 +102,47 @@ function aaa_sr( int $delay = 0, string $extra = '' ): void {
 function aaa_placeholder_image(): string {
 	return AAA_URI . '/assets/img/placeholder.svg';
 }
+
+/**
+ * A photo credit line for an attachment, or '' when none is recorded.
+ *
+ * The starter-content importer stores the photographer, the licence and the
+ * source page on each image it brings in. Creative Commons BY and BY-SA both
+ * require that credit to be shown wherever the photo is; CC0 and public-domain
+ * images carry it too, because knowing where a photo came from is useful even
+ * when it is not legally required.
+ *
+ * @param int $attachment_id Attachment to describe.
+ */
+function aaa_media_credit( int $attachment_id ): string {
+	$author  = (string) get_post_meta( $attachment_id, '_aaa_credit_author', true );
+	$license = (string) get_post_meta( $attachment_id, '_aaa_credit_license', true );
+	$source  = (string) get_post_meta( $attachment_id, '_aaa_credit_source', true );
+
+	if ( '' === $author && '' === $license ) {
+		return '';
+	}
+
+	$name = $author ?: __( 'Unknown', 'amir-al-afia' );
+	if ( $source ) {
+		$name = sprintf(
+			'<a href="%s" target="_blank" rel="noopener nofollow">%s</a>',
+			esc_url( $source ),
+			esc_html( $name )
+		);
+	} else {
+		$name = esc_html( $name );
+	}
+
+	if ( '' === $license ) {
+		/* translators: %s: photographer name, possibly linked. */
+		return sprintf( __( 'Photo: %s', 'amir-al-afia' ), $name );
+	}
+
+	return sprintf(
+		/* translators: 1: photographer name, possibly linked. 2: licence name. */
+		__( 'Photo: %1$s (%2$s)', 'amir-al-afia' ),
+		$name,
+		esc_html( $license )
+	);
+}

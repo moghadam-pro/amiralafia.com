@@ -237,6 +237,100 @@
 		} );
 	}
 
+
+	/* ── Property gallery slider ────────────────────────────────
+	 * The track is a native scroll-snap container, so swipe and keyboard
+	 * scrolling already work. This adds the arrows, the thumbnails, the
+	 * counter and arrow-key support, and reveals the controls only once it
+	 * has run.
+	 */
+	function initGallery() {
+		var slider = document.getElementById( 'sp-slider' );
+		var track = document.getElementById( 'sp-slider-track' );
+		if ( ! slider || ! track ) {
+			return;
+		}
+
+		var slides = Array.prototype.slice.call( track.querySelectorAll( '.sp-slide' ) );
+		var thumbs = Array.prototype.slice.call( document.querySelectorAll( '.sp-thumb' ) );
+		var prev = slider.querySelector( '.sp-prev' );
+		var next = slider.querySelector( '.sp-next' );
+		var counter = slider.querySelector( '.sp-slider-current' );
+		var index = 0;
+
+		if ( slides.length < 2 ) {
+			return;
+		}
+
+		prev.hidden = false;
+		next.hidden = false;
+		slider.classList.add( 'is-enhanced' );
+
+		function goTo( i, smooth ) {
+			index = Math.max( 0, Math.min( i, slides.length - 1 ) );
+			track.scrollTo( {
+				left: slides[ index ].offsetLeft - track.offsetLeft,
+				behavior: ( smooth === false || reduceMotion ) ? 'auto' : 'smooth'
+			} );
+		}
+
+		function paint() {
+			if ( counter ) {
+				counter.textContent = String( index + 1 );
+			}
+			thumbs.forEach( function ( thumb, i ) {
+				var on = i === index;
+				thumb.classList.toggle( 'is-active', on );
+				thumb.setAttribute( 'aria-selected', on ? 'true' : 'false' );
+			} );
+			prev.disabled = index === 0;
+			next.disabled = index === slides.length - 1;
+		}
+
+		// Derive the active slide from where the track actually is, so a
+		// swipe updates the thumbnails the same way a click does.
+		if ( 'IntersectionObserver' in window ) {
+			var spy = new IntersectionObserver( function ( entries ) {
+				entries.forEach( function ( entry ) {
+					if ( entry.isIntersecting ) {
+						index = slides.indexOf( entry.target );
+						paint();
+					}
+				} );
+			}, { root: track, threshold: 0.6 } );
+
+			slides.forEach( function ( slide ) {
+				spy.observe( slide );
+			} );
+		}
+
+		prev.addEventListener( 'click', function () {
+			goTo( index - 1 );
+		} );
+		next.addEventListener( 'click', function () {
+			goTo( index + 1 );
+		} );
+
+		thumbs.forEach( function ( thumb ) {
+			thumb.addEventListener( 'click', function () {
+				goTo( parseInt( thumb.dataset.index, 10 ) || 0 );
+			} );
+		} );
+
+		track.addEventListener( 'keydown', function ( event ) {
+			if ( 'ArrowLeft' === event.key ) {
+				event.preventDefault();
+				goTo( index - 1 );
+			}
+			if ( 'ArrowRight' === event.key ) {
+				event.preventDefault();
+				goTo( index + 1 );
+			}
+		} );
+
+		paint();
+	}
+
 	/* ── Highlight the section currently in view ────────────── */
 	function initActiveNav() {
 		var links = document.querySelectorAll( '.nav-links a[href*="#"]' );
@@ -283,6 +377,7 @@
 		initScrollReveal();
 		initFilters();
 		initLeadForm();
+		initGallery();
 		initActiveNav();
 	}
 

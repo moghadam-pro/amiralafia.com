@@ -2,10 +2,10 @@
 /**
  * One-click starter content.
  *
- * Sideloads the photography used in the mockup into the Media Library, then
- * creates the demo properties, agents and attractions so the landing page has
- * something to render on a fresh install. Everything it creates is ordinary
- * content the office can edit or delete.
+ * Sideloads photography into the Media Library, then creates the demo
+ * properties, agents and attraction pages so a fresh install has something to
+ * render. Everything it creates is ordinary content the office can edit or
+ * delete.
  *
  * Images are pulled once and stored locally, so the published site never
  * hotlinks a third-party CDN.
@@ -16,62 +16,166 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * The photo set: a key used for lookups, plus the source URL and alt text.
+ * Build a Wikimedia Commons file URL, scaled server-side.
  *
- * Property photography comes from Unsplash, whose licence permits commercial
- * use; it is placeholder material to be swapped for real listing photos.
+ * @param string $file Commons file name, without the "File:" prefix.
+ * @param int    $width Target width in pixels.
+ */
+function aaa_commons_url( string $file, int $width = 1600 ): string {
+	return 'https://commons.wikimedia.org/wiki/Special:FilePath/' . rawurlencode( $file ) . '?width=' . $width;
+}
+
+/**
+ * The photo set.
  *
- * The Oman photographs are CC0 / Public Domain Mark from Wikimedia Commons,
- * chosen because the mockup's own picks were wrong — its "Historical House"
- * was the Great Sphinx and its "Desert Adventures" was Monument Valley. Every
- * image below was checked to be the place its caption claims.
+ * Every photograph here is of Oman, and every one was opened and checked to be
+ * the place it is captioned as. That is not a given: the original mockup's
+ * picks included the Great Sphinx captioned as an Omani house and Monument
+ * Valley captioned as Omani desert.
+ *
+ * The building photography is interim. It is real Omani architecture rather
+ * than generic villa stock, so the site reads as an Omani agency until the
+ * office uploads its own listing photos — which is the point at which all of
+ * this should be deleted.
+ *
+ * Licences are recorded per image and stored on the attachment, because CC BY
+ * and CC BY-SA both require the credit to travel with the photo.
  *
  * @return array<string, array<string, string>>
  */
 function aaa_demo_images(): array {
-	$u = 'https://images.unsplash.com/photo-';
-	$q = '?w=1600&q=85&fm=jpg&fit=max';
-
-	// Wikimedia Commons resolves this to the file and scales it server-side.
-	$commons = static fn( string $file ): string =>
-		'https://commons.wikimedia.org/wiki/Special:FilePath/' . rawurlencode( $file ) . '?width=1600';
+	$commons = 'https://commons.wikimedia.org/wiki/File:';
 
 	return array(
-		'pool-aerial'   => array( 'url' => $u . '1571003123894-1f0594d2b5d9' . $q, 'alt' => 'Aerial view of a villa swimming pool' ),
-		'villa-modern'  => array( 'url' => $u . '1600596542815-ffad4c1539a9' . $q, 'alt' => 'Modern villa exterior at dusk' ),
-		'villa-pool'    => array( 'url' => $u . '1512917774080-9991f1c4c750' . $q, 'alt' => 'Villa with a lit swimming pool' ),
-		'villa-grand'   => array( 'url' => $u . '1613490493576-7fde63acd811' . $q, 'alt' => 'Grand white villa with a landscaped drive' ),
-		'villa-contemp' => array( 'url' => $u . '1580587771525-78b9dba3b914' . $q, 'alt' => 'Contemporary villa with floor-to-ceiling glass' ),
-		'home-lux'      => array( 'url' => $u . '1570129477492-45c003edd2be' . $q, 'alt' => 'Luxury home exterior with warm lighting' ),
-		'arch-modern'   => array( 'url' => $u . '1600607687939-ce8a6c25118c' . $q, 'alt' => 'Modern apartment interior' ),
-		'prop-lux'      => array( 'url' => $u . '1600047509807-ba8f99d2cdde' . $q, 'alt' => 'Luxury property with a courtyard pool' ),
-		'villa-white'   => array( 'url' => $u . '1600585154340-be6161a56a0c' . $q, 'alt' => 'White villa with a manicured lawn' ),
 
-		// Oman — CC0 / Public Domain Mark, via Wikimedia Commons.
-		'om-corniche' => array(
-			'url' => $commons( 'Aerial view of the coastline of Muttrah.jpg' ),
-			'alt' => 'The Muttrah Corniche curving along Muscat harbour beneath the Al Hajar mountains',
+		// --- Omani buildings and residential areas ----------------------
+		'om-khuwair'      => array(
+			'url'     => aaa_commons_url( 'Al-Khuwair, Muscat.jpg' ),
+			'alt'     => 'White low-rise residential buildings in Al Khuwair, Muscat, below the Al Hajar mountains',
+			'author'  => 'Joe Castleman',
+			'license' => 'CC BY-SA 3.0',
+			'source'  => $commons . 'Al-Khuwair,_Muscat.jpg',
 		),
-		'om-houses'   => array(
-			'url' => $commons( 'Traditional Architecture Muttrah.jpg' ),
-			'alt' => 'Carved wooden balconies on traditional whitewashed houses in Muttrah',
+		'om-almouj-night' => array(
+			'url'     => aaa_commons_url( 'Al Mouj Marina.jpg' ),
+			'alt'     => 'Apartment buildings lit up at night around Al Mouj Marina, Muscat',
+			'author'  => 'Karananand2',
+			'license' => 'CC0',
+			'source'  => $commons . 'Al_Mouj_Marina.jpg',
 		),
-		// From the WordPress Photo Directory, which is CC0 throughout.
-		'om-mosque'   => array(
-			'url' => 'https://pd.w.org/2022/08/506630598190f7316.03658406-2048x1359.jpeg',
-			'alt' => 'The arcaded courtyard and minaret of the Sultan Qaboos Grand Mosque, Muscat',
+		'om-almouj-boats' => array(
+			'url'     => aaa_commons_url( 'Al-mouj-marina-3.jpg' ),
+			'alt'     => 'Yachts moored at Al Mouj Marina with waterfront buildings behind',
+			'author'  => 'A1000',
+			'license' => 'CC0',
+			'source'  => $commons . 'Al-mouj-marina-3.jpg',
 		),
-		'om-desert'   => array(
-			'url' => $commons( 'Wahiba Sands, Oman (Unsplash).jpg' ),
-			'alt' => 'A desert camp under the Milky Way in the Wahiba Sands',
+		'om-almouj-front' => array(
+			'url'     => aaa_commons_url( 'Al-mouj-marina.jpg' ),
+			'alt'     => 'The marina building and waterfront promenade at Al Mouj, Muscat',
+			'author'  => 'A1000',
+			'license' => 'CC0',
+			'source'  => $commons . 'Al-mouj-marina.jpg',
 		),
-		'om-wadi'     => array(
-			'url' => $commons( 'Wadi Shab 11-2025.jpg' ),
-			'alt' => 'Turquoise pools between the canyon walls of Wadi Shab',
+		'om-house'        => array(
+			'url'     => aaa_commons_url( 'Muscat Oman normal house.jpg' ),
+			'alt'     => 'A residential street of Omani villas in Muscat with a rocky hillside behind',
+			'author'  => 'Yourusernamewillbepublic2',
+			'license' => 'CC0',
+			'source'  => $commons . 'Muscat_Oman_normal_house.jpg',
 		),
-		'om-mountain' => array(
-			'url' => $commons( 'Jebel Shams, Jabal Shams, Oman (Unsplash).jpg' ),
-			'alt' => 'Two walkers on a ridge looking across the Jebel Shams range',
+		'om-aerial'       => array(
+			'url'     => aaa_commons_url( 'Aerial view of Muscat, Oman (53698188165).jpg' ),
+			'alt'     => 'Aerial view over the low white housing of Muscat',
+			'author'  => 'dronepicr',
+			'license' => 'CC BY 2.0',
+			'source'  => $commons . 'Aerial_view_of_Muscat,_Oman_(53698188165).jpg',
+		),
+		'om-coast-res'    => array(
+			'url'     => aaa_commons_url( 'Muscat 2016 1.jpg' ),
+			'alt'     => 'Aerial view of a Muscat residential district along the coastline',
+			'author'  => 'Arne Müseler',
+			'license' => 'CC BY-SA 3.0 DE',
+			'source'  => $commons . 'Muscat_2016_1.jpg',
+		),
+		'om-development'  => array(
+			'url'     => aaa_commons_url( 'Muscat 2016 4.jpg' ),
+			'alt'     => 'Aerial view of a planned coastal residential development near Muscat',
+			'author'  => 'Arne Müseler',
+			'license' => 'CC BY-SA 3.0 DE',
+			'source'  => $commons . 'Muscat_2016_4.jpg',
+		),
+		'om-marina-air'   => array(
+			'url'     => aaa_commons_url( 'Muttrah-Muscat مطرح، مسقط 05.jpg' ),
+			'alt'     => 'Aerial view of a marina development on the Muscat coast',
+			'author'  => 'Mostafameraji',
+			'license' => 'CC BY-SA 4.0',
+			'source'  => $commons . 'Muttrah-Muscat_%D9%85%D8%B7%D8%B1%D8%AD%D8%8C_%D9%85%D8%B3%D9%82%D8%B7_05.jpg',
+		),
+		'om-office'       => array(
+			'url'     => aaa_commons_url( 'Ahlibank Head Office .jpg' ),
+			'alt'     => 'A modern office building in Muscat framed by palm trees',
+			'author'  => 'Wael Mohammed Al-Masri',
+			'license' => 'CC BY-SA 4.0',
+			'source'  => $commons . 'Ahlibank_Head_Office_.jpg',
+		),
+
+		// --- Places, for the Oman guide --------------------------------
+		'om-corniche'     => array(
+			'url'     => aaa_commons_url( 'Aerial view of the coastline of Muttrah.jpg' ),
+			'alt'     => 'The Muttrah Corniche curving along Muscat harbour beneath the Al Hajar mountains',
+			'author'  => 'Izeberg007',
+			'license' => 'CC0',
+			'source'  => $commons . 'Aerial_view_of_the_coastline_of_Muttrah.jpg',
+		),
+		'om-maritime'     => array(
+			'url'     => aaa_commons_url( 'Maritime Majesty - Flickr - Abubakr Saeed.jpg' ),
+			'alt'     => 'Muttrah harbour at sunset with ships at anchor and the mountains behind',
+			'author'  => 'Abubakr Saeed',
+			'license' => 'CC BY 4.0',
+			'source'  => $commons . 'Maritime_Majesty_-_Flickr_-_Abubakr_Saeed.jpg',
+		),
+		'om-houses'       => array(
+			'url'     => aaa_commons_url( 'Traditional Architecture Muttrah.jpg' ),
+			'alt'     => 'Carved wooden balconies on traditional whitewashed merchant houses in Muttrah',
+			'author'  => 'Izeberg007',
+			'license' => 'CC0',
+			'source'  => $commons . 'Traditional_Architecture_Muttrah.jpg',
+		),
+		'om-mosque'       => array(
+			'url'     => 'https://pd.w.org/2022/08/506630598190f7316.03658406-2048x1359.jpeg',
+			'alt'     => 'The arcaded courtyard and minaret of the Sultan Qaboos Grand Mosque, Muscat',
+			'author'  => 'WordPress Photo Directory',
+			'license' => 'CC0',
+			'source'  => 'https://wordpress.org/photos/photo/506630598190f7316/',
+		),
+		'om-desert'       => array(
+			'url'     => aaa_commons_url( 'Wahiba Sands, Oman (Unsplash).jpg' ),
+			'alt'     => 'A desert camp under the Milky Way in the Wahiba Sands',
+			'author'  => 'Freddie Marriage',
+			'license' => 'CC0',
+			'source'  => $commons . 'Wahiba_Sands,_Oman_(Unsplash).jpg',
+		),
+		'om-wadi'         => array(
+			'url'     => aaa_commons_url( 'Wadi Shab 11-2025.jpg' ),
+			'alt'     => 'Turquoise pools between the canyon walls of Wadi Shab',
+			'author'  => 'Izeberg007',
+			'license' => 'CC0',
+			'source'  => $commons . 'Wadi_Shab_11-2025.jpg',
+		),
+		'om-mountain'     => array(
+			'url'     => aaa_commons_url( 'Jebel Shams, Jabal Shams, Oman (Unsplash).jpg' ),
+			'alt'     => 'Two walkers on a ridge looking across the Jebel Shams range',
+			'author'  => 'Freddie Marriage',
+			'license' => 'CC0',
+			'source'  => $commons . 'Jebel_Shams,_Jabal_Shams,_Oman_(Unsplash).jpg',
+		),
+		'om-khayran'      => array(
+			'url'     => aaa_commons_url( 'Bandar Khayran, Muscat, Sultanate of Oman.jpg' ),
+			'alt'     => 'Turquoise coves and limestone inlets at Bandar Khayran near Muscat',
+			'author'  => 'Erfan.arafat',
+			'license' => 'CC BY-SA 4.0',
+			'source'  => $commons . 'Bandar_Khayran,_Muscat,_Sultanate_of_Oman.jpg',
 		),
 	);
 }
@@ -85,7 +189,7 @@ function aaa_demo_properties(): array {
 	return array(
 		array(
 			'title'   => 'Al Mouj Marina Apartment',
-			'image'   => 'home-lux',
+			'image'   => 'om-almouj-night',
 			'price'   => 285000,
 			'beds'    => '2',
 			'baths'   => '2',
@@ -97,7 +201,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Marina View Residence',
-			'image'   => 'villa-grand',
+			'image'   => 'om-almouj-boats',
 			'price'   => 400000,
 			'beds'    => '3',
 			'baths'   => '2',
@@ -109,7 +213,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Luxury Villa — Qurum',
-			'image'   => 'villa-contemp',
+			'image'   => 'om-khuwair',
 			'price'   => 1250000,
 			'beds'    => '6',
 			'baths'   => '6',
@@ -121,7 +225,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Studio Apartment — Al Mouj',
-			'image'   => 'villa-modern',
+			'image'   => 'om-almouj-front',
 			'price'   => 9600,
 			'beds'    => 'Studio',
 			'baths'   => '1',
@@ -133,7 +237,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Garden Villa — Madinat Sultan Qaboos',
-			'image'   => 'villa-white',
+			'image'   => 'om-house',
 			'price'   => 32000,
 			'beds'    => '4',
 			'baths'   => '4',
@@ -145,7 +249,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Sea-Facing Penthouse — Shatti Al Qurum',
-			'image'   => 'prop-lux',
+			'image'   => 'om-coast-res',
 			'price'   => 890000,
 			'beds'    => '4',
 			'baths'   => '4',
@@ -157,7 +261,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Family Villa — Azaiba',
-			'image'   => 'pool-aerial',
+			'image'   => 'om-aerial',
 			'price'   => 465000,
 			'beds'    => '5',
 			'baths'   => '5',
@@ -169,7 +273,7 @@ function aaa_demo_properties(): array {
 		),
 		array(
 			'title'   => 'Two-Bedroom Apartment — Ghubrah',
-			'image'   => 'arch-modern',
+			'image'   => 'om-development',
 			'price'   => 7200,
 			'beds'    => '2',
 			'baths'   => '2',
@@ -178,6 +282,135 @@ function aaa_demo_properties(): array {
 			'type'    => 'apartment',
 			'deal'    => 'for-rent',
 			'excerpt' => 'Well-kept apartment let annually in a quiet building with a lift and allocated parking.',
+		),
+	);
+}
+
+/**
+ * The six places in the Oman guide, each with a real page behind it.
+ *
+ * Figures are the widely published ones and are deliberately hedged where a
+ * source would vary; the office should confirm anything it wants to state as
+ * fact in marketing.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function aaa_demo_attractions(): array {
+	return array(
+		array(
+			'title'   => 'Muttrah Corniche',
+			'image'   => 'om-corniche',
+			'region'  => 'Muscat Governorate',
+			'drive'   => 'In Muscat',
+			'best'    => 'October to April',
+			'areas'   => 'Muttrah, Ruwi, Darsait',
+			'lat'     => '23.6187',
+			'lng'     => '58.5650',
+			'excerpt' => 'The waterfront promenade along Muscat\'s old harbour, with the souq at one end and a Portuguese-era fort on the ridge above.',
+			'content' => '<p>The Corniche runs for roughly three kilometres along Muttrah\'s natural harbour, which is the reason Muscat exists where it does. Merchant houses face the water on one side and dhows and cruise ships sit on the other. It is the part of the capital that still looks like the trading port it was.</p>
+<p>At the southern end is <strong>Muttrah Souq</strong>, one of the oldest working markets in the Arab world — frankincense, silver, textiles and a great deal of everything else, under a covered timber roof. Above the harbour sits <strong>Muttrah Fort</strong>, built by the Portuguese in the 1580s during their occupation of the coast.</p>
+<h2>What it is like to live near</h2>
+<p>Muttrah itself is dense, old and characterful, with limited modern housing stock. Most people who want to be near it live in <strong>Ruwi</strong> — the commercial district immediately inland, well supplied with apartments — or in <strong>Darsait</strong>. Both are among the more affordable parts of the capital, and both are a short drive from the corniche.</p>
+<p>The trade-off is traffic and age of building. If you want new construction with parking and a pool, you will be looking further west along the coast.</p>',
+		),
+		array(
+			'title'   => 'Traditional Houses of Muttrah',
+			'image'   => 'om-houses',
+			'region'  => 'Muscat Governorate',
+			'drive'   => 'In Muscat',
+			'best'    => 'Year round',
+			'areas'   => 'Muttrah, Ruwi',
+			'lat'     => '23.6205',
+			'lng'     => '58.5638',
+			'excerpt' => 'Whitewashed merchant houses with carved wooden balconies — the domestic architecture of Oman\'s trading century.',
+			'content' => '<p>The houses along the Muttrah waterfront are the clearest surviving example of Omani merchant architecture. Thick whitewashed walls, small deep-set windows and, above the street, carved wooden balconies screened with lattice — the arrangement that lets air move through a room while keeping the sun and the street out.</p>
+<p>The woodwork reflects where Oman\'s merchants sailed. Omani trade reached the Indian coast, the Gulf and Zanzibar, and the carving, joinery and painted detail carry all three influences. Doors were often the most expensive element of a house, and many were made in India to Omani order.</p>
+<h2>Why it matters if you are buying</h2>
+<p>Very little of this stock trades on the open market, and what does usually needs structural work and sits in a conservation context with real constraints. It is worth understanding anyway: the vocabulary — the <em>mashrabiya</em> screen, the shaded courtyard, the thick wall — reappears in a lot of contemporary Omani villa design, and knowing the original tells you which modern versions are doing it properly.</p>',
+		),
+		array(
+			'title'   => 'Sultan Qaboos Grand Mosque',
+			'image'   => 'om-mosque',
+			'region'  => 'Bawshar, Muscat Governorate',
+			'drive'   => 'About 15 minutes from the city centre',
+			'best'    => 'Saturday to Thursday, early morning',
+			'areas'   => 'Ghubrah, Bawshar, Al Khuwair, Azaiba',
+			'lat'     => '23.5843',
+			'lng'     => '58.3887',
+			'excerpt' => 'Oman\'s principal mosque, opened in 2001, and one of the few in the country that welcomes non-Muslim visitors.',
+			'content' => '<p>The mosque was commissioned by Sultan Qaboos bin Said and opened in 2001 after about six years of construction. The complex accommodates roughly 20,000 worshippers across the main prayer hall, the women\'s hall and the courtyards, and it is the largest mosque in the country.</p>
+<p>Two things inside are usually singled out. The main prayer hall carpet covers over 4,000 square metres and was hand-woven in Iran in a single piece — for some years it was the largest of its kind in the world. Above it hangs a Swarovski crystal chandelier standing some fourteen metres tall.</p>
+<p>The building is worth seeing for the stonework as much as the set pieces: Indian sandstone, a restrained palette, and a courtyard arcade that is very carefully proportioned.</p>
+<h2>Visiting</h2>
+<p>Non-Muslim visitors are welcome outside prayer times, typically <strong>Saturday to Thursday, early morning</strong>. Dress is covered arms and legs, and women should cover their hair. Confirm current hours before travelling — they change around Ramadan and public holidays.</p>
+<h2>Living nearby</h2>
+<p>The mosque sits in <strong>Bawshar</strong>, on the edge of the band of western suburbs where most of Muscat\'s newer housing is. <strong>Al Khuwair</strong> and <strong>Ghubrah</strong> are the established apartment districts either side of it, close to embassies, schools and the main highway; <strong>Azaiba</strong> runs down to the beach and is quieter and more villa-led.</p>',
+		),
+		array(
+			'title'   => 'Wahiba Sands',
+			'image'   => 'om-desert',
+			'region'  => 'Ash Sharqiyah',
+			'drive'   => 'About 2 to 3 hours',
+			'best'    => 'October to March',
+			'areas'   => 'Bidiyah, Ibra',
+			'lat'     => '21.9167',
+			'lng'     => '58.7500',
+			'excerpt' => 'A dune sea roughly 180 km long, reachable from Muscat in a morning, and the usual answer to "where do people go for the weekend?"',
+			'content' => '<p>Properly the Sharqiyah Sands, and still widely called Wahiba after the tribe whose territory it is. The dune field runs roughly 180 kilometres north to south and around 80 across, with dunes reaching something like 100 metres in the higher parts. The sand shifts from pale gold to a deep rust depending on where you are and how the light falls.</p>
+<p>Most visitors drive down for a night at one of the desert camps near <strong>Bidiyah</strong>, where the road ends and the sand begins. Tyres come down, a guide takes over, and you spend the afternoon on the dunes and the evening under a sky with effectively no light pollution in it.</p>
+<h2>Practicalities</h2>
+<p>You need a proper four-wheel drive and, unless you know the terrain, a guide — camps will normally meet you at the edge and lead you in. Go between <strong>October and March</strong>; summer daytime temperatures make it genuinely unpleasant and, in the wrong circumstances, dangerous.</p>
+<h2>Why it appears on a property site</h2>
+<p>Because it is two to three hours from the capital, and that shapes how people use a home in Muscat. A weekend place in the interior is a normal thing to own here, and buyers regularly ask how far the desert, the mountains and the coast are before they ask about the kitchen.</p>',
+		),
+		array(
+			'title'   => 'Wadi Shab',
+			'image'   => 'om-wadi',
+			'region'  => 'Ash Sharqiyah North',
+			'drive'   => 'About 2 hours',
+			'best'    => 'October to April',
+			'areas'   => 'Tiwi, Sur, Quriyat',
+			'lat'     => '22.8406',
+			'lng'     => '59.2431',
+			'excerpt' => 'A canyon of turquoise pools an easy drive down the coast, ending in a waterfall you can only reach by swimming.',
+			'content' => '<p>Wadi Shab opens off the coast road near the village of <strong>Tiwi</strong>, between Quriyat and Sur. You leave the car at the mouth, take a short boat across the inlet, and then walk — around forty-five minutes over rock and gravel, past date palms and terraced smallholdings, with the canyon walls narrowing above you.</p>
+<p>The walk ends at a chain of clear green pools. From the last one, a narrow slot in the rock leads into a partly enclosed chamber with a waterfall falling into it. You have to swim the final stretch, and the gap is tight enough that anything you are carrying needs to be waterproof or left behind.</p>
+<h2>Practicalities</h2>
+<p>Go <strong>October to April</strong>. Take water and shoes you can walk and swim in. Avoid it entirely if rain is forecast anywhere upstream — wadis flash-flood, and that is the one genuine danger here rather than a theoretical one.</p>
+<h2>Living nearby</h2>
+<p>The coast between Muscat and Sur is a string of small towns rather than a commuter belt, so this is weekend territory rather than somewhere most people live. <strong>Quriyat</strong> is the closest town of any size to the capital and has been drawing steady interest as the coast road has improved.</p>',
+		),
+		array(
+			'title'   => 'Jebel Shams',
+			'image'   => 'om-mountain',
+			'region'  => 'Ad Dakhiliyah',
+			'drive'   => 'About 2.5 hours',
+			'best'    => 'October to April',
+			'areas'   => 'Al Hamra, Nizwa, Bahla',
+			'lat'     => '23.2381',
+			'lng'     => '57.2622',
+			'excerpt' => 'Oman\'s highest mountain, at roughly 3,000 metres, with a canyon below it that gets called the Grand Canyon of Arabia.',
+			'content' => '<p>Jebel Shams — "mountain of the sun" — is the high point of the Al Hajar range and of Oman, at around 3,000 metres. The draw is not the summit, which is a restricted military area, but the rim: the plateau looks straight down into <strong>Wadi Ghul</strong>, a gorge deep enough to have earned the Grand Canyon comparison and to mostly deserve it.</p>
+<p>The best-known walk is the <strong>Balcony Walk (W6)</strong>, which follows a ledge cut into the canyon wall from the abandoned village of As Sab to the deserted settlement of As Sab Bani Khamis. It is a few hours each way, largely level, and exposed enough that it is not for anyone uneasy with heights.</p>
+<h2>Practicalities</h2>
+<p>It is genuinely cold up there. Winter nights drop to around freezing and it occasionally snows, which is not what most people expect of Oman. The road is paved most of the way, with a rough final section better suited to four-wheel drive.</p>
+<h2>Living nearby</h2>
+<p><strong>Nizwa</strong>, the old interior capital, is the regional centre — a real town with a fort, a well-known Friday livestock market and a growing amount of new housing. <strong>Al Hamra</strong> and <strong>Bahla</strong> sit closer to the mountain. This is a different market from Muscat: lower prices, larger plots, and a much slower pace.</p>',
+		),
+		array(
+			'title'   => 'Bandar Khayran',
+			'image'   => 'om-khayran',
+			'region'  => 'Muscat Governorate',
+			'drive'   => 'About 40 minutes',
+			'best'    => 'October to April',
+			'areas'   => 'Qantab, Bandar Jissah, Yenkit',
+			'lat'     => '23.5167',
+			'lng'     => '58.7167',
+			'excerpt' => 'A maze of limestone inlets and turquoise coves southeast of the capital, and the closest good snorkelling to the city.',
+			'content' => '<p>Southeast of Muscat the coastline breaks up into a run of narrow limestone inlets, sheltered bays and small islands. That is Bandar Khayran. It is a protected area, the water is unusually clear for somewhere this close to a capital city, and it is reached either by boat from Marina Bandar Al Rowdha or by kayak from the closer bays.</p>
+<p>The reefs are the reason most people go — the snorkelling and diving here are the best within easy reach of Muscat — but the inlets themselves are the attraction. There are wrecks, sea caves and beaches that can only be reached from the water.</p>
+<h2>Living nearby</h2>
+<p>The stretch between Muscat and Bandar Khayran — <strong>Qantab</strong>, <strong>Bandar Jissah</strong>, <strong>Yenkit</strong> — is where the resort-adjacent property sits. It is scenic, quieter than the western suburbs and increasingly built up, and it is one of the areas where foreign buyers can own freehold within an integrated tourism development. Expect a longer drive into the city than from Al Khuwair or Ghubrah.</p>',
 		),
 	);
 }
@@ -193,6 +426,7 @@ function aaa_import_image( string $key ): int {
 	if ( ! isset( $images[ $key ] ) ) {
 		return 0;
 	}
+	$image = $images[ $key ];
 
 	$existing = get_posts(
 		array(
@@ -212,17 +446,19 @@ function aaa_import_image( string $key ): int {
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 
-	$tmp = download_url( $images[ $key ]['url'], 45 );
+	$tmp = download_url( $image['url'], 60 );
 	if ( is_wp_error( $tmp ) ) {
 		return 0;
 	}
 
-	$file = array(
-		'name'     => 'aaa-' . $key . '.jpg',
-		'tmp_name' => $tmp,
+	$id = media_handle_sideload(
+		array(
+			'name'     => 'aaa-' . $key . '.jpg',
+			'tmp_name' => $tmp,
+		),
+		0,
+		$image['alt']
 	);
-
-	$id = media_handle_sideload( $file, 0, $images[ $key ]['alt'] );
 
 	if ( is_wp_error( $id ) ) {
 		if ( file_exists( $tmp ) ) {
@@ -231,10 +467,27 @@ function aaa_import_image( string $key ): int {
 		return 0;
 	}
 
-	update_post_meta( $id, '_aaa_demo_key', $key );
-	update_post_meta( $id, '_wp_attachment_image_alt', $images[ $key ]['alt'] );
+	$id = (int) $id;
 
-	return (int) $id;
+	update_post_meta( $id, '_aaa_demo_key', $key );
+	update_post_meta( $id, '_wp_attachment_image_alt', $image['alt'] );
+	update_post_meta( $id, '_aaa_credit_author', $image['author'] ?? '' );
+	update_post_meta( $id, '_aaa_credit_license', $image['license'] ?? '' );
+	update_post_meta( $id, '_aaa_credit_source', $image['source'] ?? '' );
+
+	// Put the credit in the caption too, so it is visible in the Media Library.
+	wp_update_post(
+		array(
+			'ID'           => $id,
+			'post_excerpt' => sprintf(
+				'%s — %s',
+				$image['author'] ?? '',
+				$image['license'] ?? ''
+			),
+		)
+	);
+
+	return $id;
 }
 
 /**
@@ -293,7 +546,11 @@ function aaa_import_team_photo(): int {
 }
 
 /**
- * Create the demo content. Safe to re-run: anything already imported is reused.
+ * Create the demo content.
+ *
+ * Safe to re-run: media already imported is reused, and existing demo posts
+ * have their photo refreshed rather than being duplicated — which is what
+ * makes it possible to correct a wrong image by running this again.
  *
  * @return array<string, int> Counts, for the admin notice.
  */
@@ -303,6 +560,7 @@ function aaa_run_demo_import(): array {
 		'properties'  => 0,
 		'agents'      => 0,
 		'attractions' => 0,
+		'pruned'      => 0,
 	);
 
 	// --- Media ---------------------------------------------------------
@@ -321,7 +579,7 @@ function aaa_run_demo_import(): array {
 	}
 
 	// --- Hero collage --------------------------------------------------
-	$collage = array( 'pool-aerial', 'villa-modern', 'villa-pool', 'villa-grand', 'villa-contemp', 'home-lux', 'arch-modern', 'prop-lux' );
+	$collage = array( 'om-khuwair', 'om-maritime', 'om-almouj-night', 'om-aerial', 'om-coast-res', 'om-marina-air', 'om-house', 'om-almouj-boats' );
 	foreach ( $collage as $i => $key ) {
 		if ( isset( $ids[ $key ] ) ) {
 			set_theme_mod( 'aaa_collage_' . ( $i + 1 ), $ids[ $key ] );
@@ -330,7 +588,12 @@ function aaa_run_demo_import(): array {
 
 	// --- Properties ----------------------------------------------------
 	foreach ( aaa_demo_properties() as $index => $item ) {
-		if ( get_page_by_path( sanitize_title( $item['title'] ), OBJECT, 'property' ) ) {
+		$existing = get_page_by_path( sanitize_title( $item['title'] ), OBJECT, 'property' );
+
+		if ( $existing ) {
+			if ( isset( $ids[ $item['image'] ] ) ) {
+				set_post_thumbnail( $existing->ID, $ids[ $item['image'] ] );
+			}
 			continue;
 		}
 
@@ -355,7 +618,6 @@ function aaa_run_demo_import(): array {
 		update_post_meta( $post_id, '_aaa_area', (string) $item['area'] );
 		update_post_meta( $post_id, '_aaa_address', $item['address'] );
 
-		// The first four are what the home page teaser shows.
 		if ( $index < 4 ) {
 			update_post_meta( $post_id, '_aaa_featured', '1' );
 		}
@@ -415,48 +677,54 @@ function aaa_run_demo_import(): array {
 	}
 
 	// --- Attractions ---------------------------------------------------
-	$attractions = array(
-		'Muttrah Corniche'           => 'om-corniche',
-		'Traditional Houses'         => 'om-houses',
-		'Sultan Qaboos Grand Mosque' => 'om-mosque',
-		'Desert Adventures'          => 'om-desert',
-		'Wadi Shab'                  => 'om-wadi',
-		'Jebel Shams'                => 'om-mountain',
-	);
+	foreach ( aaa_demo_attractions() as $index => $item ) {
+		$existing = get_page_by_path( sanitize_title( $item['title'] ), OBJECT, 'attraction' );
+		$post_id  = $existing ? (int) $existing->ID : 0;
 
-	$index = 0;
-	foreach ( $attractions as $title => $image_key ) {
-		$existing = get_page_by_path( sanitize_title( $title ), OBJECT, 'attraction' );
+		if ( ! $post_id ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'    => 'attraction',
+					'post_status'  => 'publish',
+					'post_title'   => $item['title'],
+					'post_excerpt' => $item['excerpt'],
+					'post_content' => $item['content'],
+					'menu_order'   => $index,
+				)
+			);
 
-		if ( $existing ) {
-			// Re-running should repair a tile whose photo was replaced.
-			if ( isset( $ids[ $image_key ] ) ) {
-				set_post_thumbnail( $existing->ID, $ids[ $image_key ] );
+			if ( ! $post_id || is_wp_error( $post_id ) ) {
+				continue;
 			}
-			++$index;
-			continue;
-		}
 
-		$post_id = wp_insert_post(
-			array(
-				'post_type'   => 'attraction',
-				'post_status' => 'publish',
-				'post_title'  => $title,
-				'menu_order'  => $index,
-			)
-		);
-
-		if ( $post_id && ! is_wp_error( $post_id ) ) {
-			if ( isset( $ids[ $image_key ] ) ) {
-				set_post_thumbnail( $post_id, $ids[ $image_key ] );
-			}
 			++$result['attractions'];
+		} else {
+			// Refresh the body only while it is still ours to refresh.
+			wp_update_post(
+				array(
+					'ID'           => $post_id,
+					'post_excerpt' => $item['excerpt'],
+					'post_content' => $item['content'],
+					'menu_order'   => $index,
+				)
+			);
 		}
 
-		++$index;
+		foreach ( array( 'region', 'drive', 'best', 'areas', 'lat', 'lng' ) as $field ) {
+			if ( ! empty( $item[ $field ] ) ) {
+				update_post_meta( $post_id, '_aaa_attr_' . $field, $item[ $field ] );
+			}
+		}
+
+		if ( isset( $ids[ $item['image'] ] ) ) {
+			set_post_thumbnail( $post_id, $ids[ $item['image'] ] );
+		}
 	}
 
-	aaa_prune_stale_demo_media();
+	$result['pruned'] = aaa_prune_stale_demo_media();
+
+	// The Oman guide is a new archive; make sure its permalinks resolve.
+	flush_rewrite_rules();
 
 	update_option( 'aaa_demo_imported', gmdate( 'c' ) );
 
@@ -473,7 +741,7 @@ function aaa_run_demo_import(): array {
  * @return int How many were removed.
  */
 function aaa_prune_stale_demo_media(): int {
-	$current = array_keys( aaa_demo_images() );
+	$current   = array_keys( aaa_demo_images() );
 	$current[] = 'team-photo';
 
 	$attachments = get_posts(
@@ -525,7 +793,7 @@ function aaa_render_demo_page(): void {
 	$done = null;
 
 	if ( isset( $_POST['aaa_import_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['aaa_import_nonce'] ) ), 'aaa_import_demo' ) ) {
-		set_time_limit( 300 );
+		set_time_limit( 600 );
 		$done = aaa_run_demo_import();
 	}
 
@@ -539,12 +807,13 @@ function aaa_render_demo_page(): void {
 				<p>
 					<?php
 					printf(
-						/* translators: 1: image count, 2: property count, 3: agent count, 4: attraction count. */
-						esc_html__( 'Imported %1$d images, %2$d properties, %3$d agents and %4$d attractions.', 'amir-al-afia' ),
+						/* translators: 1: image count, 2: property count, 3: agent count, 4: attraction count, 5: removed count. */
+						esc_html__( 'Imported %1$d images, %2$d properties, %3$d agents and %4$d attraction pages. Removed %5$d images no longer used.', 'amir-al-afia' ),
 						(int) $done['images'],
 						(int) $done['properties'],
 						(int) $done['agents'],
-						(int) $done['attractions']
+						(int) $done['attractions'],
+						(int) $done['pruned']
 					);
 					?>
 				</p>
@@ -552,10 +821,14 @@ function aaa_render_demo_page(): void {
 		<?php endif; ?>
 
 		<p>
-			<?php esc_html_e( 'Downloads the photography used in the design into your Media Library, then creates the demo properties, agents and attractions so the home page has content to show. Everything it creates is normal content you can edit or delete.', 'amir-al-afia' ); ?>
+			<?php esc_html_e( 'Downloads the photography into your Media Library, then creates the demo properties, agents and Oman guide pages so the home page has content to show.', 'amir-al-afia' ); ?>
 		</p>
 		<p>
-			<?php esc_html_e( 'Running it twice is safe — anything already imported is reused rather than duplicated. Replace the demo photos with real listing photography before launch.', 'amir-al-afia' ); ?>
+			<?php esc_html_e( 'Running it again is safe. Images already imported are reused, and demo pages have their photo and text refreshed rather than duplicated — so this is also how you pick up a corrected photo.', 'amir-al-afia' ); ?>
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Note:', 'amir-al-afia' ); ?></strong>
+			<?php esc_html_e( 'Every photo is a real photo of Oman, under a Creative Commons or public-domain licence, credited on the attachment. The building photos are placeholders for real listing photography — replace them before launch. The photos of places can stay.', 'amir-al-afia' ); ?>
 		</p>
 
 		<?php if ( $imported ) : ?>

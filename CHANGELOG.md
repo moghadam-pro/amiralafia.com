@@ -11,6 +11,60 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-08-25
+
+### Added
+
+- **A page for every place in the Oman guide.** The Attractions section was six
+  tiles that went nowhere. Attractions are now a public post type at `/oman/`,
+  each with a researched page: what the place is, how far it is from Muscat,
+  when to go, and which residential areas sit near it. Seven places —
+  Muttrah Corniche, the traditional houses of Muttrah, the Sultan Qaboos Grand
+  Mosque, Wahiba Sands, Wadi Shab, Jebel Shams and Bandar Khayran.
+- **Gallery slider on a listing** when more than one photo is set. The track is
+  a native scroll-snap container, so swipe and keyboard scrolling work before
+  any JavaScript runs; the script adds arrows, thumbnails, a counter and
+  arrow-key support. A single photo still renders as a single photo.
+- **`screenshot.png`** for Appearance → Themes, and **`share-default.png`**, the
+  Open Graph card used when a page has no photo of its own. Both are generated
+  by `tools/make-brand-images.py` from the theme's own fonts and logo geometry,
+  so they can be regenerated after a palette or wording change.
+- Photo credits: the importer records photographer, licence and source URL on
+  each attachment, shown on the place pages and in the Media Library.
+
+### Changed
+
+- **Real Omani photography.** The property placeholders were generic villa
+  stock that could have been anywhere. They are now photographs of Al Mouj
+  Marina, Al Khuwair, Shatti Al Qurum and Muscat's residential coast — real
+  Omani architecture, so the site reads as an Omani agency until the office
+  uploads its own listing photos.
+- **Open Graph rebuilt for chat apps.** A link pasted into WhatsApp or Telegram
+  now previews with a large image, title and description. The fix that mattered
+  was emitting `og:image:width` and `og:image:height`: without them the
+  scrapers will not block on measuring the image and fall back to a thumbnail.
+  Also added `og:image:secure_url`, `og:image:type`, `og:image:alt`,
+  `twitter:image`, article timestamps, and price/bedroom labels on a listing.
+- **SEO structure reworked.** One JSON-LD `@graph` whose nodes cross-reference
+  by `@id` instead of repeating the organisation on every page: `WebSite` with
+  a `SearchAction`, `RealEstateAgent`, `WebPage`, `BreadcrumbList`, plus
+  `RealEstateListing` on a listing, `TouristAttraction` with coordinates on a
+  place, and `ItemList` on the properties archive. Added an explicit canonical
+  on non-singular views, a robots directive that noindexes search, 404 and
+  paged views, and `theme-color`.
+- Primary and footer menus point at the real `/properties/` and `/oman/`
+  archives rather than page anchors.
+- An eighth hero collage image and a 1200×630 `aaa-og` image size.
+
+### Fixed
+
+- Responsive: the listing slider hides its arrows on phones where swipe is the
+  gesture; attraction grids reflow at 1100px, 768px and 480px rather than
+  staying at six columns; the hero heading uses a viewport-aware clamp instead
+  of a fixed 48px; long prices no longer collide with the title on a narrow
+  listing header; breadcrumbs wrap.
+
+
 ## [1.1.0] — 2026-08-25
 
 ### Fixed
@@ -77,6 +131,7 @@ theme with no plugin or third-party theme dependencies.
 
 See [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) for the full list.
 
-[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.0
 [1.1.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.1.0
 [1.0.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.0.0

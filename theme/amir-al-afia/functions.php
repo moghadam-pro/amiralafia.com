@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.1.0' );
+define( 'AAA_VERSION', '1.2.0' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -47,6 +47,9 @@ function aaa_setup(): void {
 	add_image_size( 'aaa-card', 640, 360, true );
 	add_image_size( 'aaa-collage', 600, 600, true );
 	add_image_size( 'aaa-wide', 1400, 900, true );
+	// Open Graph / Twitter card. 1.91:1 is what Facebook, WhatsApp, Telegram
+	// and X all crop to; giving them exactly that avoids a re-crop.
+	add_image_size( 'aaa-og', 1200, 630, true );
 
 	register_nav_menus( array(
 		'primary' => __( 'Primary menu', 'amir-al-afia' ),

@@ -60,11 +60,19 @@ while ( have_posts() ) :
 				<p class="sp-price"><?php echo esc_html( aaa_format_price( $aaa_price ) ); ?></p>
 			</div>
 
-			<?php if ( has_post_thumbnail() ) : ?>
-				<div class="sp-hero">
-					<?php the_post_thumbnail( 'aaa-wide', array( 'decoding' => 'async' ) ); ?>
-				</div>
-			<?php endif; ?>
+			<?php
+			// Featured image first, then the gallery, de-duplicated. The part
+			// renders a plain figure for one photo and a slider for more.
+			$aaa_slides = array_values(
+				array_unique(
+					array_filter(
+						array_merge( array( (int) get_post_thumbnail_id() ), $aaa_gallery )
+					)
+				)
+			);
+			set_query_var( 'aaa_gallery_ids', $aaa_slides );
+			get_template_part( 'template-parts/property/gallery' );
+			?>
 
 			<div class="sp-body">
 				<div class="sp-content">
@@ -98,26 +106,6 @@ while ( have_posts() ) :
 						<?php the_content(); ?>
 					</div>
 
-					<?php if ( $aaa_gallery ) : ?>
-						<h2 class="sp-subhead"><?php esc_html_e( 'Gallery', 'amir-al-afia' ); ?></h2>
-						<div class="sp-gallery">
-							<?php foreach ( $aaa_gallery as $aaa_att ) : ?>
-								<figure>
-									<?php
-									echo wp_get_attachment_image(
-										$aaa_att,
-										'aaa-card',
-										false,
-										array(
-											'loading'  => 'lazy',
-											'decoding' => 'async',
-										)
-									);
-									?>
-								</figure>
-							<?php endforeach; ?>
-						</div>
-					<?php endif; ?>
 				</div>
 
 				<aside class="sp-aside">
