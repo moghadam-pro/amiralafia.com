@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.2.2' );
+define( 'AAA_VERSION', '1.2.3' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -177,4 +177,21 @@ function aaa_document_title_parts( array $parts ): array {
 
 	return $parts;
 }
+
+/**
+ * Title the Oman archive the way the page heading does.
+ *
+ * The post type's label is the short "Attractions", which reads oddly as a
+ * browser tab and in a shared link.
+ *
+ * @param string $title Archive title.
+ * @return string
+ */
+function aaa_archive_title( string $title ): string {
+	if ( is_post_type_archive( 'attraction' ) ) {
+		return aaa_option( 'aaa_attr_title' );
+	}
+	return $title;
+}
+add_filter( 'post_type_archive_title', 'aaa_archive_title' );
 add_filter( 'document_title_parts', 'aaa_document_title_parts' );
