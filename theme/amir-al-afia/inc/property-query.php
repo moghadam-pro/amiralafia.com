@@ -94,10 +94,15 @@ function aaa_filter_groups(): array {
 	$groups = array();
 
 	foreach ( array( 'type' => 'property_type', 'deal' => 'deal_type' ) as $group => $taxonomy ) {
+		// Ordered by term_id, i.e. the order they were seeded, so the bar reads
+		// Apartment / Villas / Luxuries and For Sale / For Rent as designed,
+		// rather than alphabetically.
 		$terms = get_terms(
 			array(
 				'taxonomy'   => $taxonomy,
 				'hide_empty' => false,
+				'orderby'    => 'term_id',
+				'order'      => 'ASC',
 			)
 		);
 

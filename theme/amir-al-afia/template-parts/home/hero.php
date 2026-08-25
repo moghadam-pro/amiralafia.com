@@ -56,7 +56,7 @@ $aaa_stats = array(
 			</div>
 
 			<div <?php aaa_sr( 100, 'hero-collage sr-right' ); ?> aria-label="<?php esc_attr_e( 'Recent properties', 'amir-al-afia' ); ?>" role="img">
-				<?php for ( $aaa_c = 1; $aaa_c <= 9; $aaa_c++ ) : ?>
+				<?php for ( $aaa_c = 1; $aaa_c <= 8; $aaa_c++ ) : ?>
 					<?php $aaa_id = (int) get_theme_mod( 'aaa_collage_' . $aaa_c, 0 ); ?>
 					<div class="hcell hcell-<?php echo (int) $aaa_c; ?>">
 						<?php

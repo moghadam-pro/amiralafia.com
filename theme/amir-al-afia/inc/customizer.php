@@ -256,7 +256,7 @@ function aaa_customize_register( $wp_customize ): void {
 		)
 	);
 
-	for ( $i = 1; $i <= 9; $i++ ) {
+	for ( $i = 1; $i <= 8; $i++ ) {
 		$wp_customize->add_setting(
 			'aaa_collage_' . $i,
 			array(

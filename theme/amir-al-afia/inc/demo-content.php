@@ -18,11 +18,23 @@ defined( 'ABSPATH' ) || exit;
 /**
  * The photo set: a key used for lookups, plus the source URL and alt text.
  *
+ * Property photography comes from Unsplash, whose licence permits commercial
+ * use; it is placeholder material to be swapped for real listing photos.
+ *
+ * The Oman photographs are CC0 / Public Domain Mark from Wikimedia Commons,
+ * chosen because the mockup's own picks were wrong — its "Historical House"
+ * was the Great Sphinx and its "Desert Adventures" was Monument Valley. Every
+ * image below was checked to be the place its caption claims.
+ *
  * @return array<string, array<string, string>>
  */
 function aaa_demo_images(): array {
 	$u = 'https://images.unsplash.com/photo-';
 	$q = '?w=1600&q=85&fm=jpg&fit=max';
+
+	// Wikimedia Commons resolves this to the file and scales it server-side.
+	$commons = static fn( string $file ): string =>
+		'https://commons.wikimedia.org/wiki/Special:FilePath/' . rawurlencode( $file ) . '?width=1600';
 
 	return array(
 		'pool-aerial'   => array( 'url' => $u . '1571003123894-1f0594d2b5d9' . $q, 'alt' => 'Aerial view of a villa swimming pool' ),
@@ -35,12 +47,32 @@ function aaa_demo_images(): array {
 		'prop-lux'      => array( 'url' => $u . '1600047509807-ba8f99d2cdde' . $q, 'alt' => 'Luxury property with a courtyard pool' ),
 		'villa-white'   => array( 'url' => $u . '1600585154340-be6161a56a0c' . $q, 'alt' => 'White villa with a manicured lawn' ),
 
-		'attr-beach'    => array( 'url' => $u . '1534430480872-3498386e7856' . $q, 'alt' => 'Empty beach on the Gulf of Oman' ),
-		'attr-house'    => array( 'url' => $u . '1568322445389-f64ac2515020' . $q, 'alt' => 'Traditional Omani architecture' ),
-		'attr-mosque'   => array( 'url' => $u . '1591604466107-ec97de577aff' . $q, 'alt' => 'Sultan Qaboos Grand Mosque in Muscat' ),
-		'attr-desert'   => array( 'url' => $u . '1509316785289-025f5b846b35' . $q, 'alt' => 'Dunes in the Wahiba Sands' ),
-		'attr-souq'     => array( 'url' => $u . '1517760444937-f6397edcbbcd' . $q, 'alt' => 'Lanterns in a traditional souq' ),
-		'attr-mountain' => array( 'url' => $u . '1547471080-7cc2caa01a7e' . $q, 'alt' => 'Mountain road in the Al Hajar range' ),
+		// Oman — CC0 / Public Domain Mark, via Wikimedia Commons.
+		'om-corniche' => array(
+			'url' => $commons( 'Aerial view of the coastline of Muttrah.jpg' ),
+			'alt' => 'The Muttrah Corniche curving along Muscat harbour beneath the Al Hajar mountains',
+		),
+		'om-houses'   => array(
+			'url' => $commons( 'Traditional Architecture Muttrah.jpg' ),
+			'alt' => 'Carved wooden balconies on traditional whitewashed houses in Muttrah',
+		),
+		// From the WordPress Photo Directory, which is CC0 throughout.
+		'om-mosque'   => array(
+			'url' => 'https://pd.w.org/2022/08/506630598190f7316.03658406-2048x1359.jpeg',
+			'alt' => 'The arcaded courtyard and minaret of the Sultan Qaboos Grand Mosque, Muscat',
+		),
+		'om-desert'   => array(
+			'url' => $commons( 'Wahiba Sands, Oman (Unsplash).jpg' ),
+			'alt' => 'A desert camp under the Milky Way in the Wahiba Sands',
+		),
+		'om-wadi'     => array(
+			'url' => $commons( 'Wadi Shab 11-2025.jpg' ),
+			'alt' => 'Turquoise pools between the canyon walls of Wadi Shab',
+		),
+		'om-mountain' => array(
+			'url' => $commons( 'Jebel Shams, Jabal Shams, Oman (Unsplash).jpg' ),
+			'alt' => 'Two walkers on a ridge looking across the Jebel Shams range',
+		),
 	);
 }
 
@@ -289,7 +321,7 @@ function aaa_run_demo_import(): array {
 	}
 
 	// --- Hero collage --------------------------------------------------
-	$collage = array( 'pool-aerial', 'villa-modern', 'villa-pool', 'villa-grand', 'villa-contemp', 'home-lux', 'arch-modern', 'prop-lux', 'villa-white' );
+	$collage = array( 'pool-aerial', 'villa-modern', 'villa-pool', 'villa-grand', 'villa-contemp', 'home-lux', 'arch-modern', 'prop-lux' );
 	foreach ( $collage as $i => $key ) {
 		if ( isset( $ids[ $key ] ) ) {
 			set_theme_mod( 'aaa_collage_' . ( $i + 1 ), $ids[ $key ] );
@@ -384,17 +416,23 @@ function aaa_run_demo_import(): array {
 
 	// --- Attractions ---------------------------------------------------
 	$attractions = array(
-		'Stunning Beaches'     => 'attr-beach',
-		'Historical Houses'    => 'attr-house',
-		'Sultan Qaboos Mosque' => 'attr-mosque',
-		'Desert Adventures'    => 'attr-desert',
-		'Muttrah Souq'         => 'attr-souq',
-		'Mountain Scenery'     => 'attr-mountain',
+		'Muttrah Corniche'           => 'om-corniche',
+		'Traditional Houses'         => 'om-houses',
+		'Sultan Qaboos Grand Mosque' => 'om-mosque',
+		'Desert Adventures'          => 'om-desert',
+		'Wadi Shab'                  => 'om-wadi',
+		'Jebel Shams'                => 'om-mountain',
 	);
 
 	$index = 0;
 	foreach ( $attractions as $title => $image_key ) {
-		if ( get_page_by_path( sanitize_title( $title ), OBJECT, 'attraction' ) ) {
+		$existing = get_page_by_path( sanitize_title( $title ), OBJECT, 'attraction' );
+
+		if ( $existing ) {
+			// Re-running should repair a tile whose photo was replaced.
+			if ( isset( $ids[ $image_key ] ) ) {
+				set_post_thumbnail( $existing->ID, $ids[ $image_key ] );
+			}
 			++$index;
 			continue;
 		}
@@ -418,9 +456,48 @@ function aaa_run_demo_import(): array {
 		++$index;
 	}
 
+	aaa_prune_stale_demo_media();
+
 	update_option( 'aaa_demo_imported', gmdate( 'c' ) );
 
 	return $result;
+}
+
+/**
+ * Delete demo attachments this theme imported under a key it no longer uses.
+ *
+ * Scoped deliberately narrowly: it only ever touches attachments carrying a
+ * `_aaa_demo_key` this importer wrote, and only when that key has dropped out
+ * of aaa_demo_images(). Media the office uploaded is never considered.
+ *
+ * @return int How many were removed.
+ */
+function aaa_prune_stale_demo_media(): int {
+	$current = array_keys( aaa_demo_images() );
+	$current[] = 'team-photo';
+
+	$attachments = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'meta_key'       => '_aaa_demo_key',
+		)
+	);
+
+	$removed = 0;
+	foreach ( $attachments as $id ) {
+		$key = (string) get_post_meta( $id, '_aaa_demo_key', true );
+		if ( in_array( $key, $current, true ) ) {
+			continue;
+		}
+		if ( wp_delete_attachment( (int) $id, true ) ) {
+			++$removed;
+		}
+	}
+
+	return $removed;
 }
 
 /**
