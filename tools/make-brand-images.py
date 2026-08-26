@@ -36,10 +36,15 @@ SECONDARY = (56, 182, 255)     # #38B6FF
 WHITE = (255, 255, 255)
 
 
-def load_font(slug: str, size: int) -> ImageFont.FreeTypeFont:
+def load_font(slug: str, size: int, weight: float | None = None) -> ImageFont.FreeTypeFont:
     """Load one of the theme's woff2 faces at a given size."""
     face = TTFont(str(FONTS / f"{slug}.woff2"))
     face.flavor = None
+    # Both shipped faces are variable and default to 400. The brand images want
+    # the bold end, so instance the axis before rasterising.
+    if "fvar" in face and weight is not None:
+        from fontTools.varLib.instancer import instantiateVariableFont
+        face = instantiateVariableFont(face, {"wght": weight}, inplace=True)
     buffer = io.BytesIO()
     face.save(buffer)
     buffer.seek(0)
@@ -129,11 +134,11 @@ def build_share_card() -> Path:
     card = brand_gradient(w, h)
     draw = ImageDraw.Draw(card)
 
-    f_brand = load_font("italiana-400", 42)
-    f_head = load_font("italiana-400", 72)
+    f_brand = load_font("manrope-variable", 38, 800)
+    f_head = load_font("manrope-variable", 66, 800)
     f_body = load_font("jost-variable", 25)
-    f_foot = load_font("jost-variable", 21)
-    f_site = load_font("jost-variable", 21)
+    f_foot = load_font("jost-variable", 21, 600)
+    f_site = load_font("jost-variable", 21, 600)
 
     pad = 84
 
@@ -176,12 +181,12 @@ def build_screenshot() -> Path:
     shot = brand_gradient(w, h)
     draw = ImageDraw.Draw(shot)
 
-    f_brand = load_font("italiana-400", 46)
-    f_head = load_font("italiana-400", 66)
+    f_brand = load_font("manrope-variable", 42, 800)
+    f_head = load_font("manrope-variable", 62, 800)
     f_body = load_font("jost-variable", 25)
-    f_tag = load_font("jost-variable", 17)
-    f_stat = load_font("italiana-400", 52)
-    f_lbl = load_font("jost-variable", 16)
+    f_tag = load_font("jost-variable", 17, 600)
+    f_stat = load_font("manrope-variable", 48, 800)
+    f_lbl = load_font("jost-variable", 16, 600)
 
     pad = 90
 

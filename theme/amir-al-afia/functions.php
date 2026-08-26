@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.3.3' );
+define( 'AAA_VERSION', '1.4.0' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -20,6 +20,7 @@ require_once AAA_DIR . '/inc/post-type-agent.php';
 require_once AAA_DIR . '/inc/post-type-attraction.php';
 require_once AAA_DIR . '/inc/post-type-lead.php';
 require_once AAA_DIR . '/inc/customizer.php';
+require_once AAA_DIR . '/inc/typography.php';
 require_once AAA_DIR . '/inc/lead-form.php';
 require_once AAA_DIR . '/inc/property-query.php';
 require_once AAA_DIR . '/inc/seo.php';
@@ -86,7 +87,14 @@ add_action( 'wp_enqueue_scripts', 'aaa_assets' );
  * does not swap after first paint.
  */
 function aaa_preload_fonts(): void {
-	foreach ( array( 'italiana-400', 'jost-variable' ) as $face ) {
+	// Only worth doing while the theme's own faces are the ones in use; a
+	// swapped-in font is loaded from its own stylesheet.
+	if ( 'default' !== get_theme_mod( 'aaa_font_heading_source', 'default' )
+		|| 'default' !== get_theme_mod( 'aaa_font_body_source', 'default' ) ) {
+		return;
+	}
+
+	foreach ( array( 'manrope-variable', 'jost-variable' ) as $face ) {
 		printf(
 			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
 			esc_url( AAA_URI . '/assets/fonts/' . $face . '.woff2' )

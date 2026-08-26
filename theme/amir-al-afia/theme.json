@@ -36,8 +36,8 @@
 				},
 				{
 					"slug": "display",
-					"name": "Italiana",
-					"fontFamily": "'Italiana', 'Times New Roman', serif"
+					"name": "Manrope",
+					"fontFamily": "'Manrope', system-ui, sans-serif"
 				}
 			],
 			"fontSizes": [
@@ -67,8 +67,8 @@
 			},
 			"heading": {
 				"typography": {
-					"fontFamily": "'Italiana', 'Times New Roman', serif",
-					"fontWeight": "400",
+					"fontFamily": "'Manrope', system-ui, sans-serif",
+					"fontWeight": "800",
 					"textTransform": "uppercase"
 				}
 			}
