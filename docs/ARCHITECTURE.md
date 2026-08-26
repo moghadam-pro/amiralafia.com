@@ -30,6 +30,7 @@ theme/amir-al-afia/
 │   ├── post-type-attraction.php  Attraction CPT
 │   ├── post-type-lead.php        Lead CPT (private) and the unread bubble
 │   ├── customizer.php        Every editable string and image
+│   ├── typography.php       Swappable heading/body fonts
 │   ├── lead-form.php         Validation, storage, notification, both endpoints
 │   ├── property-query.php    Listing queries and the filter AJAX endpoint
 │   ├── seo.php               Canonical, robots, Open Graph, Twitter, JSON-LD
@@ -110,6 +111,23 @@ mandatory`: swipe, trackpad and keyboard scrolling all work with the script
 blocked, and the arrows ship `hidden` until `main.js` unhides them. The active
 slide is derived from an IntersectionObserver on the track rather than from
 click handlers, so a swipe updates the thumbnails exactly as a click does.
+
+### Fonts are a runtime choice
+
+The stylesheet never names a family; it reads `--display` and `--body`.
+`inc/typography.php` resolves the administrator's choice — the bundled face, a
+family installed through the WordPress Font Library, or a pasted Google Fonts
+URL — and prints a single `:root` override, or nothing at all when both are
+default.
+
+This file exists because the Font Library cannot restyle a classic theme. It
+installs fonts and exposes them to the block editor; something still has to map
+that to the two custom properties, and that is all this does.
+
+Remote stylesheet URLs are checked against a host allowlist before being
+enqueued. The value is interpolated into a `<link href>` on every page, so an
+unchecked URL would let anyone with Customizer access inject a third-party
+stylesheet sitewide.
 
 ## Sharing and structured data
 

@@ -93,6 +93,49 @@ If you change a photo or the text and the old version still shows, the chat app
 has cached it — that cache clears on its own, usually within a day. Facebook's
 Sharing Debugger can force a refresh for Facebook and WhatsApp.
 
+## Changing the fonts
+
+**Appearance -> Customize -> Amir Al Afia -> Typography.** Headings and body
+text are set separately, and each has three options.
+
+**Theme default** - Manrope for headings, Jost for body. Both are stored on
+this server, so nothing is fetched from Google and nothing breaks if Google is
+unreachable. This is the fastest option.
+
+**A font from Appearance -> Fonts** - the better way to use a different font.
+Go to **Appearance -> Fonts -> Install Fonts**, search the Google catalogue and
+install the family you want; WordPress downloads the files onto this server.
+Then come back to Typography and pick it from the dropdown. The option only
+appears once at least one font has been installed there.
+
+Installing a font at Appearance -> Fonts does **not** change the site on its
+own. That screen adds the font to WordPress; the Typography section is what
+tells the theme to use it.
+
+**A Google Fonts link** - the quickest, at a cost. On fonts.google.com, choose
+your font and its weights, open the **Get font -> Get embed code** panel, and
+copy the address out of the `<link>` it shows you. It looks like this:
+
+```
+https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&display=swap
+```
+
+Paste that whole address into the field. The theme reads the font name out of
+it, so the "font name override" box below can stay empty.
+
+Two things to watch:
+
+- **Include bold weights.** Headings are set at 800, so pick a range that goes
+  that high - `wght@400..900`, or tick the bold weights in the panel. A font
+  that only ships one weight will look thin and flat, which is exactly what
+  went wrong with the first attempt at Italiana.
+- **This loads the font from Google on every page view**, which is slower and
+  hands your visitors' IP addresses to a third party. If that matters, use
+  Appearance -> Fonts instead - same font, served from here.
+
+Only Google Fonts and Bunny Fonts addresses are accepted, so a mistyped or
+pasted-from-elsewhere link is ignored rather than loaded.
+
 ## Reading enquiries
 
 **Leads.** A count appears next to the menu item when new ones arrive, and
@@ -118,6 +161,7 @@ Leads cannot be created by hand — they only ever arrive through the form.
 | **Hero** | The three headline lines, the intro paragraph, and the three statistics. |
 | **Section headings** | Every badge, heading and intro across the page, the four "Why Oman" cards, the number of property cards, and the form's success message. |
 | **Images** | The team photo and the eight hero collage photos. |
+| **Typography** | The heading and body fonts - see above. |
 
 The menu is at **Appearance → Menus** — assign one to *Primary menu* and
 *Footer menu* to take over from the built-in defaults.

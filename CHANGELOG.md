@@ -11,6 +11,38 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-08-26
+
+### Fixed
+
+- The hero wrapped onto a fourth line again: Manrope 800 sets wider than the
+  clamp assumed, needing about 570px for the third line in a 484px column.
+
+## [1.4.0] - 2026-08-26
+
+### Added
+
+- **Swappable fonts, no code required.** Customizer > Amir Al Afia >
+  Typography points headings and body text at the bundled face, a family
+  installed through Appearance > Fonts, or a pasted Google Fonts URL. The Font
+  Library installs fonts but cannot restyle a classic theme, so
+  `inc/typography.php` translates the choice into the `--display` / `--body`
+  custom properties the stylesheet reads. Remote URLs are restricted to a host
+  allowlist, and the bundled faces stop being preloaded once a replacement is
+  active.
+
+### Changed
+
+- **Manrope replaces Italiana for headings.** Italiana has a single weight, so
+  headings had no bold and leaned entirely on size. Manrope is variable
+  200-800: the display scale went back up, leading came back in, and headings
+  are 700/800 again.
+- **Every icon is now Heroicons v2 outline** (MIT) - 24x24, 1.5 stroke, round
+  caps, currentColor - taken from the published package rather than
+  transcribed. Two exceptions: Heroicons carries no brand marks, so WhatsApp
+  and Telegram keep their own glyphs; and it carries no furniture, so bed and
+  bath are drawn to the same spec.
+
 ## [1.3.1] - 2026-08-26
 
 ### Fixed
@@ -208,7 +240,11 @@ theme with no plugin or third-party theme dependencies.
 
 See [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) for the full list.
 
-[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.4.1...HEAD
+[1.4.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.4.1
+[1.4.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.4.0
+[1.3.3]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.3
+[1.3.2]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.2
 [1.3.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.1
 [1.3.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.0
 [1.2.4]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.4

@@ -36,34 +36,41 @@ copy above 7:1 across the whole gradient.
 
 ## Type
 
-Two faces, self-hosted, latin subset — 37 KB in total:
+Two faces, self-hosted, latin subset - 51 KB for the pair. Both are variable,
+so every weight in range is free:
 
-- **Italiana** — every heading, price, statistic and large display use. Always
-  uppercase. **It has exactly one weight.** There is no bold, so every rule
-  that sets it stays at `font-weight: 400`; asking for 700 or 900 gets a
-  synthesised smear across strokes that are already fine. Emphasis comes from
-  size and tracking instead.
-- **Jost** — everything else. Shipped as a single variable file covering
-  100–900, so weight is free: 400 body, 500 nav, 600 labels and buttons.
+- **Manrope** (200-800) - headings, prices, statistics, any large display use.
+  Headings sit at 800, sub-headings at 700.
+- **Jost** (100-900) - everything else. 400 body, 500 nav, 600 labels.
 
 | Role | Size | Face |
 | --- | --- | --- |
-| Hero headline | `clamp(32px, 3.9vw, 56px)` | Italiana 400 |
-| Section title | `clamp(25px, 2.7vw, 38px)` | Italiana 400 |
-| Closing band | `clamp(27px, 3.4vw, 44px)` | Italiana 400 |
-| Statistic / listing price | 40px / 30px | Italiana 400 |
+| Hero headline | `clamp(34px, 3.6vw, 52px)` | Manrope 800 |
+| Section title | `clamp(27px, 2.9vw, 40px)` | Manrope 800 |
+| Closing band | `clamp(29px, 3.6vw, 46px)` | Manrope 800 |
+| Statistic / listing price | 42px / 28px | Manrope 800 |
 | Card title | 14px | Jost 600 |
 | Body | 15.5px, line-height 1.65 | Jost 400 |
-| Badge / eyebrow | 10–11px, uppercase, .09em | Jost 600 |
+| Badge / eyebrow | 10-11px, uppercase, .09em | Jost 600 |
 
-**Two things Italiana changed.** It is much wider than Barlow Condensed at the
-same size, so every display size came down roughly a step — at `4.4vw` the hero
-pushed its third line onto a fourth. And it sits taller in its em box, so line
-heights that suited a condensed sans clipped the caps: nothing set in Italiana
-should use `line-height: 1`.
+Uppercase display text carries slightly negative tracking (`-.005em` to
+`-.01em`); uppercase at small sizes goes positive instead.
 
-Tracking is positive everywhere Italiana is set in caps (`.012em`–`.04em`),
-which the face needs to stop the letterforms closing up.
+**Sizing the hero is the constraint that bites.** Its text column is half the
+shell - about 484px at a 1100px viewport - and the longest line, "ON YOUR
+DREAM LAND", needs roughly 11.2em in Manrope 800. Anything above ~3.6vw wraps
+onto a fourth line and breaks the composition. Check that line specifically
+after any change to the display face or the scale.
+
+### The fonts are not fixed
+
+The stylesheet never names a family; it reads `--display` and `--body`. An
+administrator can repoint either from **Customizer -> Amir Al Afia ->
+Typography**, at a font installed through **Appearance -> Fonts** or at a
+pasted Google Fonts URL. `inc/typography.php` prints the override.
+
+So: **never hardcode a font family in a rule.** Anything that should follow the
+brand font goes through the custom properties, or it will not follow a swap.
 
 ## Space and shape
 
@@ -129,8 +136,20 @@ generated brand images match. If the logo changes, both must change.
 
 ## Icons
 
-Inline SVG from `inc/icons.php`, called as `aaa_icon( 'name', size, colour )`.
-Colour defaults to `currentColor` so an icon follows its text.
+[Heroicons v2](https://heroicons.com) outline (MIT): a 24x24 grid, 1.5 stroke,
+round caps and joins, painted with `currentColor`. Inline SVG from
+`inc/icons.php`, called as `aaa_icon( 'name', size, colour )`.
 
 Available: `phone` `whatsapp` `telegram` `email` `home` `bed` `bath` `area`
 `send` `arrow-ne` `arrow-r` `tax` `passport` `calendar` `growth` `pin` `dot`.
+
+Four are not Heroicons, for reasons worth keeping:
+
+- **`whatsapp`, `telegram`** - Heroicons carries no brand marks. These keep
+  their official glyphs, because that shape is how people recognise the
+  service; a generic chat bubble would be worse, not more consistent.
+- **`bed`, `bath`** - Heroicons carries no furniture or fixtures at all. Both
+  are drawn to the same 24x24 / 1.5-stroke spec so they sit in the card meta
+  row alongside the real ones without looking imported.
+
+New icons should come from Heroicons unless they hit one of those gaps.

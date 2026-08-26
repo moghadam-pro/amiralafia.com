@@ -57,9 +57,12 @@ site, so read what you wrote before shipping it.
 - Nothing may be hidden by default and revealed by JavaScript. Reveal styles are
   scoped under `.sr-armed`, which only `main.js` adds.
 - Respect `prefers-reduced-motion`.
-- **Italiana has one weight.** Anything set in `var(--display)` stays at
-  `font-weight: 400`, and never at `line-height: 1` — it clips the caps.
-  Emphasis comes from size and tracking.
+- **Fonts are swappable at runtime.** `--display` and `--body` can be
+  overridden inline by `inc/typography.php`, so never hardcode a family in a
+  rule — always go through the two custom properties.
+- **Icons are Heroicons v2 outline** (24x24, 1.5 stroke, round caps). New icons
+  come from that set; the two documented exceptions are at the top of
+  `inc/icons.php` and should stay short.
 - Check contrast before putting text on `--primary`: white on `#018ED5` is
   3.60:1, which passes only for large text. Use `--primary-ink` otherwise.
 
