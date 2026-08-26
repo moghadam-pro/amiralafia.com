@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.3.1' );
+define( 'AAA_VERSION', '1.3.2' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -86,7 +86,7 @@ add_action( 'wp_enqueue_scripts', 'aaa_assets' );
  * does not swap after first paint.
  */
 function aaa_preload_fonts(): void {
-	foreach ( array( 'barlow-condensed-900', 'barlow-400' ) as $face ) {
+	foreach ( array( 'italiana-400', 'jost-variable' ) as $face ) {
 		printf(
 			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
 			esc_url( AAA_URI . '/assets/fonts/' . $face . '.woff2' )
