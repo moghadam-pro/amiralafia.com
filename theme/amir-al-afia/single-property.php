@@ -38,7 +38,7 @@ while ( have_posts() ) :
 				<div>
 					<?php if ( $aaa_deal ) : ?>
 						<p class="section-tag">
-							<?php aaa_icon( 'dot', 7, '#0B2461' ); ?>
+							<?php aaa_icon( 'dot', 7, '#016FA6' ); ?>
 							<?php echo esc_html( $aaa_deal->name ); ?>
 						</p>
 					<?php endif; ?>
@@ -80,21 +80,21 @@ while ( have_posts() ) :
 						<ul class="sp-specs">
 							<?php if ( $aaa_beds ) : ?>
 								<li>
-									<?php aaa_icon( 'bed', 18, '#0B2461' ); ?>
+									<?php aaa_icon( 'bed', 18, '#016FA6' ); ?>
 									<strong><?php echo esc_html( $aaa_beds ); ?></strong>
 									<span><?php esc_html_e( 'Bedrooms', 'amir-al-afia' ); ?></span>
 								</li>
 							<?php endif; ?>
 							<?php if ( $aaa_baths ) : ?>
 								<li>
-									<?php aaa_icon( 'bath', 18, '#0B2461' ); ?>
+									<?php aaa_icon( 'bath', 18, '#016FA6' ); ?>
 									<strong><?php echo esc_html( $aaa_baths ); ?></strong>
 									<span><?php esc_html_e( 'Bathrooms', 'amir-al-afia' ); ?></span>
 								</li>
 							<?php endif; ?>
 							<?php if ( $aaa_area ) : ?>
 								<li>
-									<?php aaa_icon( 'area', 18, '#0B2461' ); ?>
+									<?php aaa_icon( 'area', 18, '#016FA6' ); ?>
 									<strong><?php echo esc_html( number_format_i18n( (float) $aaa_area ) ); ?></strong>
 									<span><?php esc_html_e( 'Sq ft', 'amir-al-afia' ); ?></span>
 								</li>
@@ -114,7 +114,7 @@ while ( have_posts() ) :
 						<p><?php esc_html_e( 'Call or message us and we will arrange a visit, usually within 24 hours.', 'amir-al-afia' ); ?></p>
 
 						<?php if ( $aaa_phone ) : ?>
-							<a class="btn btn-navy" href="tel:<?php echo esc_attr( aaa_digits( $aaa_phone ) ); ?>">
+							<a class="btn btn-primary" href="tel:<?php echo esc_attr( aaa_digits( $aaa_phone ) ); ?>">
 								<?php aaa_icon( 'phone', 16, '#fff' ); ?>
 								<span><?php echo esc_html( $aaa_phone ); ?></span>
 							</a>

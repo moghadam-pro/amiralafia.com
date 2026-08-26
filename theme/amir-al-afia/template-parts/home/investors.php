@@ -27,7 +27,7 @@ foreach ( $aaa_recent as $aaa_pid ) {
 
 		<?php if ( aaa_option( 'aaa_inv_tag' ) ) : ?>
 			<p <?php aaa_sr( 0, 'section-tag' ); ?>>
-				<?php aaa_icon( 'dot', 7, '#00CDDE' ); ?>
+				<?php aaa_icon( 'dot', 7, '#38B6FF' ); ?>
 				<?php aaa_the_option( 'aaa_inv_tag' ); ?>
 			</p>
 		<?php endif; ?>
@@ -42,7 +42,7 @@ foreach ( $aaa_recent as $aaa_pid ) {
 				<?php endif; ?>
 				<div <?php aaa_sr( $aaa_i * 80, 'inv-card' ); ?>>
 					<div class="inv-card-icon" aria-hidden="true">
-						<?php aaa_icon( $aaa_card['icon'], 24, '#00CDDE' ); ?>
+						<?php aaa_icon( $aaa_card['icon'], 24, '#38B6FF' ); ?>
 					</div>
 					<h3><?php echo esc_html( $aaa_card['title'] ); ?></h3>
 					<p><?php echo esc_html( $aaa_card['text'] ); ?></p>

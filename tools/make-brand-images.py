@@ -28,11 +28,11 @@ THEME = ROOT / "theme" / "amir-al-afia"
 FONTS = THEME / "assets" / "fonts"
 IMG = THEME / "assets" / "img"
 
-NAVY = (11, 36, 97)
-NAVY_DEEP = (7, 24, 71)
-BLUE_MID = (15, 58, 154)
-CYAN = (74, 203, 240)
-CYAN_BRIGHT = (33, 171, 252)
+PRIMARY = (1, 142, 213)        # #018ED5
+PRIMARY_INK = (1, 111, 166)    # #016FA6
+PRIMARY_DEEP = (1, 82, 124)    # #01527C
+ABYSS = (0, 37, 55)            # #002537
+SECONDARY = (56, 182, 255)     # #38B6FF
 WHITE = (255, 255, 255)
 
 
@@ -48,7 +48,7 @@ def load_font(slug: str, size: int) -> ImageFont.FreeTypeFont:
 
 def brand_gradient(width: int, height: int) -> Image.Image:
     """The 135-degree navy gradient used by the investors band, plus glow."""
-    base = Image.new("RGB", (width, height), NAVY)
+    base = Image.new("RGB", (width, height), PRIMARY_DEEP)
     draw = ImageDraw.Draw(base)
 
     span = width + height
@@ -56,10 +56,10 @@ def brand_gradient(width: int, height: int) -> Image.Image:
         t = i / span
         if t < 0.55:
             k = t / 0.55
-            color = tuple(round(NAVY[c] + (BLUE_MID[c] - NAVY[c]) * k) for c in range(3))
+            color = tuple(round(PRIMARY_DEEP[c] + (PRIMARY_INK[c] - PRIMARY_DEEP[c]) * k) for c in range(3))
         else:
             k = (t - 0.55) / 0.45
-            color = tuple(round(BLUE_MID[c] + (NAVY_DEEP[c] - BLUE_MID[c]) * k) for c in range(3))
+            color = tuple(round(PRIMARY_INK[c] + (ABYSS[c] - PRIMARY_INK[c]) * k) for c in range(3))
         draw.line([(i, 0), (0, i)], fill=color)
 
     # Two soft radial glows, matching the CSS on .investors-section.
@@ -68,12 +68,12 @@ def brand_gradient(width: int, height: int) -> Image.Image:
     r1 = int(width * 0.42)
     gdraw.ellipse(
         [int(width * 0.12) - r1, int(height * 0.70) - r1, int(width * 0.12) + r1, int(height * 0.70) + r1],
-        fill=(0, 52, 57),
+        fill=(2, 60, 92),
     )
     r2 = int(width * 0.38)
     gdraw.ellipse(
         [int(width * 0.88) - r2, int(height * 0.12) - r2, int(width * 0.88) + r2, int(height * 0.12) + r2],
-        fill=(10, 44, 70),
+        fill=(6, 74, 112),
     )
     glow = glow.filter(ImageFilter.GaussianBlur(width // 6))
 
@@ -82,16 +82,17 @@ def brand_gradient(width: int, height: int) -> Image.Image:
 
 # The two chevrons of the brand mark, taken vertex for vertex from
 # assets/img/logo.svg so the drawn version cannot drift from the real one.
-# Coordinates are in the SVG's own 63x64 space.
+# Coordinates are in the SVG's own 63x64 space. The apex is the first vertex
+# and closes the polygon, so it is moved to the end when filling.
 MARK_BACK = [
-    (25.2933, 50.8342), (1.9236, 13.8556), (19.4533, 19.8019), (16.2283, 22.1216),
-    (24.6191, 36.1095), (25.5142, 36.1095), (34.0911, 22.8765), (33.9051, 22.1216),
-    (30.6401, 20.2851), (48.2097, 13.8556),
+    (38.1733, 13.1658), (61.5430, 50.1444), (44.0133, 44.1981), (47.2384, 41.8784),
+    (38.8476, 27.8905), (37.9525, 27.8905), (29.3755, 41.1235), (32.8266, 43.7149),
+    (15.5110, 50.4574),
 ]
 MARK_FRONT = [
-    (38.6267, 50.8342), (15.2570, 13.8556), (32.7867, 19.8019), (29.5616, 22.1216),
-    (37.9525, 36.1095), (38.8476, 36.1095), (47.4245, 22.8765), (47.2384, 22.1216),
-    (43.9735, 20.2851), (61.5430, 13.8556),
+    (24.8400, 13.1658), (48.2097, 50.1444), (30.6800, 44.1981), (33.9051, 41.8784),
+    (25.5142, 27.8905), (24.6191, 27.8905), (16.0422, 41.1235), (19.4932, 43.7149),
+    (2.17766, 50.4574),
 ]
 
 
@@ -106,8 +107,7 @@ def draw_mark(canvas: Image.Image, x: int, y: int, size: int) -> None:
     layer = Image.new("RGBA", (size * scale, size * scale), (0, 0, 0, 0))
     draw = ImageDraw.Draw(layer)
 
-    for points, color in ((MARK_BACK, CYAN_BRIGHT), (MARK_FRONT, CYAN)):
-        # The tip is listed first in the SVG but is the closing vertex.
+    for points, color in ((MARK_BACK, PRIMARY), (MARK_FRONT, SECONDARY)):
         ordered = points[1:] + [points[0]]
         draw.polygon([(px * s, py * s) for px, py in ordered], fill=color + (255,))
 
@@ -129,11 +129,11 @@ def build_share_card() -> Path:
     card = brand_gradient(w, h)
     draw = ImageDraw.Draw(card)
 
-    f_brand = load_font("barlow-condensed-900", 40)
-    f_head = load_font("barlow-condensed-900", 86)
-    f_body = load_font("barlow-400", 25)
-    f_foot = load_font("barlow-600", 21)
-    f_site = load_font("barlow-700", 21)
+    f_brand = load_font("italiana-400", 42)
+    f_head = load_font("italiana-400", 72)
+    f_body = load_font("jost-variable", 25)
+    f_foot = load_font("jost-variable", 21)
+    f_site = load_font("jost-variable", 21)
 
     pad = 84
 
@@ -142,12 +142,12 @@ def build_share_card() -> Path:
 
     y = 190
     for line, color in (
-        ("FIND YOUR", CYAN),
+        ("FIND YOUR", SECONDARY),
         ("DREAM PROPERTY", WHITE),
-        ("ON YOUR DREAM LAND", CYAN),
+        ("ON YOUR DREAM LAND", SECONDARY),
     ):
         draw.text((pad, y), line, font=f_head, fill=color)
-        y += 82
+        y += 76
 
     draw.text(
         (pad, y + 22),
@@ -159,11 +159,11 @@ def build_share_card() -> Path:
 
     # Footer rule and line.
     rule_y = h - 96
-    draw.line([(pad, rule_y), (w - pad, rule_y)], fill=(70, 100, 160), width=1)
+    draw.line([(pad, rule_y), (w - pad, rule_y)], fill=(40, 110, 155), width=1)
     draw.text((pad, rule_y + 26), "Muscat, Oman", font=f_foot, fill=(205, 218, 238))
 
     site = "amiralafia.com"
-    draw.text((w - pad - text_width(draw, site, f_site), rule_y + 26), site, font=f_site, fill=CYAN)
+    draw.text((w - pad - text_width(draw, site, f_site), rule_y + 26), site, font=f_site, fill=SECONDARY)
 
     out = IMG / "share-default.png"
     card.save(out, "PNG", optimize=True)
@@ -176,12 +176,12 @@ def build_screenshot() -> Path:
     shot = brand_gradient(w, h)
     draw = ImageDraw.Draw(shot)
 
-    f_brand = load_font("barlow-condensed-900", 44)
-    f_head = load_font("barlow-condensed-900", 78)
-    f_body = load_font("barlow-400", 25)
-    f_tag = load_font("barlow-700", 17)
-    f_stat = load_font("barlow-condensed-900", 54)
-    f_lbl = load_font("barlow-600", 16)
+    f_brand = load_font("italiana-400", 46)
+    f_head = load_font("italiana-400", 66)
+    f_body = load_font("jost-variable", 25)
+    f_tag = load_font("jost-variable", 17)
+    f_stat = load_font("italiana-400", 52)
+    f_lbl = load_font("jost-variable", 16)
 
     pad = 90
 
@@ -191,17 +191,17 @@ def build_screenshot() -> Path:
     # Badge.
     badge = "REAL ESTATE · MUSCAT, OMAN"
     bw = text_width(draw, badge, f_tag)
-    draw.rounded_rectangle([pad, 214, pad + bw + 34, 214 + 38], radius=6, fill=(24, 63, 140))
-    draw.text((pad + 17, 222), badge, font=f_tag, fill=CYAN)
+    draw.rounded_rectangle([pad, 214, pad + bw + 34, 214 + 38], radius=6, fill=(2, 74, 112))
+    draw.text((pad + 17, 222), badge, font=f_tag, fill=SECONDARY)
 
     y = 292
     for line, color in (
-        ("FIND YOUR", CYAN),
+        ("FIND YOUR", SECONDARY),
         ("DREAM PROPERTY", WHITE),
-        ("ON YOUR DREAM LAND", CYAN),
+        ("ON YOUR DREAM LAND", SECONDARY),
     ):
         draw.text((pad, y), line, font=f_head, fill=color)
-        y += 76
+        y += 70
 
     draw.text(
         (pad, y + 26),
@@ -217,10 +217,10 @@ def build_screenshot() -> Path:
     base = h - 190
     for i, (value, label) in enumerate(stats):
         draw.text((x, base), value, font=f_stat, fill=WHITE)
-        draw.text((x, base + 62), label, font=f_lbl, fill=(160, 182, 218))
+        draw.text((x, base + 62), label, font=f_lbl, fill=(150, 190, 220))
         x += max(text_width(draw, value, f_stat), text_width(draw, label, f_lbl)) + 74
         if i < len(stats) - 1:
-            draw.line([(x - 40, base + 8), (x - 40, base + 62)], fill=(70, 100, 160), width=1)
+            draw.line([(x - 40, base + 8), (x - 40, base + 62)], fill=(40, 110, 155), width=1)
 
     out = THEME / "screenshot.png"
     shot.save(out, "PNG", optimize=True)

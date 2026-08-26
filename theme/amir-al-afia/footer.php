@@ -17,7 +17,7 @@ $aaa_phone = aaa_option( 'aaa_phone' );
 		<p <?php aaa_sr( 80 ); ?>><?php aaa_the_option( 'aaa_cta_sub' ); ?></p>
 		<?php if ( $aaa_phone ) : ?>
 			<a href="tel:<?php echo esc_attr( aaa_digits( $aaa_phone ) ); ?>" <?php aaa_sr( 160, 'btn btn-white' ); ?>>
-				<?php aaa_icon( 'phone', 16, '#0B2461' ); ?>
+				<?php aaa_icon( 'phone', 16, '#016FA6' ); ?>
 				<span><?php echo esc_html( $aaa_phone ); ?></span>
 			</a>
 		<?php endif; ?>

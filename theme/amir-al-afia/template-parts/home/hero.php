@@ -32,7 +32,7 @@ $aaa_stats = array(
 				<p <?php aaa_sr( 160, 'hero-desc' ); ?>><?php aaa_the_option( 'aaa_hero_desc' ); ?></p>
 
 				<div <?php aaa_sr( 230, 'hero-buttons' ); ?>>
-					<a href="#properties" class="btn btn-navy">
+					<a href="#properties" class="btn btn-primary">
 						<?php aaa_icon( 'home', 16, '#fff' ); ?>
 						<span><?php esc_html_e( 'Browse Properties', 'amir-al-afia' ); ?></span>
 					</a>

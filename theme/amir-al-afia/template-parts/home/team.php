@@ -20,7 +20,7 @@ $aaa_team_photo = (int) get_theme_mod( 'aaa_team_photo', 0 );
 			<div class="team-copy">
 				<?php if ( aaa_option( 'aaa_team_tag' ) ) : ?>
 					<p <?php aaa_sr( 0, 'section-tag' ); ?>>
-						<?php aaa_icon( 'dot', 7, '#0B2461' ); ?>
+						<?php aaa_icon( 'dot', 7, '#016FA6' ); ?>
 						<?php aaa_the_option( 'aaa_team_tag' ); ?>
 					</p>
 				<?php endif; ?>

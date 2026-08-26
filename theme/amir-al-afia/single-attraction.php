@@ -55,7 +55,7 @@ while ( have_posts() ) :
 						<ul class="attr-facts">
 							<?php foreach ( $aaa_facts as $aaa_fact ) : ?>
 								<li>
-									<span class="attr-fact-icon" aria-hidden="true"><?php aaa_icon( $aaa_fact['icon'], 16, '#0B2461' ); ?></span>
+									<span class="attr-fact-icon" aria-hidden="true"><?php aaa_icon( $aaa_fact['icon'], 16, '#016FA6' ); ?></span>
 									<span class="attr-fact-label"><?php echo esc_html( $aaa_fact['label'] ); ?></span>
 									<strong><?php echo esc_html( $aaa_fact['value'] ); ?></strong>
 								</li>
@@ -81,7 +81,7 @@ while ( have_posts() ) :
 					<div class="sp-cta">
 						<h2><?php esc_html_e( 'Thinking of living here?', 'amir-al-afia' ); ?></h2>
 						<p><?php esc_html_e( 'Tell us the area you have in mind and we will send what is currently available, usually the same day.', 'amir-al-afia' ); ?></p>
-						<a class="btn btn-navy" href="<?php echo esc_url( (string) get_post_type_archive_link( 'property' ) ); ?>">
+						<a class="btn btn-primary" href="<?php echo esc_url( (string) get_post_type_archive_link( 'property' ) ); ?>">
 							<?php aaa_icon( 'home', 16, '#fff' ); ?>
 							<span><?php esc_html_e( 'Browse Properties', 'amir-al-afia' ); ?></span>
 						</a>

@@ -179,7 +179,7 @@ function aaa_head_meta(): void {
 	}
 
 	printf( '<meta name="description" content="%s">' . "\n", esc_attr( $desc ) );
-	echo '<meta name="theme-color" content="#0B2461">' . "\n";
+	echo '<meta name="theme-color" content="#018ED5">' . "\n";
 
 	// --- Open Graph -----------------------------------------------------
 	printf( '<meta property="og:site_name" content="%s">' . "\n", esc_attr( get_bloginfo( 'name' ) ) );

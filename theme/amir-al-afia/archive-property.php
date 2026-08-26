@@ -18,7 +18,7 @@ $aaa_term    = is_tax() ? get_queried_object() : null;
 
 		<div class="props-header">
 			<p <?php aaa_sr( 0, 'section-tag' ); ?>>
-				<?php aaa_icon( 'dot', 7, '#0B2461' ); ?>
+				<?php aaa_icon( 'dot', 7, '#016FA6' ); ?>
 				<?php aaa_the_option( 'aaa_props_tag' ); ?>
 			</p>
 

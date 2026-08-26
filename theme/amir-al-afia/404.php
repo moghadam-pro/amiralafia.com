@@ -16,7 +16,7 @@ get_header();
 			<?php esc_html_e( 'That page has moved or never existed. Browse the current listings instead, or call us and we will point you the right way.', 'amir-al-afia' ); ?>
 		</p>
 		<p class="error-404-actions">
-			<a class="btn btn-navy" href="<?php echo esc_url( (string) get_post_type_archive_link( 'property' ) ); ?>">
+			<a class="btn btn-primary" href="<?php echo esc_url( (string) get_post_type_archive_link( 'property' ) ); ?>">
 				<?php esc_html_e( 'Browse Properties', 'amir-al-afia' ); ?>
 			</a>
 			<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/' ) ); ?>">

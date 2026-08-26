@@ -1,6 +1,6 @@
 /* ============================================================
    AMIR AL AFIA REAL ESTATE
-   Navy #0B2461 · Cyan #00CDDE · Barlow Condensed + Barlow
+   Primary #018ED5 · Secondary #38B6FF · Italiana + Jost
    ============================================================ */
 
 *,
@@ -12,24 +12,31 @@
 }
 
 :root {
-	--navy: #0B2461;
-	--navy-dark: #071A47;
-	--cyan: #00CDDE;
-	--cyan-ink: #0097A4;      /* cyan dark enough for text on white (4.5:1) */
-	--cyan-light: #E5F9FB;
-	--blue-mid: #1565C0;
+	/* Brand. #018ED5 carries white text at only 3.6:1, so it is a fill and a
+	   large-display colour, never a button background — --primary-ink is the
+	   step down that clears AA for white text and for links on white. */
+	--primary: #018ED5;
+	--primary-ink: #016FA6;
+	--primary-deep: #01527C;
+	--primary-abyss: #002537;
+	--secondary: #38B6FF;
+	--secondary-deep: #0179B5;
+	--secondary-wash: #E8F6FF;
+
 	--text: #111827;
 	--text-muted: #5A6473;
 	--text-light: #6B7280;
 	--bg: #FFFFFF;
-	--bg-light: #F4F7FB;
-	--border: #E5E9F0;
-	--green: #1EA952;         /* WhatsApp green, darkened for white text */
+	--bg-light: #F2F8FC;
+	--border: #DCE8F1;
+	--green: #1EA952;
 	--telegram: #1B8FCC;
 	--danger: #B42318;
-	--shadow-sm: 0 2px 8px rgba(0, 0, 0, .06);
-	--shadow-md: 0 8px 28px rgba(0, 0, 0, .10);
-	--shadow-lg: 0 16px 48px rgba(0, 0, 0, .14);
+
+	--shadow-sm: 0 2px 8px rgba(0, 37, 55, .07);
+	--shadow-md: 0 8px 28px rgba(0, 37, 55, .12);
+	--shadow-lg: 0 16px 48px rgba(0, 37, 55, .16);
+
 	--radius-sm: 6px;
 	--radius-md: 10px;
 	--radius-lg: 16px;
@@ -37,6 +44,10 @@
 	--transition: .22s ease;
 	--shell: 1320px;
 	--gutter: 40px;
+
+	/* Italiana has one weight; Jost is variable across 100-900. */
+	--display: 'Italiana', 'Times New Roman', serif;
+	--body: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 html {
@@ -49,8 +60,8 @@ html {
 }
 
 body {
-	font-family: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
-	font-size: 15px;
+	font-family: var(--body);
+	font-size: 15.5px;
 	color: var(--text);
 	background: var(--bg);
 	overflow-x: hidden;
@@ -82,7 +93,7 @@ ul {
 }
 
 :focus-visible {
-	outline: 3px solid var(--cyan);
+	outline: 3px solid var(--secondary);
 	outline-offset: 2px;
 	border-radius: 4px;
 }
@@ -107,7 +118,7 @@ ul {
 	height: auto;
 	clip: auto;
 	padding: 12px 20px;
-	background: var(--navy);
+	background: var(--primary-ink);
 	color: #fff;
 	border-radius: var(--radius-md);
 	font-weight: 700;
@@ -175,24 +186,25 @@ ul {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	background: #EEF3FB;
-	color: var(--navy);
+	background: #E4F2FB;
+	color: var(--primary-ink);
 	font-size: 11px;
-	font-weight: 700;
+	font-weight: 600;
 	text-transform: uppercase;
-	letter-spacing: 1px;
+	letter-spacing: .09em;
 	padding: 4px 12px;
 	border-radius: 4px;
 	margin-bottom: 14px;
 }
 
 .section-title {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-size: clamp(28px, 3vw, 42px);
-	font-weight: 900;
+	font-family: var(--display);
+	font-size: clamp(25px, 2.7vw, 38px);
+	font-weight: 400;
 	text-transform: uppercase;
 	color: var(--text);
-	line-height: 1.02;
+	line-height: 1.1;
+	letter-spacing: .015em;
 	margin-bottom: 10px;
 }
 
@@ -267,7 +279,7 @@ ul {
 .nav-links .current-menu-item > a,
 .nav-links a.is-active {
 	background: var(--bg-light);
-	color: var(--navy);
+	color: var(--primary-ink);
 }
 
 .nav-ctas {
@@ -299,7 +311,7 @@ ul {
 }
 
 .nav-cta-phone {
-	background: var(--navy);
+	background: var(--primary-ink);
 }
 
 .nav-cta-wa {
@@ -393,7 +405,8 @@ ul {
 	border: none;
 	border-radius: var(--radius-md);
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: 600;
+	letter-spacing: .01em;
 	white-space: nowrap;
 	transition: background var(--transition), transform var(--transition), box-shadow var(--transition), border-color var(--transition), color var(--transition);
 }
@@ -402,14 +415,14 @@ ul {
 	transform: translateY(-1px);
 }
 
-.btn-navy {
-	background: var(--navy);
+.btn-primary {
+	background: var(--primary-ink);
 	color: #fff;
 }
 
-.btn-navy:hover {
-	background: var(--blue-mid);
-	box-shadow: 0 6px 20px rgba(11, 36, 97, .25);
+.btn-primary:hover {
+	background: var(--primary-deep);
+	box-shadow: 0 6px 20px rgba(1, 82, 124, .28);
 }
 
 .btn-outline {
@@ -419,13 +432,13 @@ ul {
 }
 
 .btn-outline:hover {
-	border-color: var(--navy);
-	color: var(--navy);
+	border-color: var(--primary-ink);
+	color: var(--primary-ink);
 }
 
 .btn-white {
 	background: #fff;
-	color: var(--navy);
+	color: var(--primary-ink);
 }
 
 .btn-white:hover {
@@ -462,10 +475,11 @@ ul {
 }
 
 .hero-heading {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-weight: 900;
-	font-size: clamp(46px, 5vw, 72px);
-	line-height: .96;
+	font-family: var(--display);
+	font-weight: 400;
+	font-size: clamp(38px, 4.4vw, 64px);
+	line-height: 1.04;
+	letter-spacing: .012em;
 	text-transform: uppercase;
 	color: var(--text);
 	text-wrap: balance;
@@ -476,7 +490,7 @@ ul {
 }
 
 .hero-heading .line-cyan {
-	color: var(--cyan-ink);
+	color: var(--primary);
 }
 
 .hero-desc {
@@ -508,11 +522,12 @@ ul {
 }
 
 .hstat-val {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-weight: 900;
-	font-size: 42px;
+	font-family: var(--display);
+	font-weight: 400;
+	font-size: 40px;
 	color: var(--text);
 	line-height: 1;
+	letter-spacing: .01em;
 }
 
 .hstat-lbl {
@@ -600,13 +615,13 @@ ul {
 /* Hover reads as "selectable", not "selected" — in the mockup the two states
    were identical, so hovering made every button look active. */
 .filter-btn:hover {
-	border-color: var(--navy);
-	color: var(--navy);
+	border-color: var(--primary-ink);
+	color: var(--primary-ink);
 }
 
 .filter-btn.is-active {
-	background: var(--navy);
-	border-color: var(--navy);
+	background: var(--primary-ink);
+	border-color: var(--primary-ink);
 	color: #fff;
 }
 
@@ -691,11 +706,12 @@ ul {
 }
 
 .badge-sale {
-	background: var(--navy);
+	background: var(--primary-ink);
 }
 
 .badge-rent {
-	background: var(--cyan-ink);
+	background: var(--secondary);
+	color: var(--primary-abyss);
 }
 
 .prop-body {
@@ -703,11 +719,12 @@ ul {
 }
 
 .prop-price {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-size: 26px;
-	font-weight: 900;
+	font-family: var(--display);
+	font-size: 27px;
+	font-weight: 400;
 	color: var(--text);
 	margin-bottom: 5px;
+	letter-spacing: .01em;
 }
 
 .prop-name {
@@ -756,7 +773,7 @@ ul {
    WHY OMAN
 ══════════════════════════════════════════ */
 .investors-section {
-	background: linear-gradient(135deg, #0B2461 0%, #0F3A9A 55%, #071847 100%);
+	background: linear-gradient(135deg, #01527C 0%, #016FA6 55%, #002537 100%);
 	position: relative;
 	overflow: hidden;
 	padding: 72px 0;
@@ -767,8 +784,8 @@ ul {
 	position: absolute;
 	inset: 0;
 	background-image:
-		radial-gradient(circle at 15% 60%, rgba(0, 205, 222, .09) 0%, transparent 45%),
-		radial-gradient(circle at 85% 15%, rgba(21, 101, 192, .18) 0%, transparent 42%);
+		radial-gradient(circle at 15% 60%, rgba(56, 182, 255, .16) 0%, transparent 45%),
+		radial-gradient(circle at 85% 15%, rgba(1, 142, 213, .26) 0%, transparent 42%);
 	pointer-events: none;
 }
 
@@ -777,8 +794,8 @@ ul {
 }
 
 .investors-section .section-tag {
-	background: rgba(0, 205, 222, .16);
-	color: var(--cyan);
+	background: rgba(56, 182, 255, .18);
+	color: var(--secondary);
 }
 
 .investors-section .section-title {
@@ -813,7 +830,7 @@ ul {
 	width: 46px;
 	height: 46px;
 	border-radius: 12px;
-	background: rgba(0, 205, 222, .16);
+	background: rgba(56, 182, 255, .18);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -821,13 +838,13 @@ ul {
 }
 
 .inv-card h3 {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-weight: 800;
-	font-size: 17px;
+	font-family: var(--display);
+	font-weight: 400;
+	font-size: 19px;
 	text-transform: uppercase;
 	color: #fff;
 	margin-bottom: 10px;
-	letter-spacing: .3px;
+	letter-spacing: .04em;
 }
 
 .inv-card p {
@@ -884,13 +901,13 @@ ul {
 
 .team-card:hover {
 	box-shadow: var(--shadow-md);
-	border-color: #D0DCEE;
+	border-color: #BFDCF0;
 }
 
 .team-card-role {
 	display: inline-block;
-	background: #EEF3FB;
-	color: var(--navy);
+	background: #E4F2FB;
+	color: var(--primary-ink);
 	font-size: 10px;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -919,15 +936,16 @@ ul {
 
 .team-card-phone {
 	display: block;
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-weight: 900;
-	font-size: 22px;
+	font-family: var(--display);
+	font-weight: 400;
+	font-size: 23px;
 	color: var(--text);
 	margin-bottom: 10px;
+	letter-spacing: .01em;
 }
 
 .team-card-phone:hover {
-	color: var(--navy);
+	color: var(--primary-ink);
 }
 
 .team-card-btns {
@@ -993,7 +1011,7 @@ ul {
 .contact-section::before {
 	width: 450px;
 	height: 450px;
-	background: rgba(0, 205, 222, .055);
+	background: rgba(56, 182, 255, .07);
 	top: -120px;
 	right: -100px;
 }
@@ -1001,7 +1019,7 @@ ul {
 .contact-section::after {
 	width: 300px;
 	height: 300px;
-	background: rgba(11, 36, 97, .04);
+	background: rgba(1, 82, 124, .05);
 	bottom: -80px;
 	left: -60px;
 }
@@ -1043,8 +1061,8 @@ ul {
 
 .cf-input:focus,
 .cf-phone:focus-within {
-	border-color: var(--cyan-ink);
-	box-shadow: 0 0 0 3px rgba(0, 205, 222, .18);
+	border-color: var(--primary-ink);
+	box-shadow: 0 0 0 3px rgba(1, 142, 213, .2);
 	outline: none;
 }
 
@@ -1069,7 +1087,7 @@ ul {
 	align-items: center;
 	gap: 6px;
 	padding: 0 14px;
-	background: #F1F5FB;
+	background: #EAF4FB;
 	border-right: 1px solid var(--border);
 	font-size: 13px;
 	font-weight: 600;
@@ -1102,19 +1120,20 @@ ul {
 	align-items: center;
 	gap: 8px;
 	padding: 13px 24px;
-	background: var(--navy);
+	background: var(--primary-ink);
 	color: #fff;
 	border: none;
 	border-radius: var(--radius-md);
 	font: inherit;
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: 600;
+	letter-spacing: .01em;
 	white-space: nowrap;
 	transition: background var(--transition), transform var(--transition), opacity var(--transition);
 }
 
 .cf-submit:hover {
-	background: var(--blue-mid);
+	background: var(--primary-deep);
 	transform: translateY(-1px);
 }
 
@@ -1128,7 +1147,7 @@ ul {
 	margin-top: 14px;
 	font-size: 14px;
 	font-weight: 600;
-	color: var(--navy);
+	color: var(--primary-ink);
 	min-height: 1.2em;
 	opacity: 0;
 	transition: opacity var(--transition);
@@ -1170,7 +1189,7 @@ ul {
 	height: 234px;
 	border-radius: var(--radius-lg);
 	overflow: hidden;
-	background: var(--navy);
+	background: var(--primary-ink);
 }
 
 .attr-card img {
@@ -1187,7 +1206,7 @@ ul {
 .attr-overlay {
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(180deg, transparent 35%, rgba(7, 24, 71, .7));
+	background: linear-gradient(180deg, transparent 35%, rgba(0, 37, 55, .72));
 }
 
 .attr-label {
@@ -1197,7 +1216,7 @@ ul {
 	bottom: 0;
 	writing-mode: vertical-lr;
 	transform: rotate(180deg);
-	background: rgba(11, 36, 97, .78);
+	background: rgba(0, 37, 55, .78);
 	color: #fff;
 	font-size: 10.5px;
 	font-weight: 700;
@@ -1224,7 +1243,7 @@ ul {
 }
 
 .attr-card:hover .attr-arrow {
-	background: var(--cyan);
+	background: var(--secondary);
 	transform: scale(1.12);
 }
 
@@ -1232,7 +1251,7 @@ ul {
    CTA BAND
 ══════════════════════════════════════════ */
 .cta-band {
-	background: linear-gradient(135deg, #1565C0 0%, #0B2461 100%);
+	background: linear-gradient(135deg, #0179B5 0%, #01527C 100%);
 	padding: 60px var(--gutter);
 	text-align: center;
 	position: relative;
@@ -1240,9 +1259,10 @@ ul {
 }
 
 .cta-band h2 {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-weight: 900;
-	font-size: clamp(30px, 4vw, 50px);
+	font-family: var(--display);
+	font-weight: 400;
+	font-size: clamp(27px, 3.4vw, 44px);
+	letter-spacing: .015em;
 	text-transform: uppercase;
 	color: #fff;
 	margin-bottom: 10px;
@@ -1295,7 +1315,7 @@ ul {
 }
 
 .footer-nav-links a:hover {
-	color: var(--navy);
+	color: var(--primary-ink);
 	background: var(--bg-light);
 }
 
@@ -1316,7 +1336,7 @@ ul {
 }
 
 .breadcrumb a:hover {
-	color: var(--navy);
+	color: var(--primary-ink);
 }
 
 .sp-head {
@@ -1329,11 +1349,12 @@ ul {
 }
 
 .sp-price {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-	font-size: 44px;
-	font-weight: 900;
+	font-family: var(--display);
+	font-size: 40px;
+	font-weight: 400;
 	line-height: 1;
-	color: var(--navy);
+	letter-spacing: .01em;
+	color: var(--primary-ink);
 }
 
 .sp-hero {
@@ -1376,9 +1397,9 @@ ul {
 }
 
 .sp-specs strong {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+	font-family: var(--display);
 	font-size: 22px;
-	font-weight: 900;
+	font-weight: 400;
 	color: var(--text);
 }
 
@@ -1394,15 +1415,15 @@ ul {
 
 .entry-content h2,
 .entry-content h3 {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+	font-family: var(--display);
 	text-transform: uppercase;
 	color: var(--text);
-	font-weight: 800;
+	font-weight: 400;
 	margin-top: 1.6em;
 }
 
 .entry-content a {
-	color: var(--navy);
+	color: var(--primary-ink);
 	text-decoration: underline;
 }
 
@@ -1424,9 +1445,9 @@ ul {
 }
 
 .sp-subhead {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+	font-family: var(--display);
 	font-size: 24px;
-	font-weight: 900;
+	font-weight: 400;
 	text-transform: uppercase;
 	margin: 40px 0 16px;
 }
@@ -1441,9 +1462,9 @@ ul {
 }
 
 .sp-cta h2 {
-	font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+	font-family: var(--display);
 	font-size: 24px;
-	font-weight: 900;
+	font-weight: 400;
 	text-transform: uppercase;
 	margin-bottom: 8px;
 }
@@ -1513,7 +1534,7 @@ ul {
 	border: none;
 	border-radius: 50%;
 	background: rgba(255, 255, 255, .92);
-	color: var(--navy);
+	color: var(--primary-ink);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1540,7 +1561,7 @@ ul {
 	bottom: 14px;
 	padding: 5px 12px;
 	border-radius: 999px;
-	background: rgba(7, 24, 71, .72);
+	background: rgba(0, 37, 55, .74);
 	color: #fff;
 	font-size: 12px;
 	font-weight: 700;
@@ -1580,7 +1601,7 @@ ul {
 
 .sp-thumb.is-active {
 	opacity: 1;
-	border-color: var(--navy);
+	border-color: var(--primary-ink);
 }
 
 /* ══════════════════════════════════════════
@@ -1592,7 +1613,7 @@ ul {
 	gap: 6px;
 	font-size: 14px;
 	font-weight: 700;
-	color: var(--navy);
+	color: var(--primary-ink);
 	padding: 8px 4px;
 }
 
@@ -1619,7 +1640,7 @@ ul {
 	display: flex;
 	align-items: flex-end;
 	overflow: hidden;
-	background: var(--navy);
+	background: var(--primary-ink);
 }
 
 .attr-hero > img {
@@ -1633,7 +1654,7 @@ ul {
 .attr-hero-shade {
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(180deg, rgba(7, 24, 71, .25) 0%, rgba(7, 24, 71, .82) 100%);
+	background: linear-gradient(180deg, rgba(0, 37, 55, .25) 0%, rgba(0, 37, 55, .84) 100%);
 }
 
 .attr-hero-inner {
@@ -1731,7 +1752,7 @@ ul {
 	align-items: center;
 	gap: 6px;
 	font-weight: 700;
-	color: var(--navy);
+	color: var(--primary-ink);
 	text-decoration: underline;
 }
 
@@ -1749,7 +1770,7 @@ ul {
 }
 
 .attr-map-link a:hover {
-	color: var(--navy);
+	color: var(--primary-ink);
 }
 
 /* ══════════════════════════════════════════
@@ -1780,13 +1801,13 @@ ul {
 }
 
 .aaa-pagination .page-numbers:hover {
-	border-color: var(--navy);
-	color: var(--navy);
+	border-color: var(--primary-ink);
+	color: var(--primary-ink);
 }
 
 .aaa-pagination .page-numbers.current {
-	background: var(--navy);
-	border-color: var(--navy);
+	background: var(--primary-ink);
+	border-color: var(--primary-ink);
 	color: #fff;
 }
 
