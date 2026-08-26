@@ -105,6 +105,14 @@ in that script as well as replacing the three SVGs.
 - **Renaming a demo item in `aaa_demo_attractions()` creates a duplicate**,
   because the importer matches on slug. Delete the old post after a rename.
 
+## Cloudflare caches static assets for ten years
+
+`cache-control: max-age=315360000` on everything static. CSS and JS carry
+`?ver=` from the theme version so they bust on a version bump; assets
+referenced by a fixed filename do not. `share-default.png` is versioned in
+`aaa_share_image()` because chat apps scrape that exact URL. Check the origin
+with a cache-busting query before concluding a deploy did not land.
+
 ## Deployment access
 
 Admin is reached through the browser at `https://amiralafia.com/wp-admin`. There

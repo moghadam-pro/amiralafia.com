@@ -144,8 +144,13 @@ function aaa_share_image(): array {
 	}
 
 	// The bundled card, so a link always previews with something on brand.
+	//
+	// Versioned deliberately. The host sits behind a CDN that caches static
+	// assets with a ten-year max-age, so an unversioned filename would keep
+	// serving the previous card long after a rebrand — and this is the exact
+	// URL the chat apps scrape.
 	return array(
-		'url'    => AAA_URI . '/assets/img/share-default.png',
+		'url'    => add_query_arg( 'ver', AAA_VERSION, AAA_URI . '/assets/img/share-default.png' ),
 		'width'  => 1200,
 		'height' => 630,
 		'alt'    => get_bloginfo( 'name' ) . ' — ' . __( 'Real estate in Muscat, Oman', 'amir-al-afia' ),

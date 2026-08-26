@@ -53,6 +53,32 @@ On a fresh WordPress:
    about 15 images, so give it a minute.
 4. **Appearance → Menus** — optional; the theme ships a sensible default menu.
 
+## The CDN will serve stale assets
+
+The site sits behind Cloudflare, and static assets come back with
+`cache-control: max-age=315360000` - ten years. In practice:
+
+- **CSS and JS are fine.** WordPress appends `?ver=` from the theme version, so
+  bumping the version busts them automatically. This is another reason step 2
+  is not optional.
+- **Images referenced by a fixed filename are not.** `share-default.png` and
+  `screenshot.png` keep their names across releases, so a new file sits on the
+  server while the CDN keeps serving the old one. The share card is versioned
+  in `aaa_share_image()` for exactly this reason; the theme screenshot is not,
+  because it only affects the admin.
+- **Uploaded media is fine**, because a changed photo gets a new filename.
+
+To confirm what the origin actually has, bypass the edge - any query string
+is enough:
+
+```bash
+curl -sI "https://amiralafia.com/wp-content/themes/amir-al-afia/screenshot.png" | grep -i cf-cache-status
+```
+
+A `cf-cache-status: HIT` with a large `Age` means you are looking at the CDN's
+copy, not the server's. If a fixed-name asset has to change in place, purge it
+in the Cloudflare dashboard.
+
 ## Current environment
 
 | | |
