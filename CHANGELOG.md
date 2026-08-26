@@ -11,6 +11,37 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-08-26
+
+### Fixed
+
+- Display scale tuned against the real layout: the hero fits three lines again
+  (4.4vw pushed it to four), the hero, section titles, statistics and prices
+  stopped clipping their caps, the four "Why Oman" headings line up again, and
+  body copy on the blue band went from .72 to .84 alpha.
+
+## [1.3.0] - 2026-08-26
+
+### Changed
+
+- **Italiana and Jost replace Barlow Condensed and Barlow.** Italiana has one
+  weight, so every display rule sits at 400 and takes its emphasis from size
+  and tracking; display sizes came down about a step because Italiana is much
+  wider than a condensed sans, and line heights went up because it sits taller
+  in its em box.
+- **Self-hosted font payload is down from 134 KB to 37 KB.** Google serves Jost
+  as one variable font covering 100-900, so the four static weights the site
+  requested came back byte-identical; one file with a `font-weight` range
+  replaces them.
+- **New logo**, whose mark now points up rather than down, across all three
+  variants and the favicon.
+- **New palette: `#018ED5` primary, `#38B6FF` secondary**, replacing navy and
+  cyan. White text on the primary is 3.60:1, so it is a fill and a
+  large-display colour only; `--primary-ink` (#016FA6) carries text, and dark
+  grounds run `--primary-deep` into `--primary-abyss` to hold white copy above
+  7:1. "For Rent" badges moved to the light blue with deep text so they do not
+  collapse into "For Sale". `btn-navy` is now `btn-primary`.
+
 ## [1.2.4] - 2026-08-25
 
 ### Fixed
@@ -177,7 +208,9 @@ theme with no plugin or third-party theme dependencies.
 
 See [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) for the full list.
 
-[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.2.4...HEAD
+[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.1
+[1.3.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.0
 [1.2.4]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.4
 [1.2.3]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.3
 [1.2.2]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.2.2

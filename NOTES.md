@@ -57,8 +57,11 @@ site, so read what you wrote before shipping it.
 - Nothing may be hidden by default and revealed by JavaScript. Reveal styles are
   scoped under `.sr-armed`, which only `main.js` adds.
 - Respect `prefers-reduced-motion`.
-- Check contrast before using `--cyan` on text — it is 1.9:1 on white. Use
-  `--cyan-ink`.
+- **Italiana has one weight.** Anything set in `var(--display)` stays at
+  `font-weight: 400`, and never at `line-height: 1` — it clips the caps.
+  Emphasis comes from size and tracking.
+- Check contrast before putting text on `--primary`: white on `#018ED5` is
+  3.60:1, which passes only for large text. Use `--primary-ink` otherwise.
 
 ## Regenerating the brand images
 
@@ -69,7 +72,9 @@ python tools/make-brand-images.py
 ```
 
 Do not hand-edit them. They are drawn from the theme's own fonts and the
-logo's path vertices so a palette change can be picked up by re-running.
+logo's path vertices so a palette change can be picked up by re-running — but
+the vertices are a copy, so a new logo means editing `MARK_BACK` / `MARK_FRONT`
+in that script as well as replacing the three SVGs.
 
 ## Things that will bite
 
