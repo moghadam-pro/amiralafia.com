@@ -310,11 +310,20 @@ function aaa_sanitize_svg_file( string $path ): bool {
 		return false;
 	}
 
-	// Remove any doctype or entity declaration before the parser sees it.
-	// PHP 8 does not resolve external entities by default, but an internal
-	// entity can still be used to build a billion-laughs expansion.
-	$svg = preg_replace( '/<!DOCTYPE.*?>/is', '', $svg ) ?? $svg;
-	$svg = preg_replace( '/<!ENTITY.*?>/is', '', $svg ) ?? $svg;
+	// Remove any doctype before the parser sees it. PHP 8 does not resolve
+	// external entities by default, but an internal entity can still be used to
+	// build a billion-laughs expansion.
+	//
+	// The internal subset has to be matched explicitly. A naive `<!DOCTYPE.*?>`
+	// stops at the first `>`, which for
+	//     <!DOCTYPE svg [<!ENTITY x SYSTEM "...">]>
+	// is the one closing the ENTITY - leaving a stray `]>` that makes the
+	// document unparseable. Illustrator writes a DOCTYPE on every export, so
+	// getting this wrong rejects a lot of perfectly ordinary files.
+	$svg = preg_replace( '/<!DOCTYPE\s+[^>\[]*(?:\[[^\]]*\]\s*)?>/is', '', $svg ) ?? $svg;
+
+	// Belt and braces, in case a declaration survived outside a doctype.
+	$svg = preg_replace( '/<!ENTITY\s[^>]*>/is', '', $svg ) ?? $svg;
 
 	$previous = libxml_use_internal_errors( true );
 
