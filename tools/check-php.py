@@ -27,6 +27,7 @@ def check(path: Path) -> list[str]:
     line = 1
     n = len(src)
     in_php = False
+    php_opened_on = 0
 
     while i < n:
         ch = src[i]
@@ -43,6 +44,7 @@ def check(path: Path) -> list[str]:
             line += src.count("\n", i, nxt)
             i = nxt + 5
             in_php = True
+            php_opened_on = line
             continue
 
         if src.startswith("?>", i):
@@ -50,10 +52,32 @@ def check(path: Path) -> list[str]:
             i += 2
             continue
 
-        # Comments.
+        # Comments. A `?>` inside a one-line comment is NOT commented out: PHP
+        # closes the tag there and treats everything after it as page output.
+        # It is an easy trap whenever a comment quotes markup or a regex, it
+        # takes the whole site down, and no amount of bracket counting sees it.
+        #
+        # `<?php // note ?>` on a single line is the ordinary template idiom and
+        # is fine, because closing the tag is the intent. The dangerous shape is
+        # a `?>` that lands mid-comment inside a longer block.
         if src.startswith("//", i) or ch == "#":
             end = src.find("\n", i)
-            i = n if end == -1 else end
+            end = n if end == -1 else end
+            comment = src[i:end]
+            marker = comment.find("?>")
+
+            if marker != -1:
+                inline_idiom = php_opened_on == line and not comment[marker + 2:].strip()
+                if not inline_idiom:
+                    errors.append(
+                        f"{path}:{line}: '?>' inside a one-line comment closes the PHP tag"
+                    )
+                # Model what PHP actually does: the tag is now closed.
+                in_php = False
+                i = i + marker + 2
+                continue
+
+            i = end
             continue
         if src.startswith("/*", i):
             end = src.find("*/", i + 2)

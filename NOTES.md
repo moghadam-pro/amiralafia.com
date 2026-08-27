@@ -107,6 +107,11 @@ in that script as well as replacing the three SVGs.
   Run it through `aaa_schema_text()`.
 - **Renaming a demo item in `aaa_demo_attractions()` creates a duplicate**,
   because the importer matches on slug. Delete the old post after a rename.
+- **Never write `?>` inside a `//` comment.** PHP closes the tag there — it is
+  not commented out — and everything after becomes page output, which fatals
+  the whole site. Quoting a regex or some markup in a comment is how it
+  happens. `tools/check-php.py` now catches it; `<?php // note ?>` on one line
+  is still fine, because there the close is the point.
 
 ## Cloudflare caches static assets for ten years
 

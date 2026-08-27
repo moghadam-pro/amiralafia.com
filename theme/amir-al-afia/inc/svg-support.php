@@ -314,8 +314,8 @@ function aaa_sanitize_svg_file( string $path ): bool {
 	// external entities by default, but an internal entity can still be used to
 	// build a billion-laughs expansion.
 	//
-	// The internal subset has to be matched explicitly. A naive `<!DOCTYPE.*?>`
-	// stops at the first `>`, which for
+	// The internal subset has to be matched explicitly. A pattern that simply
+	// runs to the first `>` stops on the wrong one, because for
 	//     <!DOCTYPE svg [<!ENTITY x SYSTEM "...">]>
 	// is the one closing the ENTITY - leaving a stray `]>` that makes the
 	// document unparseable. Illustrator writes a DOCTYPE on every export, so
