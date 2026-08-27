@@ -11,6 +11,47 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.5.2] - 2026-08-26
+
+### Fixed
+
+- **1.5.1 took the site down.** A comment added to explain the DOCTYPE pattern
+  quoted the pattern itself, and `?>` inside a `//` comment is not commented
+  out - PHP closes the tag there and treats the rest of the file as output, so
+  the file stopped parsing and every request fataled on requiring it.
+- `tools/check-php.py` now detects that, which bracket counting never could.
+  It still allows `<?php // note ?>` on one line, where closing the tag is the
+  intent, by tracking which line the PHP block opened on.
+
+## [1.5.1] - 2026-08-26
+
+### Fixed
+
+- The sanitiser rejected any SVG carrying a DOCTYPE. Matching to the first `>`
+  stops inside the internal subset, leaving a stray `]>` that will not parse -
+  and Illustrator writes a DOCTYPE on every export, so ordinary files were
+  being turned away as though they were unsafe.
+
+## [1.5.0] - 2026-08-26
+
+### Added
+
+- **SVG uploads, sanitised, for administrators only.** Gated on
+  `unfiltered_html`; every file is parsed with DOMDocument and rewritten
+  against an element and attribute allowlist. `script`, `foreignObject`,
+  `feImage`, `set` and the animate family are refused; every `on*` attribute
+  is dropped whether or not it is known; `href` survives only as a
+  same-document fragment or a data: image; CSS loses `@import`, `expression()`
+  and external `url()`; doctypes and entity declarations are stripped before
+  parsing. Anchors are unwrapped rather than deleted, so artwork exported
+  inside `<a>` is not lost with the link.
+- SVG dimensions are read from the markup, fixing the Customizer logo control:
+  WordPress cannot measure a vector with `getimagesize()`, so metadata was
+  empty and `wp_get_attachment_image_src()` reported 0x0.
+- `wp_check_filetype_and_ext` is reconciled with fileinfo, which reports
+  `image/svg` or `text/plain` for SVG - the actual cause of "This file cannot
+  be processed by the web server".
+
 ## [1.4.1] - 2026-08-26
 
 ### Fixed
@@ -240,7 +281,10 @@ theme with no plugin or third-party theme dependencies.
 
 See [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) for the full list.
 
-[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.4.1...HEAD
+[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.5.2...HEAD
+[1.5.2]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.5.2
+[1.5.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.5.1
+[1.5.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.5.0
 [1.4.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.4.1
 [1.4.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.4.0
 [1.3.3]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.3.3

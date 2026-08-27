@@ -31,6 +31,7 @@ theme/amir-al-afia/
 │   ├── post-type-lead.php        Lead CPT (private) and the unread bubble
 │   ├── customizer.php        Every editable string and image
 │   ├── typography.php       Swappable heading/body fonts
+│   ├── svg-support.php      Sanitised SVG uploads, admin-only
 │   ├── lead-form.php         Validation, storage, notification, both endpoints
 │   ├── property-query.php    Listing queries and the filter AJAX endpoint
 │   ├── seo.php               Canonical, robots, Open Graph, Twitter, JSON-LD
@@ -157,6 +158,20 @@ because the front end renders no blocks.
 Fonts are self-hosted with `font-display: swap`, and the two faces that paint
 above the fold — Barlow Condensed 900 for the headline, Barlow 400 for body —
 are preloaded from `wp_head` at priority 1.
+
+### SVG uploads
+
+`inc/svg-support.php` allows SVG, gated on `unfiltered_html` so only users who
+could already post raw markup may upload one, and rewrites every file against
+an element/attribute allowlist with DOMDocument before it is stored.
+
+Two WordPress behaviours had to be worked around. Its filetype check compares
+the claimed type against fileinfo, which answers `image/svg` or `text/plain`
+for SVG and so refuses the upload - that is the "cannot be processed by the web
+server" error. And `getimagesize()` cannot measure a vector, leaving empty
+metadata, a 0x0 result from `wp_get_attachment_image_src()` and a Customizer
+logo control that cannot decide whether to crop; dimensions are read from the
+markup instead.
 
 ## Security
 

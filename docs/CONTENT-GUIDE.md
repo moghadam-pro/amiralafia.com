@@ -93,6 +93,36 @@ If you change a photo or the text and the old version still shows, the chat app
 has cached it — that cache clears on its own, usually within a day. Facebook's
 Sharing Debugger can force a refresh for Facebook and WhatsApp.
 
+## Uploading an SVG logo
+
+SVG uploads are enabled, but only for administrators, and every file is cleaned
+on the way in.
+
+**Appearance -> Customize -> Site Identity -> Logo -> Select logo -> Upload.**
+Drop the `.svg` in as you would a PNG. The theme reads its size from the file,
+so the "crop or skip" step behaves normally.
+
+If you see **"This file cannot be processed by the web server"** on a site
+where this theme is not active, that is WordPress refusing the file type - it
+is not a problem with your file.
+
+### What gets removed
+
+Anything that could run code or phone home is stripped before the file is
+saved: `<script>`, every `on...` handler, `<foreignObject>`, `javascript:`
+links, `@import`, and references to other websites. Shapes, paths, gradients,
+filters and text are all kept, so a normal export from Illustrator, Figma or
+Inkscape arrives intact.
+
+If a file is so broken it cannot be read at all, the upload is refused with a
+message rather than saved half-cleaned. Re-export it as a plain SVG.
+
+### Why only administrators
+
+An SVG is not really a picture - it is a document the browser runs. Allowing
+everyone to upload one would let any contributor put code on the site. The
+permission is tied to the same one WordPress uses for posting raw HTML.
+
 ## Changing the fonts
 
 **Appearance -> Customize -> Amir Al Afia -> Typography.** Headings and body
