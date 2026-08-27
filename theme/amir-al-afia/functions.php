@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.4.1' );
+define( 'AAA_VERSION', '1.5.0' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -21,6 +21,7 @@ require_once AAA_DIR . '/inc/post-type-attraction.php';
 require_once AAA_DIR . '/inc/post-type-lead.php';
 require_once AAA_DIR . '/inc/customizer.php';
 require_once AAA_DIR . '/inc/typography.php';
+require_once AAA_DIR . '/inc/svg-support.php';
 require_once AAA_DIR . '/inc/lead-form.php';
 require_once AAA_DIR . '/inc/property-query.php';
 require_once AAA_DIR . '/inc/seo.php';
