@@ -491,7 +491,7 @@ ul {
 .hero-heading {
 	font-family: var(--display);
 	font-weight: 700;
-	font-size: clamp(38px, 4.6vw, 66px);
+	font-size: clamp(30px, 3.7vw, 52px);
 	line-height: 1.08;
 	letter-spacing: .02em;
 	color: var(--text);
