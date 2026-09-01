@@ -87,9 +87,15 @@ $aaa_columns = aaa_hero_columns();
 									false,
 									array(
 										'alt'      => '',
-										// Only the first couple are above the fold on load;
-										// the rest scroll into view over a minute or more.
-										'loading'  => ( 0 === $aaa_pass && $aaa_position < 2 ) ? 'eager' : 'lazy',
+										// Lazy without exception, including the tiles that
+										// start on screen. A browser loads an in-viewport
+										// lazy image immediately anyway, so desktop is
+										// unaffected - but on a phone, where the collage is
+										// display:none, lazy is the difference between
+										// fetching nothing and fetching the ones marked
+										// eager, which are requested regardless of whether
+										// their container is visible.
+										'loading'  => 'lazy',
 										'decoding' => 'async',
 										// Without this the browser reads the 100% width off
 										// the column and picks a far larger srcset entry
