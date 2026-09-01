@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.6.2' );
+define( 'AAA_VERSION', '1.7.0' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -48,6 +48,10 @@ function aaa_setup(): void {
 	// Card thumbnails are rendered at 320x180 CSS px; 2x for retina.
 	add_image_size( 'aaa-card', 640, 360, true );
 	add_image_size( 'aaa-collage', 600, 600, true );
+	// Hero tiles render about 201px wide in the 1320px shell, so 400px is the
+	// retina source and anything larger is wasted bytes on the heaviest part
+	// of the page. 3:4 to match the crop the columns display.
+	add_image_size( 'aaa-hero-tile', 400, 533, true );
 	add_image_size( 'aaa-wide', 1400, 900, true );
 	// Open Graph / Twitter card. 1.91:1 is what Facebook, WhatsApp, Telegram
 	// and X all crop to; giving them exactly that avoids a re-crop.

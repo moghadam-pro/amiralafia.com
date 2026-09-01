@@ -573,8 +573,8 @@ ul {
 	width: 50vw;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 12px;
-	padding-left: 12px;
+	gap: 2px;
+	padding-left: 2px;
 	pointer-events: none;
 }
 
@@ -600,8 +600,7 @@ ul {
 	width: 100%;
 	aspect-ratio: 3 / 4;
 	object-fit: cover;
-	border-radius: var(--radius-md);
-	margin-bottom: 12px;
+	margin-bottom: 2px;
 	background: var(--bg-light);
 }
 
@@ -2027,6 +2026,16 @@ ul {
 		grid-template-columns: repeat(2, 1fr);
 	}
 
+	/* Not shown on phones at all: it is decoration, and it is the single
+	   heaviest thing on the page for the narrowest connection. */
+	.hero-collage {
+		display: none;
+	}
+
+	.hero {
+		padding-bottom: 12px;
+	}
+
 	.hero-heading {
 		font-size: clamp(34px, 10.5vw, 46px);
 	}
@@ -2095,22 +2104,6 @@ ul {
 
 	.cf-submit {
 		justify-content: center;
-	}
-
-	/* Two columns read better than three at phone width. */
-	.hero-collage {
-		grid-template-columns: repeat(2, 1fr);
-		height: 40svh;
-		min-height: 260px;
-		gap: 8px;
-	}
-
-	.hc-col:nth-child(3) {
-		display: none;
-	}
-
-	.hc-track img {
-		margin-bottom: 8px;
 	}
 
 	.attr-card {

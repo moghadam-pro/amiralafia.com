@@ -581,11 +581,19 @@ function aaa_run_demo_import(): array {
 	}
 
 	// --- Hero collage --------------------------------------------------
-	// Nine slots, read three at a time as the left, middle and right columns.
+	// Eighteen slots, read six at a time as the left, middle and right columns.
+	// Every key appears once: a repeat inside a column would defeat the point
+	// of six-per-column, and a repeat across columns is visible side by side.
 	$collage = array(
+		// Left.
 		'om-khuwair', 'om-almouj-night', 'om-house',
+		'om-corniche', 'om-development', 'om-mosque',
+		// Middle.
 		'om-maritime', 'om-coast-res', 'om-almouj-boats',
+		'om-mountain', 'om-office', 'om-wadi',
+		// Right.
 		'om-aerial', 'om-marina-air', 'om-almouj-front',
+		'om-khayran', 'om-houses', 'om-desert',
 	);
 	foreach ( $collage as $i => $key ) {
 		if ( isset( $ids[ $key ] ) ) {
@@ -729,7 +737,8 @@ function aaa_run_demo_import(): array {
 	}
 
 	$result['pruned']      = aaa_prune_stale_demo_media();
-	$result['regenerated'] = aaa_regenerate_demo_sizes();
+	$result['regenerated'] = aaa_regenerate_demo_sizes( 'aaa-og' )
+		+ aaa_regenerate_demo_sizes( 'aaa-hero-tile' );
 
 	// The Oman guide is a new archive; make sure its permalinks resolve.
 	flush_rewrite_rules();

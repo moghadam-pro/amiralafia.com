@@ -256,17 +256,19 @@ function aaa_customize_register( $wp_customize ): void {
 		)
 	);
 
-	// Nine hero images, three per scrolling column. Labelled by column so a
-	// control maps to somewhere on screen rather than to an index.
+	// Eighteen hero images, six per scrolling column. Labelled by column so a
+	// control maps to somewhere on screen rather than to an index. Six per
+	// column is what keeps the same photograph from appearing twice at once;
+	// see aaa_hero_columns().
 	$aaa_column_names = array(
 		__( 'Left column', 'amir-al-afia' ),
 		__( 'Middle column', 'amir-al-afia' ),
 		__( 'Right column', 'amir-al-afia' ),
 	);
 
-	for ( $i = 1; $i <= 9; $i++ ) {
-		$column = $aaa_column_names[ (int) floor( ( $i - 1 ) / 3 ) ];
-		$slot   = ( ( $i - 1 ) % 3 ) + 1;
+	for ( $i = 1; $i <= 18; $i++ ) {
+		$column = $aaa_column_names[ (int) floor( ( $i - 1 ) / 6 ) ];
+		$slot   = ( ( $i - 1 ) % 6 ) + 1;
 
 		$wp_customize->add_setting(
 			'aaa_collage_' . $i,
@@ -281,7 +283,7 @@ function aaa_customize_register( $wp_customize ): void {
 				array(
 					/* translators: 1: column name, 2: image number within that column. */
 					'label'       => sprintf( __( 'Hero — %1$s, image %2$d', 'amir-al-afia' ), $column, $slot ),
-					'description' => 1 === $slot ? __( 'Portrait crops work best; the columns scroll slowly and loop.', 'amir-al-afia' ) : '',
+					'description' => 1 === $slot ? __( 'Portrait crops work best. Leave a slot empty to shorten the column.', 'amir-al-afia' ) : '',
 					'section'     => 'aaa_media',
 					'mime_type'   => 'image',
 				)

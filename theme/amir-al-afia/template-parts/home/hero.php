@@ -81,23 +81,22 @@ $aaa_columns = aaa_hero_columns();
 						<?php for ( $aaa_pass = 0; $aaa_pass < 2; $aaa_pass++ ) : ?>
 							<?php foreach ( $aaa_column['images'] as $aaa_position => $aaa_id ) : ?>
 								<?php
-								if ( $aaa_id ) {
-									echo wp_get_attachment_image(
-										$aaa_id,
-										'aaa-collage',
-										false,
-										array(
-											'alt'      => '',
-											'loading'  => ( 0 === $aaa_pass && $aaa_position < 2 ) ? 'eager' : 'lazy',
-											'decoding' => 'async',
-										)
-									);
-								} else {
-									printf(
-										'<img src="%s" alt="" width="600" height="800" decoding="async">',
-										esc_url( aaa_placeholder_image() )
-									);
-								}
+								echo wp_get_attachment_image(
+									$aaa_id,
+									'aaa-hero-tile',
+									false,
+									array(
+										'alt'      => '',
+										// Only the first couple are above the fold on load;
+										// the rest scroll into view over a minute or more.
+										'loading'  => ( 0 === $aaa_pass && $aaa_position < 2 ) ? 'eager' : 'lazy',
+										'decoding' => 'async',
+										// Without this the browser reads the 100% width off
+										// the column and picks a far larger srcset entry
+										// than these tiles ever render at.
+										'sizes'    => '(max-width: 960px) 30vw, 17vw',
+									)
+								);
 								?>
 							<?php endforeach; ?>
 						<?php endfor; ?>

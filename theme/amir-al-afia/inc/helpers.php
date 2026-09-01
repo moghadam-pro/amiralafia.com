@@ -150,22 +150,30 @@ function aaa_media_credit( int $attachment_id ): string {
 /**
  * The hero's three scrolling columns.
  *
- * Nine Customizer slots, three per column, so a slot maps to a place on screen
- * the office can point at: images 1-3 are the left column, 4-6 the middle,
- * 7-9 the right.
+ * Eighteen Customizer slots, six per column, so a slot maps to a place on
+ * screen the office can point at: images 1-6 are the left column, 7-12 the
+ * middle, 13-18 the right.
  *
- * The durations are deliberately unequal and not multiples of one another, and
- * each column starts part-way through its own cycle via a negative delay, so
- * the three never line up into a visible pattern. The middle column is
- * reversed in CSS.
+ * Six is not arbitrary. Each column renders its list twice so the loop has a
+ * copy to land on, and a tile is about 270px tall at the width these columns
+ * get. Six tiles is roughly 1,620px of track, which is taller than the hero on
+ * any screen it will meet - so the second copy is always off-screen and the
+ * same photograph is never visible in two places at once. Fewer than six and
+ * the repeat becomes obvious on a tall display.
+ *
+ * The durations are unequal and not multiples of one another, and each column
+ * starts part-way through its own cycle via a negative delay, so the three
+ * never line up. The middle column is reversed in CSS.
  *
  * @return array<int, array<string, mixed>>
  */
 function aaa_hero_columns(): array {
+	$per_column = 6;
+
 	$columns = array(
-		array( 'duration' => '78s',  'offset' => '0s' ),
-		array( 'duration' => '96s',  'offset' => '-31s' ),
-		array( 'duration' => '112s', 'offset' => '-64s' ),
+		array( 'duration' => '110s', 'offset' => '0s' ),
+		array( 'duration' => '134s', 'offset' => '-47s' ),
+		array( 'duration' => '158s', 'offset' => '-92s' ),
 	);
 
 	$any = false;
@@ -173,18 +181,24 @@ function aaa_hero_columns(): array {
 	foreach ( $columns as $index => $column ) {
 		$images = array();
 
-		for ( $slot = 1; $slot <= 3; $slot++ ) {
-			$id = (int) get_theme_mod( 'aaa_collage_' . ( $index * 3 + $slot ), 0 );
+		for ( $slot = 1; $slot <= $per_column; $slot++ ) {
+			$id = (int) get_theme_mod( 'aaa_collage_' . ( $index * $per_column + $slot ), 0 );
 			if ( $id ) {
 				$any = true;
+				$images[] = $id;
 			}
-			$images[] = $id;
 		}
 
 		$columns[ $index ]['images'] = $images;
 	}
 
-	// With nothing set at all the hero is better off without the placeholder
-	// scaffolding; the text side stands on its own.
+	// Drop any column left empty rather than render a stack of placeholders.
+	$columns = array_values(
+		array_filter(
+			$columns,
+			static fn( array $column ): bool => ! empty( $column['images'] )
+		)
+	);
+
 	return $any ? $columns : array();
 }
