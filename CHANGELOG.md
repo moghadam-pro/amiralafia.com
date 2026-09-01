@@ -11,6 +11,16 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.8.2] - 2026-09-01
+
+### Fixed
+
+- The team photo was served as a 900x900 square. It was requested at
+  `aaa-wide`, which is a 14:9 landscape crop — fine for an attraction banner
+  or a listing gallery, wrong for two standing figures, and the frame then
+  cropped the sides again to reach its own 4:5. It has its own `aaa-portrait`
+  size now, 900x1125, matching the frame exactly so nothing is cut.
+
 ## [1.8.1] - 2026-09-01
 
 ### Changed

@@ -816,7 +816,8 @@ function aaa_run_demo_import(): array {
 
 	$result['pruned']      = aaa_prune_stale_demo_media();
 	$result['regenerated'] = aaa_regenerate_demo_sizes( 'aaa-og' )
-		+ aaa_regenerate_demo_sizes( 'aaa-hero-tile' );
+		+ aaa_regenerate_demo_sizes( 'aaa-hero-tile' )
+		+ aaa_regenerate_demo_sizes( 'aaa-portrait' );
 
 	// The Oman guide is a new archive; make sure its permalinks resolve.
 	flush_rewrite_rules();
