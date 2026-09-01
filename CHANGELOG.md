@@ -11,6 +11,86 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.8.1] - 2026-09-01
+
+### Changed
+
+- **A new "Meet The Team" photograph.** The one carried over from the mockup
+  belonged to another agency's website and could not be used. The replacement
+  is a commissioned studio shot of two consultants in tailored suits, cut out
+  against transparency like the original and wearing the company mark as a
+  lapel pin.
+- The pin is composited by `tools/make-team-photo.py` from the vertex list in
+  `logo.svg`, not drawn by hand and not prompted, so it cannot drift from the
+  mark in the header. Each one is tilted to follow the lapel it sits on.
+- Delivered at 900x1125 as a palette PNG - 163 KB. The frame is capped at
+  480px tall, so that covers a 2x display; the full-colour composite with its
+  alpha channel was 2 MB.
+
+### Fixed
+
+- Re-running the starter content never replaced the team photo. It matched on
+  `_aaa_demo_key` alone and returned the existing attachment, so a theme
+  update shipping a different photograph would not have reached any site that
+  had already imported. The source file's hash is now stored with the
+  attachment and the old copy is discarded when it no longer matches. A photo
+  the office uploaded itself carries no demo key and is not touched.
+- The imported photo says in its Media Library caption that it is a
+  placeholder, the way the location photographs carry their credits.
+
+## [1.8.0] - 2026-09-01
+
+### Changed
+
+- **Properties For You shows two full rows**, eight cards rather than four.
+- **Twelve demo listings**, up from eight: a Muttrah townhouse, a Muttrah
+  Corniche waterfront apartment, an Al Khuwair office floor and an Al Mouj
+  marina penthouse.
+- Featured listings now top up from the newest when fewer than eight are
+  flagged, so the second row is never half empty. An office that has flagged
+  nothing still gets a full grid. Featured stops applying once a filter is
+  active - someone asking for rentals wants rentals, not the intersection.
+- The image strip under the "A Market Built For Investors" cards is gone.
+
+## [1.7.2] - 2026-09-01
+
+### Fixed
+
+- Phones fetched the hero collage tiles they never display. The first tiles
+  were marked `eager`, which a browser honours regardless of whether the
+  container is `display: none`. Every tile is lazy now; on desktop this
+  changes nothing, because an in-viewport lazy image loads immediately anyway.
+
+## [1.7.1] - 2026-09-01
+
+### Changed
+
+- The hero columns drift rather than scroll: 220s, 265s and 310s per loop.
+
+## [1.7.0] - 2026-09-01
+
+### Changed
+
+- **Eighteen photographs in the hero collage**, six per column, every one
+  distinct - a repeat inside a column defeats the point, and a repeat across
+  columns is visible side by side.
+- Tiles are cropped to their own image size rather than reusing the card size,
+  and carry a `sizes` hint so the browser stops picking srcset entries far
+  larger than the 17vw they render at.
+- Square corners, 2px gutters. Spacing is `margin-bottom` rather than `gap`,
+  because `gap` makes the two halves of the track unequal and the seam drifts.
+- The collage is not rendered on phones at all.
+
+## [1.6.2] - 2026-09-01
+
+### Fixed
+
+- Card meta was still being uppercased in one place after the 1.6.0 sweep.
+
+### Added
+
+- Documentation for the property type and the hero collage settings.
+
 ## [1.6.1] - 2026-08-27
 
 ### Fixed

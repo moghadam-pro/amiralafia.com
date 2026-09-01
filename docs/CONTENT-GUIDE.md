@@ -190,7 +190,7 @@ Leads cannot be created by hand — they only ever arrive through the form.
 | **Contact details** | Phone, WhatsApp, Telegram, public email, lead notification address, city label, currency symbol. Changing the phone here updates the header, the closing band and the schema markup at once. |
 | **Hero** | The three headline lines, the intro paragraph, and the three statistics. |
 | **Section headings** | Every badge, heading and intro across the page, the four "Why Oman" cards, the number of property cards, and the form's success message. |
-| **Images** | The team photo and the nine hero photos, labelled by which column they scroll in. |
+| **Images** | The team photo and the eighteen hero photos, labelled by which column they scroll in and in what order. Leaving a slot empty drops that photo; emptying a whole column drops the column. |
 | **Typography** | The heading and body fonts - see above. |
 
 The menu is at **Appearance → Menus** — assign one to *Primary menu* and
@@ -203,13 +203,17 @@ demo properties, agents and attractions. It is meant to be run once on a fresh
 install. Running it again is safe: it reuses what already exists.
 
 **The demo property photos are stock placeholders.** Replace them with real
-listing photography before launch. The six Oman photographs are public-domain
-images of the actual places and can stay.
+listing photography before launch. **The team photo is a stand-in too** — two
+models in branded suits, not the actual office. The Oman photographs are
+public-domain images of the actual places and can stay.
+
+Running the import again also replaces the team photo if the theme has shipped
+a new one; it is matched on the file's hash rather than by name.
 
 ## Before launch
 
 - [ ] Replace the demo property photos and text with real listings.
-- [ ] Replace the team photo and confirm the agents' names and numbers.
+- [ ] Replace the team photo — the one that ships is a stand-in, not the office — and confirm the agents' names and numbers.
 - [ ] Confirm the "Why Oman" claims — the tax, residency and growth figures came
       from the mockup and have not been verified.
 - [ ] Confirm the hero statistics (+200 properties, +12 years, 98%).

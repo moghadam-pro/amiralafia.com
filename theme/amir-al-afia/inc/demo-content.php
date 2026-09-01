@@ -542,9 +542,22 @@ function aaa_import_image( string $key ): int {
 /**
  * Import the team photo shipped inside the theme.
  *
+ * Unlike the other demo images, this one's bytes live in the theme rather than
+ * at a fixed remote URL, so it can change between theme versions. The source
+ * file's hash is stored alongside the attachment and the old copy is discarded
+ * when it no longer matches; without that, a theme update could ship a new
+ * photograph that no existing site would ever pick up.
+ *
  * @return int Attachment ID, or 0 on failure.
  */
 function aaa_import_team_photo(): int {
+	$source = AAA_DIR . '/assets/img/team-photo.png';
+	if ( ! is_readable( $source ) ) {
+		return 0;
+	}
+
+	$hash = (string) md5_file( $source );
+
 	$existing = get_posts(
 		array(
 			'post_type'      => 'attachment',
@@ -555,13 +568,16 @@ function aaa_import_team_photo(): int {
 			'meta_value'     => 'team-photo',
 		)
 	);
-	if ( $existing ) {
-		return (int) $existing[0];
-	}
 
-	$source = AAA_DIR . '/assets/img/team-photo.png';
-	if ( ! is_readable( $source ) ) {
-		return 0;
+	if ( $existing ) {
+		$id = (int) $existing[0];
+		if ( get_post_meta( $id, '_aaa_demo_hash', true ) === $hash ) {
+			return $id;
+		}
+		// Superseded. Only ever an attachment this importer created itself - a
+		// photo the office uploaded carries no _aaa_demo_key and is not found
+		// by the query above.
+		wp_delete_attachment( $id, true );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -589,9 +605,22 @@ function aaa_import_team_photo(): int {
 		return 0;
 	}
 
-	update_post_meta( $id, '_aaa_demo_key', 'team-photo' );
+	$id = (int) $id;
 
-	return (int) $id;
+	update_post_meta( $id, '_aaa_demo_key', 'team-photo' );
+	update_post_meta( $id, '_aaa_demo_hash', $hash );
+	update_post_meta( $id, '_wp_attachment_image_alt', __( 'Two Amir Al Afia consultants in suits with the company lapel pin', 'amir-al-afia' ) );
+
+	// Said plainly in the Media Library, the same way the location photographs
+	// carry their credits: this is a stand-in, not the office.
+	wp_update_post(
+		array(
+			'ID'           => $id,
+			'post_excerpt' => __( 'Placeholder — replace with a photograph of the real team.', 'amir-al-afia' ),
+		)
+	);
+
+	return $id;
 }
 
 /**

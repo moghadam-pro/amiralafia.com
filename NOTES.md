@@ -82,6 +82,25 @@ logo's path vertices so a palette change can be picked up by re-running — but
 the vertices are a copy, so a new logo means editing `MARK_BACK` / `MARK_FRONT`
 in that script as well as replacing the three SVGs.
 
+`assets/img/team-photo.png` is built the same way, from a supplied
+background-removed cut-out:
+
+```bash
+python tools/make-team-photo.py path/to/cutout.png
+```
+
+The cut-out itself is not in the repository — it is a 5 MB intermediate — so
+this only runs when the photograph is being replaced. The script crops to the
+4:5 box `.team-photo` reserves, composites a lapel pin on each figure from the
+same `MARK_BACK` / `MARK_FRONT` copy, and delivers a 900x1125 palette PNG.
+`CROP` and `PINS` are tuned to one specific photograph; a new photograph needs
+both retuned.
+
+The starter-content importer keys the attachment on the source file's MD5, so
+a rebuilt photo is picked up by re-running the import. It deletes the old
+attachment to do that — only ever one it created itself, since anything the
+office uploaded carries no `_aaa_demo_key`.
+
 ## Things that will bite
 
 - **`get_the_title()` on the front page** returns whatever the main query left

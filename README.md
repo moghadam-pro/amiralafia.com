@@ -19,7 +19,7 @@ by the theme itself.
 | `theme/amir-al-afia/` | The WordPress theme — the actual product. |
 | `design/` | The original AI-generated mockup, kept verbatim for reference. |
 | `docs/` | Architecture, design system, deployment and the office's content guide. |
-| `tools/` | `build-theme.py` packages the theme, `check-php.py` lints it, `fetch-fonts.sh` refreshes the self-hosted fonts, `make-brand-images.py` regenerates `screenshot.png` and the share card. |
+| `tools/` | `build-theme.py` packages the theme, `check-php.py` lints it, `fetch-fonts.sh` refreshes the self-hosted fonts, `make-brand-images.py` regenerates `screenshot.png` and the share card, `make-team-photo.py` rebuilds the team cut-out. |
 | `dist/amir-al-afia.zip` | The build artifact uploaded to WordPress. Tracked deliberately — see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). |
 
 ## Quick start
