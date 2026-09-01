@@ -1018,8 +1018,11 @@ ul {
 .team-photo {
 	border-radius: var(--radius-xl);
 	overflow: hidden;
-	aspect-ratio: 4 / 5;
-	max-height: 480px;
+	/* The photograph's own aspect. The pair is framed head to forearm and
+	   is wider than it is tall; a portrait frame would crop into the outer
+	   arms rather than leave empty ground above their heads. */
+	aspect-ratio: 11 / 10;
+	max-height: 420px;
 }
 
 .team-photo img {
@@ -1970,8 +1973,8 @@ ul {
 
 	.team-photo {
 		order: -1;
-		aspect-ratio: 16 / 9;
-		max-height: 320px;
+		aspect-ratio: 11 / 10;
+		max-height: 340px;
 	}
 }
 

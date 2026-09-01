@@ -91,10 +91,11 @@ python tools/make-team-photo.py path/to/cutout.png
 
 The cut-out itself is not in the repository — it is a 5 MB intermediate — so
 this only runs when the photograph is being replaced. The script crops to the
-4:5 box `.team-photo` reserves, composites a lapel pin on each figure from the
-same `MARK_BACK` / `MARK_FRONT` copy, and delivers a 900x1125 palette PNG.
-`CROP` and `PINS` are tuned to one specific photograph; a new photograph needs
-both retuned.
+11:10 box `.team-photo` reserves and delivers an 880x800 palette PNG. `CROP` is
+tuned to one specific photograph and a new one needs it retuned — and if the
+new crop is not 11:10, `.team-photo` and the `aaa-team` image size have to move
+with it. They are three statements of the same aspect ratio and disagreeing is
+how the figures get cropped.
 
 The starter-content importer keys the attachment on the source file's MD5, so
 a rebuilt photo is picked up by re-running the import. It deletes the old

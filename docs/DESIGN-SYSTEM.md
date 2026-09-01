@@ -144,9 +144,8 @@ mark alone. The filter id is namespaced `aaa-logo-shadow`, because several
 copies appear on one page and a duplicate id would make every drop shadow
 resolve to whichever came first.
 
-The mark's vertices are duplicated in `tools/make-brand-images.py` and
-`tools/make-team-photo.py` so the generated brand images and the lapel pins
-in the team photograph match. If the logo changes, all three must change.
+The mark's vertices are duplicated in `tools/make-brand-images.py` so the
+generated brand images match. If the logo changes, both must change.
 
 ## Icons
 

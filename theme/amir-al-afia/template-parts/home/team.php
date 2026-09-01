@@ -98,7 +98,7 @@ $aaa_team_photo = (int) get_theme_mod( 'aaa_team_photo', 0 );
 					<?php
 					echo wp_get_attachment_image(
 						$aaa_team_photo,
-						'aaa-portrait',
+						'aaa-team',
 						false,
 						array(
 							'loading'  => 'lazy',

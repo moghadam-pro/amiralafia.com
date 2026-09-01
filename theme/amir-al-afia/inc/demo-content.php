@@ -609,7 +609,7 @@ function aaa_import_team_photo(): int {
 
 	update_post_meta( $id, '_aaa_demo_key', 'team-photo' );
 	update_post_meta( $id, '_aaa_demo_hash', $hash );
-	update_post_meta( $id, '_wp_attachment_image_alt', __( 'Two Amir Al Afia consultants in suits with the company lapel pin', 'amir-al-afia' ) );
+	update_post_meta( $id, '_wp_attachment_image_alt', __( 'Two Amir Al Afia consultants in business suits', 'amir-al-afia' ) );
 
 	// Said plainly in the Media Library, the same way the location photographs
 	// carry their credits: this is a stand-in, not the office.
@@ -817,7 +817,7 @@ function aaa_run_demo_import(): array {
 	$result['pruned']      = aaa_prune_stale_demo_media();
 	$result['regenerated'] = aaa_regenerate_demo_sizes( 'aaa-og' )
 		+ aaa_regenerate_demo_sizes( 'aaa-hero-tile' )
-		+ aaa_regenerate_demo_sizes( 'aaa-portrait' );
+		+ aaa_regenerate_demo_sizes( 'aaa-team' );
 
 	// The Oman guide is a new archive; make sure its permalinks resolve.
 	flush_rewrite_rules();

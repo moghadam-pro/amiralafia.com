@@ -11,6 +11,22 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.8.3] - 2026-09-01
+
+### Changed
+
+- **No lapel pins on the team photograph.** They read as stuck-on at the size
+  the photo actually displays. The pin machinery is gone from
+  `make-team-photo.py` rather than left switched off.
+- **Framed head to forearm**, the way the mockup's photograph was, instead of
+  standing at mid-thigh.
+- `.team-photo` is 11:10 rather than 4:5, and the mobile frame matches it
+  instead of cropping to 16:9. The tighter crop cannot also be portrait: at
+  that height 4:5 is 1070px wide against a 1396px-wide pair, so it would take
+  163px off each of the outer arms. The frame follows the photograph.
+- The image size is `aaa-team` at 880x800 - 2x the 420px column - replacing
+  `aaa-portrait`. 113 KB.
+
 ## [1.8.2] - 2026-09-01
 
 ### Fixed

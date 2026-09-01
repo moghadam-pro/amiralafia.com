@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.8.2' );
+define( 'AAA_VERSION', '1.8.3' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -53,10 +53,10 @@ function aaa_setup(): void {
 	// of the page. 3:4 to match the crop the columns display.
 	add_image_size( 'aaa-hero-tile', 400, 533, true );
 	add_image_size( 'aaa-wide', 1400, 900, true );
-	// The team cut-out. .team-photo reserves 4:5 and caps at 480px tall, so
-	// 1125 is the retina source. It needs its own size because aaa-wide is
-	// landscape: cropping a standing figure to 14:9 takes its legs off.
-	add_image_size( 'aaa-portrait', 900, 1125, true );
+	// The team cut-out. It needs a size of its own because aaa-wide is 14:9
+	// and would crop into the figures; 11:10 is what .team-photo reserves,
+	// and 880 is 2x the 420px column it sits in.
+	add_image_size( 'aaa-team', 880, 800, true );
 	// Open Graph / Twitter card. 1.91:1 is what Facebook, WhatsApp, Telegram
 	// and X all crop to; giving them exactly that avoids a re-crop.
 	add_image_size( 'aaa-og', 1200, 630, true );
