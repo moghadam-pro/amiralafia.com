@@ -134,22 +134,22 @@ def build_share_card() -> Path:
     card = brand_gradient(w, h)
     draw = ImageDraw.Draw(card)
 
-    f_brand = load_font("manrope-variable", 38, 800)
-    f_head = load_font("manrope-variable", 66, 800)
-    f_body = load_font("jost-variable", 25)
-    f_foot = load_font("jost-variable", 21, 600)
-    f_site = load_font("jost-variable", 21, 600)
+    f_brand = load_font("playfair-display-sc-700", 38)
+    f_head = load_font("playfair-display-sc-700", 62)
+    f_body = load_font("poppins-400", 25)
+    f_foot = load_font("poppins-600", 21)
+    f_site = load_font("poppins-600", 21)
 
     pad = 84
 
     draw_mark(card, pad, 52, 72)
-    draw.text((pad + 96, 70), "AMIR AL AFIA", font=f_brand, fill=WHITE)
+    draw.text((pad + 96, 70), "Amir Al Afia", font=f_brand, fill=WHITE)
 
     y = 190
     for line, color in (
-        ("FIND YOUR", SECONDARY),
-        ("DREAM PROPERTY", WHITE),
-        ("ON YOUR DREAM LAND", SECONDARY),
+        ("Find Your", SECONDARY),
+        ("Dream Property", WHITE),
+        ("On Your Dream Land", SECONDARY),
     ):
         draw.text((pad, y), line, font=f_head, fill=color)
         y += 76
@@ -181,29 +181,29 @@ def build_screenshot() -> Path:
     shot = brand_gradient(w, h)
     draw = ImageDraw.Draw(shot)
 
-    f_brand = load_font("manrope-variable", 42, 800)
-    f_head = load_font("manrope-variable", 62, 800)
-    f_body = load_font("jost-variable", 25)
-    f_tag = load_font("jost-variable", 17, 600)
-    f_stat = load_font("manrope-variable", 48, 800)
-    f_lbl = load_font("jost-variable", 16, 600)
+    f_brand = load_font("playfair-display-sc-700", 42)
+    f_head = load_font("playfair-display-sc-700", 58)
+    f_body = load_font("poppins-400", 25)
+    f_tag = load_font("poppins-600", 17)
+    f_stat = load_font("playfair-display-sc-700", 48)
+    f_lbl = load_font("poppins-600", 16)
 
     pad = 90
 
     draw_mark(shot, pad, 74, 78)
-    draw.text((pad + 104, 94), "AMIR AL AFIA", font=f_brand, fill=WHITE)
+    draw.text((pad + 104, 94), "Amir Al Afia", font=f_brand, fill=WHITE)
 
     # Badge.
-    badge = "REAL ESTATE · MUSCAT, OMAN"
+    badge = "Real Estate · Muscat, Oman"
     bw = text_width(draw, badge, f_tag)
     draw.rounded_rectangle([pad, 214, pad + bw + 34, 214 + 38], radius=6, fill=(2, 74, 112))
     draw.text((pad + 17, 222), badge, font=f_tag, fill=SECONDARY)
 
     y = 292
     for line, color in (
-        ("FIND YOUR", SECONDARY),
-        ("DREAM PROPERTY", WHITE),
-        ("ON YOUR DREAM LAND", SECONDARY),
+        ("Find Your", SECONDARY),
+        ("Dream Property", WHITE),
+        ("On Your Dream Land", SECONDARY),
     ):
         draw.text((pad, y), line, font=f_head, fill=color)
         y += 70
@@ -217,7 +217,7 @@ def build_screenshot() -> Path:
     )
 
     # Stat row, echoing the hero.
-    stats = (("+200", "PROPERTIES"), ("+12", "YEARS ACTIVE"), ("98%", "SATISFACTION"))
+    stats = (("+200", "Properties"), ("+12", "Years Active"), ("98%", "Satisfaction"))
     x = pad
     base = h - 190
     for i, (value, label) in enumerate(stats):

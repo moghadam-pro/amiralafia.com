@@ -256,7 +256,18 @@ function aaa_customize_register( $wp_customize ): void {
 		)
 	);
 
-	for ( $i = 1; $i <= 8; $i++ ) {
+	// Nine hero images, three per scrolling column. Labelled by column so a
+	// control maps to somewhere on screen rather than to an index.
+	$aaa_column_names = array(
+		__( 'Left column', 'amir-al-afia' ),
+		__( 'Middle column', 'amir-al-afia' ),
+		__( 'Right column', 'amir-al-afia' ),
+	);
+
+	for ( $i = 1; $i <= 9; $i++ ) {
+		$column = $aaa_column_names[ (int) floor( ( $i - 1 ) / 3 ) ];
+		$slot   = ( ( $i - 1 ) % 3 ) + 1;
+
 		$wp_customize->add_setting(
 			'aaa_collage_' . $i,
 			array(
@@ -268,10 +279,11 @@ function aaa_customize_register( $wp_customize ): void {
 				$wp_customize,
 				'aaa_collage_' . $i,
 				array(
-					/* translators: %d: collage cell number. */
-					'label'     => sprintf( __( 'Hero collage image %d', 'amir-al-afia' ), $i ),
-					'section'   => 'aaa_media',
-					'mime_type' => 'image',
+					/* translators: 1: column name, 2: image number within that column. */
+					'label'       => sprintf( __( 'Hero — %1$s, image %2$d', 'amir-al-afia' ), $column, $slot ),
+					'description' => 1 === $slot ? __( 'Portrait crops work best; the columns scroll slowly and loop.', 'amir-al-afia' ) : '',
+					'section'     => 'aaa_media',
+					'mime_type'   => 'image',
 				)
 			)
 		);

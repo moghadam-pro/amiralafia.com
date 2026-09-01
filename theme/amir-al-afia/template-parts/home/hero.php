@@ -1,6 +1,11 @@
 <?php
 /**
- * Hero: headline, stats and the nine-cell photo collage.
+ * Hero: headline, stats and the scrolling photo columns.
+ *
+ * The collage is positioned over the right half of the hero rather than being
+ * a grid cell, so it can bleed to the viewport edge. The markup here is three
+ * columns; each renders its own images twice, because the CSS loops by
+ * translating exactly half the track and needs the second copy to land on.
  *
  * @package AmirAlAfia
  */
@@ -12,6 +17,8 @@ $aaa_stats = array(
 	array( aaa_option( 'aaa_stat2_value' ), aaa_option( 'aaa_stat2_label' ) ),
 	array( aaa_option( 'aaa_stat3_value' ), aaa_option( 'aaa_stat3_label' ) ),
 );
+
+$aaa_columns = aaa_hero_columns();
 ?>
 <section class="hero" id="home" aria-labelledby="hero-heading">
 	<div class="container">
@@ -55,33 +62,48 @@ $aaa_stats = array(
 				</dl>
 			</div>
 
-			<div <?php aaa_sr( 100, 'hero-collage sr-right' ); ?> aria-label="<?php esc_attr_e( 'Recent properties', 'amir-al-afia' ); ?>" role="img">
-				<?php for ( $aaa_c = 1; $aaa_c <= 8; $aaa_c++ ) : ?>
-					<?php $aaa_id = (int) get_theme_mod( 'aaa_collage_' . $aaa_c, 0 ); ?>
-					<div class="hcell hcell-<?php echo (int) $aaa_c; ?>">
-						<?php
-						if ( $aaa_id ) {
-							echo wp_get_attachment_image(
-								$aaa_id,
-								4 === $aaa_c ? 'aaa-wide' : 'aaa-collage',
-								false,
-								array(
-									'alt'      => '',
-									'loading'  => $aaa_c <= 4 ? 'eager' : 'lazy',
-									'decoding' => 'async',
-								)
-							);
-						} else {
-							printf(
-								'<img src="%s" alt="" width="600" height="600" decoding="async">',
-								esc_url( aaa_placeholder_image() )
-							);
-						}
-						?>
-					</div>
-				<?php endfor; ?>
-			</div>
-
 		</div>
 	</div>
+
+	<?php if ( $aaa_columns ) : ?>
+		<?php
+		// Decoration. It carries no information the page does not already state
+		// in words, so it is hidden from assistive technology entirely rather
+		// than narrated as a stack of unlabelled photographs.
+		?>
+		<div class="hero-collage" aria-hidden="true">
+			<?php foreach ( $aaa_columns as $aaa_index => $aaa_column ) : ?>
+				<div
+					class="hc-col"
+					style="--hc-duration: <?php echo esc_attr( $aaa_column['duration'] ); ?>; --hc-offset: <?php echo esc_attr( $aaa_column['offset'] ); ?>;">
+					<div class="hc-track">
+						<?php // Twice through: the second pass is what the loop lands on. ?>
+						<?php for ( $aaa_pass = 0; $aaa_pass < 2; $aaa_pass++ ) : ?>
+							<?php foreach ( $aaa_column['images'] as $aaa_position => $aaa_id ) : ?>
+								<?php
+								if ( $aaa_id ) {
+									echo wp_get_attachment_image(
+										$aaa_id,
+										'aaa-collage',
+										false,
+										array(
+											'alt'      => '',
+											'loading'  => ( 0 === $aaa_pass && $aaa_position < 2 ) ? 'eager' : 'lazy',
+											'decoding' => 'async',
+										)
+									);
+								} else {
+									printf(
+										'<img src="%s" alt="" width="600" height="800" decoding="async">',
+										esc_url( aaa_placeholder_image() )
+									);
+								}
+								?>
+							<?php endforeach; ?>
+						<?php endfor; ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	<?php endif; ?>
 </section>

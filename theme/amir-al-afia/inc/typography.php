@@ -2,7 +2,8 @@
 /**
  * Swappable heading and body fonts.
  *
- * The theme ships Manrope for headings and Jost for body text, self-hosted. An
+ * The theme ships Playfair Display SC for headings and Poppins for body text,
+ * self-hosted. An
  * administrator can replace either without touching code, from
  * Customizer > Amir Al Afia > Typography, in one of two ways:
  *
@@ -51,12 +52,12 @@ function aaa_font_hosts(): array {
 function aaa_font_defaults(): array {
 	return array(
 		'heading' => array(
-			'family' => 'Manrope',
-			'stack'  => "'Manrope', system-ui, sans-serif",
+			'family' => 'Playfair Display SC',
+			'stack'  => "'Playfair Display SC', Georgia, serif",
 		),
 		'body'    => array(
-			'family' => 'Jost',
-			'stack'  => "'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif",
+			'family' => 'Poppins',
+			'stack'  => "'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif",
 		),
 	);
 }
@@ -140,7 +141,7 @@ function aaa_family_from_url( string $url ): string {
  */
 function aaa_font_choice( string $role ): array {
 	$defaults = aaa_font_defaults();
-	$fallback = 'heading' === $role ? 'system-ui, sans-serif' : "system-ui, -apple-system, 'Segoe UI', sans-serif";
+	$fallback = 'heading' === $role ? 'Georgia, serif' : "system-ui, -apple-system, 'Segoe UI', sans-serif";
 
 	$source = (string) get_theme_mod( 'aaa_font_' . $role . '_source', 'default' );
 
@@ -242,7 +243,7 @@ function aaa_customize_typography( $wp_customize ): void {
 		array(
 			'title'       => __( 'Typography', 'amir-al-afia' ),
 			'panel'       => 'aaa_panel',
-			'description' => __( 'The theme ships Manrope for headings and Jost for body text, both stored on this server. To use a different font, install it first at Appearance → Fonts and pick it below — that keeps the files local. Pasting a Google Fonts link also works, but loads the font from Google on every page view.', 'amir-al-afia' ),
+			'description' => __( 'The theme ships Playfair Display SC for headings and Poppins for body text, both stored on this server. To use a different font, install it first at Appearance → Fonts and pick it below — that keeps the files local. Pasting a Google Fonts link also works, but loads the font from Google on every page view.', 'amir-al-afia' ),
 		)
 	);
 

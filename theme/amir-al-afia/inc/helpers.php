@@ -146,3 +146,45 @@ function aaa_media_credit( int $attachment_id ): string {
 		esc_html( $license )
 	);
 }
+
+/**
+ * The hero's three scrolling columns.
+ *
+ * Nine Customizer slots, three per column, so a slot maps to a place on screen
+ * the office can point at: images 1-3 are the left column, 4-6 the middle,
+ * 7-9 the right.
+ *
+ * The durations are deliberately unequal and not multiples of one another, and
+ * each column starts part-way through its own cycle via a negative delay, so
+ * the three never line up into a visible pattern. The middle column is
+ * reversed in CSS.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function aaa_hero_columns(): array {
+	$columns = array(
+		array( 'duration' => '78s',  'offset' => '0s' ),
+		array( 'duration' => '96s',  'offset' => '-31s' ),
+		array( 'duration' => '112s', 'offset' => '-64s' ),
+	);
+
+	$any = false;
+
+	foreach ( $columns as $index => $column ) {
+		$images = array();
+
+		for ( $slot = 1; $slot <= 3; $slot++ ) {
+			$id = (int) get_theme_mod( 'aaa_collage_' . ( $index * 3 + $slot ), 0 );
+			if ( $id ) {
+				$any = true;
+			}
+			$images[] = $id;
+		}
+
+		$columns[ $index ]['images'] = $images;
+	}
+
+	// With nothing set at all the hero is better off without the placeholder
+	// scaffolding; the text side stands on its own.
+	return $any ? $columns : array();
+}

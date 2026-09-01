@@ -581,7 +581,12 @@ function aaa_run_demo_import(): array {
 	}
 
 	// --- Hero collage --------------------------------------------------
-	$collage = array( 'om-khuwair', 'om-maritime', 'om-almouj-night', 'om-aerial', 'om-coast-res', 'om-marina-air', 'om-house', 'om-almouj-boats' );
+	// Nine slots, read three at a time as the left, middle and right columns.
+	$collage = array(
+		'om-khuwair', 'om-almouj-night', 'om-house',
+		'om-maritime', 'om-coast-res', 'om-almouj-boats',
+		'om-aerial', 'om-marina-air', 'om-almouj-front',
+	);
 	foreach ( $collage as $i => $key ) {
 		if ( isset( $ids[ $key ] ) ) {
 			set_theme_mod( 'aaa_collage_' . ( $i + 1 ), $ids[ $key ] );

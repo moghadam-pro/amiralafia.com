@@ -31,13 +31,13 @@
 			"fontFamilies": [
 				{
 					"slug": "body",
-					"name": "Jost",
-					"fontFamily": "'Jost', system-ui, sans-serif"
+					"name": "Poppins",
+					"fontFamily": "'Poppins', system-ui, sans-serif"
 				},
 				{
 					"slug": "display",
-					"name": "Manrope",
-					"fontFamily": "'Manrope', system-ui, sans-serif"
+					"name": "Playfair Display SC",
+					"fontFamily": "'Playfair Display SC', Georgia, serif"
 				}
 			],
 			"fontSizes": [
@@ -57,7 +57,7 @@
 			"text": "#111827"
 		},
 		"typography": {
-			"fontFamily": "'Jost', system-ui, sans-serif",
+			"fontFamily": "'Poppins', system-ui, sans-serif",
 			"fontSize": "15.5px",
 			"lineHeight": "1.75"
 		},
@@ -67,8 +67,8 @@
 			},
 			"heading": {
 				"typography": {
-					"fontFamily": "'Manrope', system-ui, sans-serif",
-					"fontWeight": "800",
+					"fontFamily": "'Playfair Display SC', Georgia, serif",
+					"fontWeight": "700",
 					"textTransform": "uppercase"
 				}
 			}

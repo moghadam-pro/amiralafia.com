@@ -1,6 +1,6 @@
 /* ============================================================
    AMIR AL AFIA REAL ESTATE
-   Primary #018ED5 · Secondary #38B6FF · Manrope + Jost
+   Primary #018ED5 · Secondary #38B6FF · Playfair Display SC + Poppins
    ============================================================ */
 
 *,
@@ -45,10 +45,11 @@
 	--shell: 1320px;
 	--gutter: 40px;
 
-	/* Both faces are variable, so any weight in range is free.
-	   These two are overridden inline when the admin picks another font. */
-	--display: 'Manrope', system-ui, sans-serif;
-	--body: 'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	/* Overridden inline by inc/typography.php when the admin picks another
+	   font. Playfair Display SC draws its own small caps, so nothing set in
+	   --display may use text-transform: uppercase. */
+	--display: 'Playfair Display SC', Georgia, serif;
+	--body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 html {
@@ -156,6 +157,10 @@ ul {
 		transition: none;
 	}
 
+	.hc-track {
+		animation: none;
+	}
+
 	*,
 	*::before,
 	*::after {
@@ -191,7 +196,6 @@ ul {
 	color: var(--primary-ink);
 	font-size: 11px;
 	font-weight: 600;
-	text-transform: uppercase;
 	letter-spacing: .09em;
 	padding: 4px 12px;
 	border-radius: 4px;
@@ -200,9 +204,8 @@ ul {
 
 .section-title {
 	font-family: var(--display);
-	font-size: clamp(27px, 2.9vw, 40px);
-	font-weight: 800;
-	text-transform: uppercase;
+	font-size: clamp(28px, 3.1vw, 42px);
+	font-weight: 700;
 	color: var(--text);
 	line-height: 1.14;
 	letter-spacing: .005em;
@@ -455,7 +458,17 @@ ul {
    HERO
 ══════════════════════════════════════════ */
 .hero {
-	padding: 52px 0 48px;
+	position: relative;
+	/* Fill the screen below the sticky header. svh rather than vh so mobile
+	   browsers do not size it to the viewport *without* their toolbars and
+	   leave the bottom of the hero permanently cut off. */
+	min-height: calc(100svh - 68px);
+	display: flex;
+	align-items: center;
+	padding: 48px 0;
+	/* The collage bleeds to the viewport edge and its columns run past the top
+	   and bottom; this is what keeps that off the page scrollbar. */
+	overflow: hidden;
 }
 
 .hero-inner {
@@ -477,11 +490,10 @@ ul {
 
 .hero-heading {
 	font-family: var(--display);
-	font-weight: 800;
-	font-size: clamp(34px, 3.6vw, 52px);
+	font-weight: 700;
+	font-size: clamp(38px, 4.6vw, 66px);
 	line-height: 1.08;
-	letter-spacing: -.005em;
-	text-transform: uppercase;
+	letter-spacing: .02em;
 	color: var(--text);
 	text-wrap: balance;
 }
@@ -524,11 +536,11 @@ ul {
 
 .hstat-val {
 	font-family: var(--display);
-	font-weight: 800;
+	font-weight: 700;
 	font-size: 42px;
 	color: var(--text);
 	line-height: 1.1;
-	letter-spacing: -.01em;
+	letter-spacing: .02em;
 }
 
 .hstat-lbl {
@@ -536,7 +548,6 @@ ul {
 	font-size: 11px;
 	font-weight: 600;
 	color: var(--text-muted);
-	text-transform: uppercase;
 	letter-spacing: .6px;
 }
 
@@ -548,38 +559,82 @@ ul {
 }
 
 /* Hero collage — a 3x4 grid of photos. */
+/* The collage owns the right half of the hero, edge to edge, and scrolls.
+   Three columns drift at different speeds, from different starting points,
+   and the middle one runs the other way, so the eye never catches a pattern. */
 .hero-collage {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	/* Half the viewport, not half the container: the container is centred, so
+	   its own midpoint is the viewport midpoint and the text column ends
+	   exactly where this begins. */
+	width: 50vw;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(4, 88px);
-	gap: 6px;
+	gap: 12px;
+	padding-left: 12px;
+	pointer-events: none;
 }
 
-.hcell {
-	border-radius: var(--radius-md);
+.hc-col {
+	position: relative;
 	overflow: hidden;
+}
+
+.hc-track {
+	display: flex;
+	flex-direction: column;
+	animation: hc-scroll var(--hc-duration, 80s) linear infinite;
+	animation-delay: var(--hc-offset, 0s);
+	will-change: transform;
+}
+
+/* The list is rendered twice, so translating by exactly half the track lands
+   on the copy and the loop is invisible. The spacing is margin rather than
+   `gap` for the same reason: with `gap` the two halves are not equal, because
+   there is one fewer gap than there are items, and the seam drifts. */
+.hc-track img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+	border-radius: var(--radius-md);
+	margin-bottom: 12px;
 	background: var(--bg-light);
 }
 
-.hcell img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	transition: transform .5s ease;
+@keyframes hc-scroll {
+	from { transform: translate3d(0, 0, 0); }
+	to   { transform: translate3d(0, -50%, 0); }
 }
 
-.hcell:hover img {
-	transform: scale(1.07);
+.hc-col:nth-child(2) .hc-track {
+	animation-direction: reverse;
 }
 
-.hcell-1 { grid-area: 1 / 1 / 3 / 2; }
-.hcell-2 { grid-area: 1 / 2 / 2 / 3; }
-.hcell-3 { grid-area: 1 / 3 / 2 / 4; }
-.hcell-4 { grid-area: 2 / 2 / 4 / 4; }
-.hcell-5 { grid-area: 3 / 1 / 4 / 2; }
-.hcell-6 { grid-area: 4 / 1 / 5 / 2; }
-.hcell-7 { grid-area: 4 / 2 / 5 / 3; }
-.hcell-8 { grid-area: 4 / 3 / 5 / 4; }
+/* Fade the columns into the page at top and bottom rather than cutting them. */
+.hero-collage::before,
+.hero-collage::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 90px;
+	z-index: 2;
+	pointer-events: none;
+}
+
+.hero-collage::before {
+	top: 0;
+	background: linear-gradient(to bottom, var(--bg), transparent);
+}
+
+.hero-collage::after {
+	bottom: 0;
+	background: linear-gradient(to top, var(--bg), transparent);
+}
 
 /* ══════════════════════════════════════════
    PROPERTIES
@@ -701,7 +756,6 @@ ul {
 	border-radius: 5px;
 	font-size: 11px;
 	font-weight: 700;
-	text-transform: uppercase;
 	letter-spacing: .5px;
 	color: #fff;
 }
@@ -722,10 +776,10 @@ ul {
 .prop-price {
 	font-family: var(--display);
 	font-size: 28px;
-	font-weight: 800;
+	font-weight: 700;
 	color: var(--text);
 	margin-bottom: 5px;
-	letter-spacing: -.01em;
+	letter-spacing: .02em;
 	line-height: 1.2;
 }
 
@@ -843,7 +897,6 @@ ul {
 	font-family: var(--display);
 	font-weight: 700;
 	font-size: 17px;
-	text-transform: uppercase;
 	color: #fff;
 	margin-bottom: 10px;
 	letter-spacing: .02em;
@@ -914,7 +967,6 @@ ul {
 	color: var(--primary-ink);
 	font-size: 10px;
 	font-weight: 700;
-	text-transform: uppercase;
 	letter-spacing: .8px;
 	padding: 2px 8px;
 	border-radius: 4px;
@@ -945,7 +997,7 @@ ul {
 	font-size: 22px;
 	color: var(--text);
 	margin-bottom: 10px;
-	letter-spacing: -.01em;
+	letter-spacing: .02em;
 	line-height: 1.25;
 }
 
@@ -1226,7 +1278,6 @@ ul {
 	font-size: 10.5px;
 	font-weight: 700;
 	letter-spacing: 1.3px;
-	text-transform: uppercase;
 	padding: 12px 9px;
 	display: flex;
 	align-items: center;
@@ -1265,10 +1316,9 @@ ul {
 
 .cta-band h2 {
 	font-family: var(--display);
-	font-weight: 800;
-	font-size: clamp(29px, 3.6vw, 46px);
+	font-weight: 700;
+	font-size: clamp(30px, 3.8vw, 48px);
 	letter-spacing: .005em;
-	text-transform: uppercase;
 	color: #fff;
 	margin-bottom: 10px;
 	line-height: 1.1;
@@ -1357,9 +1407,9 @@ ul {
 .sp-price {
 	font-family: var(--display);
 	font-size: 42px;
-	font-weight: 800;
+	font-weight: 700;
 	line-height: 1.15;
-	letter-spacing: -.01em;
+	letter-spacing: .02em;
 	color: var(--primary-ink);
 }
 
@@ -1405,7 +1455,7 @@ ul {
 .sp-specs strong {
 	font-family: var(--display);
 	font-size: 22px;
-	font-weight: 800;
+	font-weight: 700;
 	color: var(--text);
 }
 
@@ -1422,9 +1472,8 @@ ul {
 .entry-content h2,
 .entry-content h3 {
 	font-family: var(--display);
-	text-transform: uppercase;
 	color: var(--text);
-	font-weight: 800;
+	font-weight: 700;
 	margin-top: 1.6em;
 }
 
@@ -1453,8 +1502,7 @@ ul {
 .sp-subhead {
 	font-family: var(--display);
 	font-size: 24px;
-	font-weight: 800;
-	text-transform: uppercase;
+	font-weight: 700;
 	margin: 40px 0 16px;
 	letter-spacing: .005em;
 }
@@ -1471,8 +1519,7 @@ ul {
 .sp-cta h2 {
 	font-family: var(--display);
 	font-size: 24px;
-	font-weight: 800;
-	text-transform: uppercase;
+	font-weight: 700;
 	margin-bottom: 8px;
 	letter-spacing: .005em;
 }
@@ -1740,7 +1787,6 @@ ul {
 	grid-area: label;
 	font-size: 11px;
 	font-weight: 700;
-	text-transform: uppercase;
 	letter-spacing: .7px;
 	color: var(--text-muted);
 }
@@ -1923,18 +1969,22 @@ ul {
 		grid-template-columns: 1fr;
 	}
 
-	.hero-collage {
-		grid-template-rows: repeat(3, 96px);
+	/* Stacked: the collage stops being a half-width overlay and becomes a
+	   band under the text, still scrolling. */
+	.hero {
+		min-height: 0;
+		display: block;
+		padding-top: 32px;
 	}
 
-	.hcell-1 { grid-area: 1 / 1 / 2 / 2; }
-	.hcell-2 { grid-area: 1 / 2 / 2 / 3; }
-	.hcell-3 { grid-area: 1 / 3 / 2 / 4; }
-	.hcell-4 { grid-area: 2 / 1 / 4 / 4; }
-	.hcell-5,
-	.hcell-6,
-	.hcell-7,
-	.hcell-8 { display: none; }
+	.hero-collage {
+		position: relative;
+		width: auto;
+		height: 46svh;
+		min-height: 300px;
+		margin-top: 40px;
+		padding-left: 0;
+	}
 
 	.team-inner {
 		grid-template-columns: 1fr;
@@ -2047,20 +2097,20 @@ ul {
 		justify-content: center;
 	}
 
-	/* One hero photo is enough on a phone. */
+	/* Two columns read better than three at phone width. */
 	.hero-collage {
-		grid-template-columns: 1fr;
-		grid-template-rows: 220px;
+		grid-template-columns: repeat(2, 1fr);
+		height: 40svh;
+		min-height: 260px;
+		gap: 8px;
 	}
 
-	.hcell-4 {
-		grid-area: 1 / 1 / 2 / 2;
-	}
-
-	.hcell-1,
-	.hcell-2,
-	.hcell-3 {
+	.hc-col:nth-child(3) {
 		display: none;
+	}
+
+	.hc-track img {
+		margin-bottom: 8px;
 	}
 
 	.attr-card {

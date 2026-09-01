@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'AAA_VERSION', '1.5.2' );
+define( 'AAA_VERSION', '1.6.0' );
 define( 'AAA_DIR', get_template_directory() );
 define( 'AAA_URI', get_template_directory_uri() );
 
@@ -95,7 +95,7 @@ function aaa_preload_fonts(): void {
 		return;
 	}
 
-	foreach ( array( 'manrope-variable', 'jost-variable' ) as $face ) {
+	foreach ( array( 'playfair-display-sc-700', 'poppins-400' ) as $face ) {
 		printf(
 			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
 			esc_url( AAA_URI . '/assets/fonts/' . $face . '.woff2' )

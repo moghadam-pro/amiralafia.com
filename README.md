@@ -78,6 +78,7 @@ team photo are all in **Customizer → Amir Al Afia**.
 - [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) — colours, type, spacing, components.
 - [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) — every defect found in the supplied mockup and what was done about it.
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — build, upload, release checklist.
+- [NOTES.md](NOTES.md) — working notes: conventions, and the traps this codebase has already sprung.
 
 ## Requirements
 
