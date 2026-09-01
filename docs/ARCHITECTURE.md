@@ -130,6 +130,28 @@ enqueued. The value is interpolated into a `<link href>` on every page, so an
 unchecked URL would let anyone with Customizer access inject a third-party
 stylesheet sitewide.
 
+### The hero collage loops without a seam
+
+`template-parts/home/hero.php` renders each column's images twice and the CSS
+animates the track to `translateY(-50%)`. Half of a doubled list is exactly one
+list, so the frame the loop restarts on is identical to the frame it ended on
+and the join is invisible.
+
+That only holds if the two halves are the same height, which is why the images
+are spaced with `margin-bottom` rather than flex `gap`: `gap` puts space
+*between* items, so a list of n items has n-1 gaps, the second half is one gap
+shorter than the first, and the seam drifts a little further out of alignment
+on every cycle.
+
+The columns are given unequal, non-harmonic durations and negative
+`animation-delay` values so each starts part-way through its own cycle; the
+middle one is reversed. Without that they visibly march in step.
+
+The collage is `position: absolute` with `width: 50vw` rather than a grid cell,
+so it can reach the viewport edge. Because `.container` is centred, its own
+midpoint is the viewport midpoint, so the text column ends exactly where the
+collage begins at any width - no magic numbers.
+
 ## Sharing and structured data
 
 `inc/seo.php` owns the document head. Two things there are worth knowing:

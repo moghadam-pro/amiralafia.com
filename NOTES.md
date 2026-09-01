@@ -57,6 +57,9 @@ site, so read what you wrote before shipping it.
 - Nothing may be hidden by default and revealed by JavaScript. Reveal styles are
   scoped under `.sr-armed`, which only `main.js` adds.
 - Respect `prefers-reduced-motion`.
+- **Nothing is set in uppercase.** The display face draws its own small caps;
+  `text-transform: uppercase` on top of it destroys them. Labels elsewhere read
+  in normal case to match.
 - **Fonts are swappable at runtime.** `--display` and `--body` can be
   overridden inline by `inc/typography.php`, so never hardcode a family in a
   rule — always go through the two custom properties.

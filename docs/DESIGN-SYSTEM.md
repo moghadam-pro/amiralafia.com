@@ -36,38 +36,46 @@ copy above 7:1 across the whole gradient.
 
 ## Type
 
-Two faces, self-hosted, latin subset - 51 KB for the pair. Both are variable,
-so every weight in range is free:
+Two faces, self-hosted, latin subset - 88 KB for the pair. Neither is offered as
+a variable font, so each weight is its own file:
 
-- **Manrope** (200-800) - headings, prices, statistics, any large display use.
-  Headings sit at 800, sub-headings at 700.
-- **Jost** (100-900) - everything else. 400 body, 500 nav, 600 labels.
+- **Playfair Display SC** (400, 700) - headings, prices, statistics, any large
+  display use. Headings sit at 700; there is no heavier weight to reach for.
+- **Poppins** (400, 500, 600, 700) - everything else. 400 body, 500 nav,
+  600 labels and buttons.
 
 | Role | Size | Face |
 | --- | --- | --- |
-| Hero headline | `clamp(34px, 3.6vw, 52px)` | Manrope 800 |
-| Section title | `clamp(27px, 2.9vw, 40px)` | Manrope 800 |
-| Closing band | `clamp(29px, 3.6vw, 46px)` | Manrope 800 |
-| Statistic / listing price | 42px / 28px | Manrope 800 |
-| Card title | 14px | Jost 600 |
-| Body | 15.5px, line-height 1.65 | Jost 400 |
-| Badge / eyebrow | 10-11px, uppercase, .09em | Jost 600 |
+| Hero headline | `clamp(30px, 3.7vw, 52px)` | Playfair Display SC 700 |
+| Section title | `clamp(28px, 3.1vw, 42px)` | Playfair Display SC 700 |
+| Closing band | `clamp(30px, 3.8vw, 48px)` | Playfair Display SC 700 |
+| Statistic / listing price | 42px / 28px | Playfair Display SC 700 |
+| Card title | 14px | Poppins 600 |
+| Body | 15.5px, line-height 1.65 | Poppins 400 |
+| Badge / eyebrow | 10-11px, .09em | Poppins 600 |
 
-Uppercase display text carries slightly negative tracking (`-.005em` to
-`-.01em`); uppercase at small sizes goes positive instead.
+**Nothing is set in uppercase.** Playfair Display SC is a small-caps face: it
+draws lowercase letters as small capitals itself. Adding
+`text-transform: uppercase` on top destroys that - every letter comes out the
+same full height and the face loses the thing it was chosen for. Labels and
+badges elsewhere read in normal case for the same reason: the design no longer
+shouts anywhere.
+
+Display text carries `+.02em` tracking, which is what a serif in small caps
+wants; the sans that preceded it wanted slightly negative.
 
 **Sizing the hero is the constraint that bites.** Its text column is half the
-shell - about 484px at a 1100px viewport - and the longest line, "ON YOUR
-DREAM LAND", needs roughly 11.2em in Manrope 800. Anything above ~3.6vw wraps
-onto a fourth line and breaks the composition. Check that line specifically
-after any change to the display face or the scale.
+container minus the gap - 511px at a 1153px viewport, 620px once the 1320px
+shell caps out - and the longest line, "On Your Dream Land", needs about 11.4em
+in small caps. Anything above ~3.7vw breaks it onto a fourth line. Check that
+line specifically after any change to the display face or the scale.
 
 ### The fonts are not fixed
 
 The stylesheet never names a family; it reads `--display` and `--body`. An
 administrator can repoint either from **Customizer -> Amir Al Afia ->
-Typography**, at a font installed through **Appearance -> Fonts** or at a
-pasted Google Fonts URL. `inc/typography.php` prints the override.
+Typography**, at a font installed through **Appearance -> Fonts** or a pasted
+Google Fonts URL. `inc/typography.php` prints the override.
 
 So: **never hardcode a font family in a rule.** Anything that should follow the
 brand font goes through the custom properties, or it will not follow a swap.
@@ -119,6 +127,11 @@ deliberately different, so hover never reads as selected.
 bottom gradient, a corner badge, then price, title, location and a metadata row
 divided by a hairline. "For Sale" is a solid `--primary-ink` badge with white
 text; "For Rent" is `--secondary` with deep text, so the two never look alike.
+
+**Hero collage** — `.hero-collage` is positioned over the right half of the
+hero, sized in `vw` so it reaches the viewport edge, with three `.hc-col`
+columns of drifting photographs. See `docs/ARCHITECTURE.md` for why the track
+is rendered twice and spaced with margin rather than `gap`.
 
 **Gallery slider** — `.sp-slider`, a scroll-snap track. See
 `docs/ARCHITECTURE.md` for why the controls only appear once JavaScript runs.

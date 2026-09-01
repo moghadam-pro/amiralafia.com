@@ -68,8 +68,8 @@ creates the demo properties, agents and attractions.
   brand card.
 
 **Editing without code** — phone numbers, social handles, every section
-heading, the three hero stats, the "Why Oman" cards, the hero collage and the
-team photo are all in **Customizer → Amir Al Afia**.
+heading, the three hero stats, the "Why Oman" cards, the nine hero photos and
+the team photo are all in **Customizer → Amir Al Afia**.
 
 ## Documentation
 

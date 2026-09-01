@@ -128,7 +128,7 @@ permission is tied to the same one WordPress uses for posting raw HTML.
 **Appearance -> Customize -> Amir Al Afia -> Typography.** Headings and body
 text are set separately, and each has three options.
 
-**Theme default** - Manrope for headings, Jost for body. Both are stored on
+**Theme default** - Playfair Display SC for headings, Poppins for body. Both are stored on
 this server, so nothing is fetched from Google and nothing breaks if Google is
 unreachable. This is the fastest option.
 
@@ -155,7 +155,7 @@ it, so the "font name override" box below can stay empty.
 
 Two things to watch:
 
-- **Include bold weights.** Headings are set at 800, so pick a range that goes
+- **Include bold weights.** Headings are set at 700, so pick a range that goes
   that high - `wght@400..900`, or tick the bold weights in the panel. A font
   that only ships one weight will look thin and flat, which is exactly what
   went wrong with the first attempt at Italiana.
@@ -190,7 +190,7 @@ Leads cannot be created by hand — they only ever arrive through the form.
 | **Contact details** | Phone, WhatsApp, Telegram, public email, lead notification address, city label, currency symbol. Changing the phone here updates the header, the closing band and the schema markup at once. |
 | **Hero** | The three headline lines, the intro paragraph, and the three statistics. |
 | **Section headings** | Every badge, heading and intro across the page, the four "Why Oman" cards, the number of property cards, and the form's success message. |
-| **Images** | The team photo and the eight hero collage photos. |
+| **Images** | The team photo and the nine hero photos, labelled by which column they scroll in. |
 | **Typography** | The heading and body fonts - see above. |
 
 The menu is at **Appearance → Menus** — assign one to *Primary menu* and

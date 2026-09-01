@@ -11,6 +11,48 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-08-27
+
+### Fixed
+
+- The hero headline broke onto a fourth line. Small caps set far wider than
+  the sans they replaced: "On Your Dream Land" needs about 11.4em, so 4.6vw
+  wanted 612px in a 511px column.
+- Card meta labels read "2 Beds / 2 Baths / 1,200 sq ft" rather than shouting.
+
+## [1.6.0] - 2026-08-27
+
+### Changed
+
+- **Playfair Display SC for headings, Poppins for body.** Neither ships as a
+  variable font, so each weight is a separate file - 88 KB for the six.
+- **Every `text-transform: uppercase` is gone**, thirteen rules. Playfair
+  Display SC is a small-caps face and draws its own small capitals; forcing
+  uppercase on top loses them and flattens every word to full height. Labels
+  and badges elsewhere now read in normal case to match.
+- Display tracking flips from slightly negative to +.02em, which is what a
+  serif in small caps wants, and headings sit at 700 - the face has nothing
+  heavier.
+
+### Added
+
+- **The hero fills the screen** below the header, measured in `svh` so mobile
+  browsers do not size it to the viewport minus their toolbars and leave the
+  bottom permanently cropped.
+- **Three columns of drifting photographs** own the right half of the hero,
+  edge to edge. Positioned and sized in `vw` rather than laid out as a grid
+  cell: the container is centred, so its midpoint is the viewport midpoint and
+  the text column ends exactly where the collage begins at any width.
+- The columns run at unequal, non-harmonic speeds, each starting part-way
+  through its own cycle, with the middle one reversed, so they never settle
+  into a visible pattern. Each renders its images twice and loops at exactly
+  half the track, spaced with margin rather than `gap` so the two halves are
+  equal and the seam is invisible.
+- Nine Customizer image slots in the same place as before, labelled by the
+  column they feed. Under 960px the collage becomes a band beneath the text;
+  under 480px it drops to two columns; it holds still under
+  `prefers-reduced-motion`.
+
 ## [1.5.2] - 2026-08-26
 
 ### Fixed
@@ -281,7 +323,9 @@ theme with no plugin or third-party theme dependencies.
 
 See [docs/DESIGN-REVIEW.md](docs/DESIGN-REVIEW.md) for the full list.
 
-[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.5.2...HEAD
+[Unreleased]: https://github.com/moghadam-pro/amiralafia.com/compare/v1.6.1...HEAD
+[1.6.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.6.1
+[1.6.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.6.0
 [1.5.2]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.5.2
 [1.5.1]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.5.1
 [1.5.0]: https://github.com/moghadam-pro/amiralafia.com/releases/tag/v1.5.0

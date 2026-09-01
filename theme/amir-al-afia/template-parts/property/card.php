@@ -64,7 +64,7 @@ $aaa_deal  = ( $aaa_deal && ! is_wp_error( $aaa_deal ) ) ? $aaa_deal[0] : null;
 							echo esc_html(
 								is_numeric( $aaa_beds )
 									/* translators: %s: number of bedrooms. */
-									? sprintf( _n( '%s BD', '%s BDS', (int) $aaa_beds, 'amir-al-afia' ), $aaa_beds )
+									? sprintf( _n( '%s Bed', '%s Beds', (int) $aaa_beds, 'amir-al-afia' ), $aaa_beds )
 									: $aaa_beds
 							);
 							?>
@@ -76,7 +76,7 @@ $aaa_deal  = ( $aaa_deal && ! is_wp_error( $aaa_deal ) ) ? $aaa_deal[0] : null;
 							<?php aaa_icon( 'bath', 13, '#9CA3AF' ); ?>
 							<?php
 							/* translators: %s: number of bathrooms. */
-							echo esc_html( sprintf( _n( '%s BATH', '%s BATHS', (int) $aaa_baths, 'amir-al-afia' ), $aaa_baths ) );
+							echo esc_html( sprintf( _n( '%s Bath', '%s Baths', (int) $aaa_baths, 'amir-al-afia' ), $aaa_baths ) );
 							?>
 						</span>
 					<?php endif; ?>
@@ -86,7 +86,7 @@ $aaa_deal  = ( $aaa_deal && ! is_wp_error( $aaa_deal ) ) ? $aaa_deal[0] : null;
 							<?php aaa_icon( 'area', 13, '#9CA3AF' ); ?>
 							<?php
 							/* translators: %s: floor area in square feet. */
-							echo esc_html( sprintf( __( '%s SQFT', 'amir-al-afia' ), number_format_i18n( (float) $aaa_area ) ) );
+							echo esc_html( sprintf( __( '%s sq ft', 'amir-al-afia' ), number_format_i18n( (float) $aaa_area ) ) );
 							?>
 						</span>
 					<?php endif; ?>
