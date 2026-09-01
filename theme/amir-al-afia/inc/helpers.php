@@ -170,10 +170,12 @@ function aaa_media_credit( int $attachment_id ): string {
 function aaa_hero_columns(): array {
 	$per_column = 6;
 
+	// Roughly 5-7px a second: slow enough to read as ambient drift rather than
+	// motion. Kept non-harmonic so the three columns never fall into step.
 	$columns = array(
-		array( 'duration' => '110s', 'offset' => '0s' ),
-		array( 'duration' => '134s', 'offset' => '-47s' ),
-		array( 'duration' => '158s', 'offset' => '-92s' ),
+		array( 'duration' => '220s', 'offset' => '0s' ),
+		array( 'duration' => '265s', 'offset' => '-97s' ),
+		array( 'duration' => '310s', 'offset' => '-211s' ),
 	);
 
 	$any = false;
