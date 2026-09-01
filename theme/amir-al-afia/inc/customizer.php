@@ -40,7 +40,7 @@ function aaa_defaults(): array {
 		'aaa_props_tag'      => 'Featured Listings',
 		'aaa_props_title'    => 'Properties For You',
 		'aaa_props_sub'      => "Handpicked villas and apartments across Oman's most sought-after areas, from Muscat to Al Mouj Marina.",
-		'aaa_props_count'    => '4',
+		'aaa_props_count'    => '8',
 
 		'aaa_inv_tag'        => 'Why Oman',
 		'aaa_inv_title'      => 'A Market Built For Investors',
@@ -211,6 +211,7 @@ function aaa_customize_register( $wp_customize ): void {
 	$add( 'aaa_sections', 'aaa_props_title', __( 'Properties: heading', 'amir-al-afia' ) );
 	$add( 'aaa_sections', 'aaa_props_sub', __( 'Properties: intro', 'amir-al-afia' ), 'textarea' );
 	$add( 'aaa_sections', 'aaa_props_count', __( 'Properties: how many cards', 'amir-al-afia' ) );
+	// The grid is four across, so multiples of four fill whole rows.
 	$add( 'aaa_sections', 'aaa_inv_tag', __( 'Why Oman: badge', 'amir-al-afia' ) );
 	$add( 'aaa_sections', 'aaa_inv_title', __( 'Why Oman: heading', 'amir-al-afia' ) );
 	$add( 'aaa_sections', 'aaa_inv_sub', __( 'Why Oman: intro', 'amir-al-afia' ), 'textarea' );

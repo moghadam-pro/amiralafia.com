@@ -127,7 +127,7 @@
 				nonce: data.filterNonce,
 				type: state.type,
 				deal: state.deal,
-				per_page: grid.dataset.perPage || '4'
+				per_page: grid.dataset.perPage || '8'
 			} );
 
 			window.fetch( data.ajaxUrl, {

@@ -284,6 +284,54 @@ function aaa_demo_properties(): array {
 			'deal'    => 'for-rent',
 			'excerpt' => 'Well-kept apartment let annually in a quiet building with a lift and allocated parking.',
 		),
+		array(
+			'title'   => 'Townhouse — Muttrah',
+			'image'   => 'om-houses',
+			'price'   => 198000,
+			'beds'    => '3',
+			'baths'   => '2',
+			'area'    => 1650,
+			'address' => 'Muttrah, Muscat',
+			'type'    => 'villa',
+			'deal'    => 'for-sale',
+			'excerpt' => 'A restored townhouse in the old quarter, carved balcony intact, two minutes from the corniche.',
+		),
+		array(
+			'title'   => 'Waterfront Apartment — Muttrah Corniche',
+			'image'   => 'om-corniche',
+			'price'   => 11400,
+			'beds'    => '2',
+			'baths'   => '2',
+			'area'    => 1150,
+			'address' => 'Muttrah, Muscat',
+			'type'    => 'apartment',
+			'deal'    => 'for-rent',
+			'excerpt' => 'Second-floor apartment facing the harbour, let annually, with a balcony over the promenade.',
+		),
+		array(
+			'title'   => 'Office Floor — Al Khuwair',
+			'image'   => 'om-office',
+			'price'   => 28000,
+			'beds'    => 'Open plan',
+			'baths'   => '2',
+			'area'    => 2400,
+			'address' => 'Al Khuwair, Muscat',
+			'type'    => 'apartment',
+			'deal'    => 'for-rent',
+			'excerpt' => 'A full floor on the business strip, fitted and cabled, with dedicated parking for eight.',
+		),
+		array(
+			'title'   => 'Marina Penthouse — Al Mouj',
+			'image'   => 'om-marina-air',
+			'price'   => 1450000,
+			'beds'    => '4',
+			'baths'   => '5',
+			'area'    => 4600,
+			'address' => 'Al Mouj, Muscat',
+			'type'    => 'luxury',
+			'deal'    => 'for-sale',
+			'excerpt' => 'Top-floor penthouse over the marina, private roof terrace and plunge pool, berth negotiable.',
+		),
 	);
 }
 
@@ -633,7 +681,8 @@ function aaa_run_demo_import(): array {
 		update_post_meta( $post_id, '_aaa_area', (string) $item['area'] );
 		update_post_meta( $post_id, '_aaa_address', $item['address'] );
 
-		if ( $index < 4 ) {
+		// The home teaser shows two rows of four.
+		if ( $index < 8 ) {
 			update_post_meta( $post_id, '_aaa_featured', '1' );
 		}
 

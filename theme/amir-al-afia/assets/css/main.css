@@ -909,23 +909,6 @@ ul {
 	line-height: 1.68;
 }
 
-.inv-imgstrip {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 10px;
-	margin-top: 28px;
-	border-radius: var(--radius-lg);
-	overflow: hidden;
-	height: 180px;
-	opacity: .45;
-}
-
-.inv-imgstrip img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
 /* ══════════════════════════════════════════
    TEAM
 ══════════════════════════════════════════ */
@@ -1927,10 +1910,6 @@ ul {
 
 	.attr-grid {
 		grid-template-columns: repeat(3, 1fr);
-	}
-
-	.inv-imgstrip {
-		display: none;
 	}
 
 	.sp-body,

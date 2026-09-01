@@ -7,20 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$aaa_cards   = aaa_investor_cards();
-$aaa_strip   = array();
-$aaa_recent  = get_posts(
-	array(
-		'post_type'      => 'property',
-		'posts_per_page' => 4,
-		'fields'         => 'ids',
-		'meta_key'       => '_thumbnail_id',
-	)
-);
-
-foreach ( $aaa_recent as $aaa_pid ) {
-	$aaa_strip[] = (int) get_post_thumbnail_id( $aaa_pid );
-}
+$aaa_cards = aaa_investor_cards();
 ?>
 <section class="investors-section" id="investors" aria-labelledby="investors-heading">
 	<div class="container">
@@ -50,24 +37,6 @@ foreach ( $aaa_recent as $aaa_pid ) {
 			<?php endforeach; ?>
 		</div>
 
-		<?php if ( count( $aaa_strip ) === 4 ) : ?>
-			<div <?php aaa_sr( 300, 'inv-imgstrip' ); ?> aria-hidden="true">
-				<?php foreach ( $aaa_strip as $aaa_att_id ) : ?>
-					<?php
-					echo wp_get_attachment_image(
-						$aaa_att_id,
-						'aaa-card',
-						false,
-						array(
-							'alt'      => '',
-							'loading'  => 'lazy',
-							'decoding' => 'async',
-						)
-					);
-					?>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
 
 	</div>
 </section>
