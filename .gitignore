@@ -7,3 +7,12 @@ desktop.ini
 # WordPress via Appearance > Themes > Add New > Upload Theme, and it is fetched
 # from this repo during deployment. Rebuild it with tools/build-theme.sh before
 # every release commit so it never drifts from theme/.
+
+# Cross-platform OS metadata
+._*
+.Spotlight-V100
+.Trashes
+[Tt]humbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
