@@ -11,6 +11,19 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.9.4] - 2026-09-08
+
+### Fixed
+
+- **The header did not actually stick.** It has been `position: sticky` since
+  1.0.0 and the root carries a comment warning that `overflow-x: hidden` there
+  would break it - and then `body` two rules below did exactly that.
+  `overflow-x: hidden` forces the other axis to `auto`, so the body computed to
+  `hidden auto`, became a scroll container of its own, and the header stuck to
+  a box that never scrolls. Measured: at `scrollY` 1600 the header sat at
+  `top: -1600`. `overflow-x: clip` clips the same way without touching
+  `overflow-y`.
+
 ## [1.9.3] - 2026-09-08
 
 ### Fixed

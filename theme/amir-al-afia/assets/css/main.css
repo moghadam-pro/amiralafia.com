@@ -66,7 +66,13 @@ body {
 	font-size: 15.5px;
 	color: var(--text);
 	background: var(--bg);
-	overflow-x: hidden;
+	/* `clip`, for the same reason as on the root above, and it is the root's
+	   comment that this rule kept walking into: `overflow-x: hidden` forces
+	   the other axis to `auto`, so the computed value is `hidden auto` and the
+	   body becomes a scroll container. The sticky header then sticks to the
+	   body's scroll box - which never scrolls, because the page scrolls on the
+	   viewport - and rides up out of sight. `clip` leaves overflow-y alone. */
+	overflow-x: clip;
 	-webkit-font-smoothing: antialiased;
 }
 
