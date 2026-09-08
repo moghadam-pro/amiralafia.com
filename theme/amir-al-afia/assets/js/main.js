@@ -338,7 +338,7 @@
 		// the href. Both menus are collected: the mobile drawer shows the same
 		// items and should agree with the bar behind it.
 		var links = document.querySelectorAll( '.nav-links a[data-section], .nav-mobile-links a[data-section]' );
-		if ( ! links.length || ! ( 'IntersectionObserver' in window ) ) {
+		if ( ! links.length ) {
 			return;
 		}
 
@@ -357,7 +357,14 @@
 			return;
 		}
 
+		var current = null;
+
 		function light( id ) {
+			if ( id === current ) {
+				return;
+			}
+			current = id;
+
 			ids.forEach( function ( other ) {
 				map[ other ].forEach( function ( link ) {
 					link.classList.toggle( 'is-active', other === id );
@@ -373,27 +380,22 @@
 		// A band across the middle of the viewport. A section counts as being
 		// read while it crosses this, not while it is merely on screen.
 		var BAND_TOP = 0.40;
-		var BAND_BOTTOM = 0.45;
+		var BAND_BOTTOM = 0.55;
 
-		// Which sections are currently crossing the band. Tracking the set
-		// rather than reacting to each entry keeps the highlight correct when
-		// a short section scrolls out while a tall one is still crossing:
-		// without it, whichever entry fired last would win.
-		var visible = [];
-
-		// Two sections share the band at every boundary, so one has to be
-		// chosen. Whichever fills more of it is the one being read - picking
-		// the upper one instead leaves the previous section lit for the whole
-		// of the next one whenever the previous is tall enough to still have a
-		// sliver in frame.
-		function dominant() {
+		// Measured on scroll rather than by IntersectionObserver. An observer
+		// only reports threshold crossings, and at every boundary two sections
+		// share the band without either crossing anything - scrolling from the
+		// middle of one to the middle of the next fires no entry at all, and
+		// the bar would keep the first one lit the whole way.
+		function update() {
 			var top = window.innerHeight * BAND_TOP;
-			var bottom = window.innerHeight * ( 1 - BAND_BOTTOM );
+			var bottom = window.innerHeight * BAND_BOTTOM;
 			var best = null;
-			var bestOverlap = -1;
+			var bestOverlap = 0;
 
-			visible.forEach( function ( id ) {
+			ids.forEach( function ( id ) {
 				var rect = document.getElementById( id ).getBoundingClientRect();
+				// Whichever fills more of the band is the one being read.
 				var overlap = Math.min( rect.bottom, bottom ) - Math.max( rect.top, top );
 
 				if ( overlap > bestOverlap ) {
@@ -402,31 +404,29 @@
 				}
 			} );
 
-			return best;
+			// Nothing in the band - the hero, or a footer past the last
+			// section. Leave the previous item lit rather than blanking the bar.
+			if ( best ) {
+				light( best );
+			}
 		}
 
-		var observer = new IntersectionObserver( function ( entries ) {
-			entries.forEach( function ( entry ) {
-				var id = entry.target.id;
-				var at = visible.indexOf( id );
+		var queued = false;
 
-				if ( entry.isIntersecting && at === -1 ) {
-					visible.push( id );
-				} else if ( ! entry.isIntersecting && at !== -1 ) {
-					visible.splice( at, 1 );
-				}
-			} );
-
-			if ( ! visible.length ) {
-				return; // Keep the last one lit rather than blanking the bar.
+		function onScroll() {
+			if ( queued ) {
+				return;
 			}
+			queued = true;
+			window.requestAnimationFrame( function () {
+				queued = false;
+				update();
+			} );
+		}
 
-			light( dominant() );
-		}, { rootMargin: ( -BAND_TOP * 100 ) + '% 0px ' + ( -BAND_BOTTOM * 100 ) + '% 0px' } );
-
-		ids.forEach( function ( id ) {
-			observer.observe( document.getElementById( id ) );
-		} );
+		window.addEventListener( 'scroll', onScroll, { passive: true } );
+		window.addEventListener( 'resize', onScroll, { passive: true } );
+		update();
 	}
 
 	function init() {

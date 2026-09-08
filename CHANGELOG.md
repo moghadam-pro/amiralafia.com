@@ -11,6 +11,17 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.9.2] - 2026-09-08
+
+### Fixed
+
+- The scroll spy still would not move off *Our Team* onto *Contact*. An
+  IntersectionObserver only reports threshold crossings, and at every boundary
+  two sections share the band without either crossing anything: scrolling from
+  the middle of one section to the middle of the next fires no entry at all,
+  so the measurement added in 1.9.1 never ran. It is measured on scroll now,
+  throttled to a frame.
+
 ## [1.9.1] - 2026-09-08
 
 ### Fixed
