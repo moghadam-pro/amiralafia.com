@@ -251,8 +251,9 @@ ul {
 	transform: scaleX(1);
 }
 
-/* Centred sections would otherwise be pulled to the left by `fit-content`. */
-.contact-inner .section-title {
+/* Centred blocks would otherwise be pulled to the left by `fit-content`. */
+.contact-inner .section-title,
+.error-404 .section-title {
 	margin-inline: auto;
 }
 
@@ -328,7 +329,9 @@ ul {
    like the page's primary button rather than inventing a third treatment. */
 .nav-links a:hover,
 .nav-links a:focus-visible,
-.nav-links a.is-active {
+.nav-links a.is-active,
+.nav-links .current-menu-item > a,
+.nav-links .current-menu-ancestor > a {
 	background: var(--primary-ink);
 	color: #fff;
 	box-shadow: 0 4px 14px rgba(1, 82, 124, .24);
