@@ -370,11 +370,40 @@
 			} );
 		}
 
-		// Which sections are currently crossing the band, in document order.
-		// Tracking the set rather than reacting to each entry keeps the
-		// highlight correct when a short section scrolls out while a tall one
-		// is still crossing: without it, whichever entry fired last would win.
+		// A band across the middle of the viewport. A section counts as being
+		// read while it crosses this, not while it is merely on screen.
+		var BAND_TOP = 0.40;
+		var BAND_BOTTOM = 0.45;
+
+		// Which sections are currently crossing the band. Tracking the set
+		// rather than reacting to each entry keeps the highlight correct when
+		// a short section scrolls out while a tall one is still crossing:
+		// without it, whichever entry fired last would win.
 		var visible = [];
+
+		// Two sections share the band at every boundary, so one has to be
+		// chosen. Whichever fills more of it is the one being read - picking
+		// the upper one instead leaves the previous section lit for the whole
+		// of the next one whenever the previous is tall enough to still have a
+		// sliver in frame.
+		function dominant() {
+			var top = window.innerHeight * BAND_TOP;
+			var bottom = window.innerHeight * ( 1 - BAND_BOTTOM );
+			var best = null;
+			var bestOverlap = -1;
+
+			visible.forEach( function ( id ) {
+				var rect = document.getElementById( id ).getBoundingClientRect();
+				var overlap = Math.min( rect.bottom, bottom ) - Math.max( rect.top, top );
+
+				if ( overlap > bestOverlap ) {
+					bestOverlap = overlap;
+					best = id;
+				}
+			} );
+
+			return best;
+		}
 
 		var observer = new IntersectionObserver( function ( entries ) {
 			entries.forEach( function ( entry ) {
@@ -392,15 +421,8 @@
 				return; // Keep the last one lit rather than blanking the bar.
 			}
 
-			// The topmost section in the band is the one being read.
-			light(
-				ids.filter( function ( id ) {
-					return visible.indexOf( id ) !== -1;
-				} ).sort( function ( a, b ) {
-					return document.getElementById( a ).offsetTop - document.getElementById( b ).offsetTop;
-				} )[ 0 ]
-			);
-		}, { rootMargin: '-40% 0px -45% 0px' } );
+			light( dominant() );
+		}, { rootMargin: ( -BAND_TOP * 100 ) + '% 0px ' + ( -BAND_BOTTOM * 100 ) + '% 0px' } );
 
 		ids.forEach( function ( id ) {
 			observer.observe( document.getElementById( id ) );

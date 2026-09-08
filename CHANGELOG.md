@@ -11,6 +11,16 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.9.1] - 2026-09-08
+
+### Fixed
+
+- The scroll spy lit *Our Team* while the contact section was being read.
+  Two sections share the band at every boundary and 1.9.0 chose the upper
+  one; measured on the live page, `#team` held 15px of the band and
+  `#contact` held 200px. It now lights whichever fills more of it, so a tall
+  section keeps the highlight only while it is actually the one in view.
+
 ## [1.9.0] - 2026-09-08
 
 ### Added
