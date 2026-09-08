@@ -554,7 +554,10 @@ ul {
 	text-wrap: balance;
 }
 
-.hero-heading span {
+/* Direct children only. The highlight below is a span too, and blocking it
+   made its background paint as a full-width rectangle instead of hugging the
+   words. */
+.hero-heading > span {
 	display: block;
 }
 

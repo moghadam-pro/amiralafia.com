@@ -11,6 +11,15 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.9.3] - 2026-09-08
+
+### Fixed
+
+- The headline highlight painted a full-width rectangle across both wrapped
+  lines instead of hugging the words. `.hero-heading span` was blocking every
+  descendant span, the highlight included, and `box-decoration-break` has
+  nothing to do once the box is no longer inline. Scoped to direct children.
+
 ## [1.9.2] - 2026-09-08
 
 ### Fixed
