@@ -11,6 +11,43 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-09-08
+
+### Added
+
+- **The headline's last line highlights on hover.** "On Your Dream Land" fills
+  left to right as if it were being selected. It is a background sweep rather
+  than a positioned box, so it follows the text when the line wraps on a phone
+  instead of painting one rectangle over both fragments.
+- **Section headings move on hover** - a small nudge and an accent rule that
+  draws itself under the words. The nudge uses `translate` rather than
+  `transform`, because the scroll reveal owns `transform` on those same
+  headings and its `.sr-armed .sr.is-visible` rule outranks a `:hover`.
+- **Instagram in the header**, replacing Telegram, with an `Instagram username`
+  field beside the others under Contact details. Telegram stays on the agent
+  cards and in the schema; Instagram joins it in `sameAs`.
+
+### Changed
+
+- **The scroll spy lights every menu item, not three of five.** It matched
+  links on their fragment, and *Properties* and *Oman* point at real archives
+  (`/properties/`, `/oman/`), so those two never lit however far you scrolled
+  past their sections. Menu anchors now carry `data-section`, printed by both
+  the fallback menu and a `nav_menu_link_attributes` filter so a menu built in
+  the admin behaves the same.
+- The spy tracks which sections are in the band rather than reacting to
+  whichever observer entry fired last, and lights the topmost. With the old
+  code a short section scrolling out could steal the highlight from the tall
+  one still being read. It also mirrors onto the mobile drawer and sets
+  `aria-current`.
+- **Nav items are plain until they are hovered or current**, and then they take
+  the primary button's fill instead of the pale grey wash - one state, not a
+  third treatment.
+- **The hero collage is back on phones**, as a 200px full-bleed band under the
+  call to action: the same three columns at the same three speeds, about a
+  fifth of the screen rather than a second screenful. It had been hidden
+  outright since 1.7.0. Tiles are lazy, so only the few on screen are fetched.
+
 ## [1.8.3] - 2026-09-01
 
 ### Changed

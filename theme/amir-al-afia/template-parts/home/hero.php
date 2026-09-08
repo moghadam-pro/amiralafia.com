@@ -33,7 +33,7 @@ $aaa_columns = aaa_hero_columns();
 				<h1 id="hero-heading" <?php aaa_sr( 80, 'hero-heading' ); ?>>
 					<span class="line-cyan"><?php aaa_the_option( 'aaa_hero_line1' ); ?></span>
 					<span class="line-dark"><?php aaa_the_option( 'aaa_hero_line2' ); ?></span>
-					<span class="line-cyan"><?php aaa_the_option( 'aaa_hero_line3' ); ?></span>
+					<span class="line-cyan"><span class="hl"><?php aaa_the_option( 'aaa_hero_line3' ); ?></span></span>
 				</h1>
 
 				<p <?php aaa_sr( 160, 'hero-desc' ); ?>><?php aaa_the_option( 'aaa_hero_desc' ); ?></p>

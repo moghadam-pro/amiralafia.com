@@ -161,6 +161,16 @@ ul {
 		animation: none;
 	}
 
+	.section-title,
+	.section-title::after,
+	.hero-heading .hl {
+		transition: none;
+	}
+
+	.section-title:hover {
+		translate: none;
+	}
+
 	*,
 	*::before,
 	*::after {
@@ -210,6 +220,40 @@ ul {
 	line-height: 1.14;
 	letter-spacing: .005em;
 	margin-bottom: 10px;
+	/* Hug the words. A full-width block would put the hover target over half a
+	   metre of empty page and the rule below would run out past the text. */
+	width: fit-content;
+	position: relative;
+	/* `translate`, not `transform`: the scroll reveal owns transform on these
+	   headings and would win the cascade. The two compose. */
+	transition: translate .35s cubic-bezier(.4, 0, .2, 1);
+}
+
+.section-title::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -4px;
+	width: 100%;
+	height: 3px;
+	border-radius: 2px;
+	background: linear-gradient(90deg, var(--primary), var(--secondary));
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+.section-title:hover {
+	translate: 6px 0;
+}
+
+.section-title:hover::after {
+	transform: scaleX(1);
+}
+
+/* Centred sections would otherwise be pulled to the left by `fit-content`. */
+.contact-inner .section-title {
+	margin-inline: auto;
 }
 
 .section-sub {
@@ -279,11 +323,19 @@ ul {
 	transition: background var(--transition), color var(--transition);
 }
 
+/* Hover and "you are here" are the same state deliberately: the bar reads as
+   one row of plain words until something claims it, and what claims it looks
+   like the page's primary button rather than inventing a third treatment. */
 .nav-links a:hover,
-.nav-links .current-menu-item > a,
+.nav-links a:focus-visible,
 .nav-links a.is-active {
-	background: var(--bg-light);
-	color: var(--primary-ink);
+	background: var(--primary-ink);
+	color: #fff;
+	box-shadow: 0 4px 14px rgba(1, 82, 124, .24);
+}
+
+.nav-links a:hover {
+	background: var(--primary-deep);
 }
 
 .nav-ctas {
@@ -322,8 +374,9 @@ ul {
 	background: var(--green);
 }
 
-.nav-cta-tg {
-	background: var(--telegram);
+/* Instagram has no single brand colour - the sweep is the mark. */
+.nav-cta-ig {
+	background: linear-gradient(45deg, #F58529 0%, #DD2A7B 42%, #8134AF 68%, #515BD4 100%);
 }
 
 .nav-ham {
@@ -504,6 +557,26 @@ ul {
 
 .hero-heading .line-cyan {
 	color: var(--primary);
+}
+
+/* Hovering the headline drags a selection across its last line. The wash is a
+   background rather than a positioned box so it follows the text when the line
+   wraps - `box-decoration-break: clone` gives each wrapped fragment its own. */
+.hero-heading .hl {
+	background-image: linear-gradient(var(--primary), var(--primary));
+	background-repeat: no-repeat;
+	background-size: 0 100%;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+	padding: .04em .12em;
+	margin: 0 -.12em;
+	border-radius: 4px;
+	transition: background-size .5s cubic-bezier(.4, 0, .2, 1), color .3s ease .08s;
+}
+
+.hero-heading:hover .hl {
+	background-size: 100% 100%;
+	color: #fff;
 }
 
 .hero-desc {
@@ -2008,14 +2081,30 @@ ul {
 		grid-template-columns: repeat(2, 1fr);
 	}
 
-	/* Not shown on phones at all: it is decoration, and it is the single
-	   heaviest thing on the page for the narrowest connection. */
+	/* Phones keep the collage, but as a shallow band: the same three columns
+	   drifting at the same three speeds, edge to edge and about a fifth of the
+	   screen tall. It sits below the call to action, so it never covers the
+	   headline, and being one band rather than a stack it costs the page a
+	   couple of hundred pixels instead of a second screenful. Tiles are lazy,
+	   so only the handful actually on screen is ever fetched. */
 	.hero-collage {
-		display: none;
+		height: 200px;
+		min-height: 0;
+		margin-top: 30px;
+		/* Full bleed: .hero clips the overflow, and gutters would make three
+		   columns too narrow to read as photographs. */
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+	}
+
+	/* The 90px fade would eat most of a 200px band. */
+	.hero-collage::before,
+	.hero-collage::after {
+		height: 46px;
 	}
 
 	.hero {
-		padding-bottom: 12px;
+		padding-bottom: 0;
 	}
 
 	.hero-heading {

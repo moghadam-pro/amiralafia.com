@@ -53,6 +53,25 @@ function aaa_whatsapp_url( string $phone ): string {
 }
 
 /**
+ * Build an Instagram profile URL from a handle.
+ *
+ * Accepts a handle with or without the leading @, or a full URL pasted
+ * straight out of the address bar.
+ *
+ * @param string $handle Instagram username or profile URL.
+ */
+function aaa_instagram_url( string $handle ): string {
+	$handle = ltrim( trim( $handle ), '@' );
+	if ( '' === $handle ) {
+		return '';
+	}
+	if ( str_starts_with( $handle, 'http' ) ) {
+		return esc_url_raw( $handle );
+	}
+	return 'https://www.instagram.com/' . rawurlencode( $handle ) . '/';
+}
+
+/**
  * A Telegram link. Accepts either a @handle or a bare username.
  */
 function aaa_telegram_url( string $handle ): string {

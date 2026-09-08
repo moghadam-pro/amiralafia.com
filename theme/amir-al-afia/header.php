@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $aaa_phone    = aaa_option( 'aaa_phone' );
 $aaa_whatsapp = aaa_option( 'aaa_whatsapp' );
-$aaa_telegram = aaa_telegram_url( aaa_option( 'aaa_telegram' ) );
+$aaa_instagram = aaa_instagram_url( aaa_option( 'aaa_instagram' ) );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -58,10 +58,10 @@ $aaa_telegram = aaa_telegram_url( aaa_option( 'aaa_telegram' ) );
 					</a>
 				<?php endif; ?>
 
-				<?php if ( $aaa_telegram ) : ?>
-					<a href="<?php echo esc_url( $aaa_telegram ); ?>" target="_blank" rel="noopener" class="nav-cta nav-cta-tg">
-						<?php aaa_icon( 'telegram', 14, '#fff' ); ?>
-						<span><?php esc_html_e( 'Telegram', 'amir-al-afia' ); ?></span>
+				<?php if ( $aaa_instagram ) : ?>
+					<a href="<?php echo esc_url( $aaa_instagram ); ?>" target="_blank" rel="noopener" class="nav-cta nav-cta-ig">
+						<?php aaa_icon( 'instagram', 14, '#fff' ); ?>
+						<span><?php esc_html_e( 'Instagram', 'amir-al-afia' ); ?></span>
 					</a>
 				<?php endif; ?>
 			</div>
@@ -94,6 +94,12 @@ $aaa_telegram = aaa_telegram_url( aaa_option( 'aaa_telegram' ) );
 					<a href="<?php echo esc_url( aaa_whatsapp_url( $aaa_whatsapp ) ); ?>" target="_blank" rel="noopener" class="nav-cta nav-cta-wa">
 						<?php aaa_icon( 'whatsapp', 13, '#fff' ); ?>
 						<span><?php esc_html_e( 'WhatsApp', 'amir-al-afia' ); ?></span>
+					</a>
+				<?php endif; ?>
+				<?php if ( $aaa_instagram ) : ?>
+					<a href="<?php echo esc_url( $aaa_instagram ); ?>" target="_blank" rel="noopener" class="nav-cta nav-cta-ig">
+						<?php aaa_icon( 'instagram', 13, '#fff' ); ?>
+						<span><?php esc_html_e( 'Instagram', 'amir-al-afia' ); ?></span>
 					</a>
 				<?php endif; ?>
 			</div>

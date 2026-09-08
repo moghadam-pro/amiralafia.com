@@ -333,21 +333,23 @@
 
 	/* ── Highlight the section currently in view ────────────── */
 	function initActiveNav() {
-		var links = document.querySelectorAll( '.nav-links a[href*="#"]' );
+		// data-section is printed by the menu, because two entries point at
+		// real archives rather than at a fragment and could not be matched on
+		// the href. Both menus are collected: the mobile drawer shows the same
+		// items and should agree with the bar behind it.
+		var links = document.querySelectorAll( '.nav-links a[data-section], .nav-mobile-links a[data-section]' );
 		if ( ! links.length || ! ( 'IntersectionObserver' in window ) ) {
 			return;
 		}
 
+		// One section can own more than one link, so the map holds arrays.
 		var map = {};
 		links.forEach( function ( link ) {
-			var hash = link.href.split( '#' )[ 1 ];
-			if ( ! hash ) {
+			var id = link.getAttribute( 'data-section' );
+			if ( ! id || ! document.getElementById( id ) ) {
 				return;
 			}
-			var section = document.getElementById( hash );
-			if ( section ) {
-				map[ hash ] = link;
-			}
+			( map[ id ] = map[ id ] || [] ).push( link );
 		} );
 
 		var ids = Object.keys( map );
@@ -355,16 +357,50 @@
 			return;
 		}
 
-		var observer = new IntersectionObserver( function ( entries ) {
-			entries.forEach( function ( entry ) {
-				if ( ! entry.isIntersecting ) {
-					return;
-				}
-				ids.forEach( function ( id ) {
-					map[ id ].classList.toggle( 'is-active', id === entry.target.id );
+		function light( id ) {
+			ids.forEach( function ( other ) {
+				map[ other ].forEach( function ( link ) {
+					link.classList.toggle( 'is-active', other === id );
+					if ( other === id ) {
+						link.setAttribute( 'aria-current', 'true' );
+					} else {
+						link.removeAttribute( 'aria-current' );
+					}
 				} );
 			} );
-		}, { rootMargin: '-45% 0px -50% 0px' } );
+		}
+
+		// Which sections are currently crossing the band, in document order.
+		// Tracking the set rather than reacting to each entry keeps the
+		// highlight correct when a short section scrolls out while a tall one
+		// is still crossing: without it, whichever entry fired last would win.
+		var visible = [];
+
+		var observer = new IntersectionObserver( function ( entries ) {
+			entries.forEach( function ( entry ) {
+				var id = entry.target.id;
+				var at = visible.indexOf( id );
+
+				if ( entry.isIntersecting && at === -1 ) {
+					visible.push( id );
+				} else if ( ! entry.isIntersecting && at !== -1 ) {
+					visible.splice( at, 1 );
+				}
+			} );
+
+			if ( ! visible.length ) {
+				return; // Keep the last one lit rather than blanking the bar.
+			}
+
+			// The topmost section in the band is the one being read.
+			light(
+				ids.filter( function ( id ) {
+					return visible.indexOf( id ) !== -1;
+				} ).sort( function ( a, b ) {
+					return document.getElementById( a ).offsetTop - document.getElementById( b ).offsetTop;
+				} )[ 0 ]
+			);
+		}, { rootMargin: '-40% 0px -45% 0px' } );
 
 		ids.forEach( function ( id ) {
 			observer.observe( document.getElementById( id ) );

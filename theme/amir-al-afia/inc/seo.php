@@ -254,6 +254,7 @@ function aaa_schema_organization(): array {
 			array(
 				aaa_whatsapp_url( aaa_option( 'aaa_whatsapp' ) ),
 				aaa_telegram_url( aaa_option( 'aaa_telegram' ) ),
+				aaa_instagram_url( aaa_option( 'aaa_instagram' ) ),
 			)
 		)
 	);
