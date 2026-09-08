@@ -2088,16 +2088,14 @@ ul {
 	   drifting at the same three speeds, edge to edge and about a fifth of the
 	   screen tall. It sits below the call to action, so it never covers the
 	   headline, and being one band rather than a stack it costs the page a
-	   couple of hundred pixels instead of a second screenful. Tiles are lazy,
+	   couple of hundred pixels instead of a second screenful. It is already
+	   edge to edge - it is a child of .hero, not of .container - which is what
+	   keeps three columns wide enough to read as photographs. Tiles are lazy,
 	   so only the handful actually on screen is ever fetched. */
 	.hero-collage {
 		height: 200px;
 		min-height: 0;
 		margin-top: 30px;
-		/* Full bleed: .hero clips the overflow, and gutters would make three
-		   columns too narrow to read as photographs. */
-		width: 100vw;
-		margin-left: calc(50% - 50vw);
 	}
 
 	/* The 90px fade would eat most of a 200px band. */
