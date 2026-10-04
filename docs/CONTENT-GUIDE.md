@@ -187,7 +187,7 @@ Leads cannot be created by hand — they only ever arrive through the form.
 
 | Section | What is in it |
 | --- | --- |
-| **Contact details** | Phone, WhatsApp, Telegram, public email, lead notification address, city label, currency symbol. Changing the phone here updates the header, the closing band and the schema markup at once. |
+| **Contact details** | Phone, WhatsApp, Telegram, Instagram, public email, lead notification address, city label, currency symbol. Changing the phone here updates the header, the closing band and the schema markup at once. The header shows phone, WhatsApp and Instagram; Telegram stays on the agent cards. |
 | **Hero** | The three headline lines, the intro paragraph, and the three statistics. |
 | **Section headings** | Every badge, heading and intro across the page, the four "Why Oman" cards, the number of property cards, and the form's success message. |
 | **Images** | The team photo and the eighteen hero photos, labelled by which column they scroll in and in what order. Leaving a slot empty drops that photo; emptying a whole column drops the column. |

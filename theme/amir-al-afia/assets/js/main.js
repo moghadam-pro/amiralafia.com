@@ -333,21 +333,23 @@
 
 	/* ── Highlight the section currently in view ────────────── */
 	function initActiveNav() {
-		var links = document.querySelectorAll( '.nav-links a[href*="#"]' );
-		if ( ! links.length || ! ( 'IntersectionObserver' in window ) ) {
+		// data-section is printed by the menu, because two entries point at
+		// real archives rather than at a fragment and could not be matched on
+		// the href. Both menus are collected: the mobile drawer shows the same
+		// items and should agree with the bar behind it.
+		var links = document.querySelectorAll( '.nav-links a[data-section], .nav-mobile-links a[data-section]' );
+		if ( ! links.length ) {
 			return;
 		}
 
+		// One section can own more than one link, so the map holds arrays.
 		var map = {};
 		links.forEach( function ( link ) {
-			var hash = link.href.split( '#' )[ 1 ];
-			if ( ! hash ) {
+			var id = link.getAttribute( 'data-section' );
+			if ( ! id || ! document.getElementById( id ) ) {
 				return;
 			}
-			var section = document.getElementById( hash );
-			if ( section ) {
-				map[ hash ] = link;
-			}
+			( map[ id ] = map[ id ] || [] ).push( link );
 		} );
 
 		var ids = Object.keys( map );
@@ -355,20 +357,76 @@
 			return;
 		}
 
-		var observer = new IntersectionObserver( function ( entries ) {
-			entries.forEach( function ( entry ) {
-				if ( ! entry.isIntersecting ) {
-					return;
-				}
-				ids.forEach( function ( id ) {
-					map[ id ].classList.toggle( 'is-active', id === entry.target.id );
+		var current = null;
+
+		function light( id ) {
+			if ( id === current ) {
+				return;
+			}
+			current = id;
+
+			ids.forEach( function ( other ) {
+				map[ other ].forEach( function ( link ) {
+					link.classList.toggle( 'is-active', other === id );
+					if ( other === id ) {
+						link.setAttribute( 'aria-current', 'true' );
+					} else {
+						link.removeAttribute( 'aria-current' );
+					}
 				} );
 			} );
-		}, { rootMargin: '-45% 0px -50% 0px' } );
+		}
 
-		ids.forEach( function ( id ) {
-			observer.observe( document.getElementById( id ) );
-		} );
+		// A band across the middle of the viewport. A section counts as being
+		// read while it crosses this, not while it is merely on screen.
+		var BAND_TOP = 0.40;
+		var BAND_BOTTOM = 0.55;
+
+		// Measured on scroll rather than by IntersectionObserver. An observer
+		// only reports threshold crossings, and at every boundary two sections
+		// share the band without either crossing anything - scrolling from the
+		// middle of one to the middle of the next fires no entry at all, and
+		// the bar would keep the first one lit the whole way.
+		function update() {
+			var top = window.innerHeight * BAND_TOP;
+			var bottom = window.innerHeight * BAND_BOTTOM;
+			var best = null;
+			var bestOverlap = 0;
+
+			ids.forEach( function ( id ) {
+				var rect = document.getElementById( id ).getBoundingClientRect();
+				// Whichever fills more of the band is the one being read.
+				var overlap = Math.min( rect.bottom, bottom ) - Math.max( rect.top, top );
+
+				if ( overlap > bestOverlap ) {
+					bestOverlap = overlap;
+					best = id;
+				}
+			} );
+
+			// Nothing in the band - the hero, or a footer past the last
+			// section. Leave the previous item lit rather than blanking the bar.
+			if ( best ) {
+				light( best );
+			}
+		}
+
+		var queued = false;
+
+		function onScroll() {
+			if ( queued ) {
+				return;
+			}
+			queued = true;
+			window.requestAnimationFrame( function () {
+				queued = false;
+				update();
+			} );
+		}
+
+		window.addEventListener( 'scroll', onScroll, { passive: true } );
+		window.addEventListener( 'resize', onScroll, { passive: true } );
+		update();
 	}
 
 	function init() {

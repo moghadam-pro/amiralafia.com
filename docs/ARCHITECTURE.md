@@ -21,7 +21,7 @@ theme/amir-al-afia/
 ├── functions.php             Bootstrap: supports, assets, head cleanup
 │
 ├── inc/
-│   ├── helpers.php           Phone/WhatsApp/Telegram URLs, price format, logo
+│   ├── helpers.php           Phone/WhatsApp/Telegram/Instagram URLs, price format, logo
 │   ├── icons.php             The inline SVG icon set
 │   ├── nav-fallback.php      Default menus until one is assigned in the admin
 │   ├── post-type-property.php    Property CPT, taxonomies, admin columns

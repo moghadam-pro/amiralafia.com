@@ -23,7 +23,7 @@ anything that has to be legible.
 | `--text-muted` | `#5A6473` | Secondary copy. |
 | `--bg-light` | `#F2F8FC` | Section backgrounds, team cards, the aside on a listing. |
 | `--border` | `#DCE8F1` | Every hairline. |
-| `--green` / `--telegram` | `#1EA952` / `#1B8FCC` | WhatsApp and Telegram, darkened from their brand colours so white labels pass. |
+| `--green` / `--telegram` | `#1EA952` / `#1B8FCC` | WhatsApp and Telegram, darkened from their brand colours so white labels pass. Instagram has no flat colour and keeps its gradient, on `.nav-cta-ig`. |
 
 **The contrast rule.** White on `#018ED5` is **3.60:1** — fine for large text
 and UI, below AA for anything smaller. So the brand blue is a fill and a

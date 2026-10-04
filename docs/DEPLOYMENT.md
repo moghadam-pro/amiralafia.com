@@ -6,10 +6,16 @@ no SSH or FTP access wired up, and no CI.
 ## Release
 
 1. Make the change in `theme/amir-al-afia/`.
-2. **Bump the version** in `theme/amir-al-afia/style.css` and `VERSION`, and add
-   the entry to `CHANGELOG.md`. WordPress compares the `Version:` header when a
-   zip is re-uploaded; if it has not changed, the installer reports the upload
-   as identical to what is already installed and asks you to confirm a replace.
+2. **Bump the version in all three places** and add the entry to
+   `CHANGELOG.md`:
+
+   | Where | Why it matters |
+   | --- | --- |
+   | `theme/amir-al-afia/style.css` → `Version:` | What the installer compares on re-upload. Unchanged, it reports the zip as identical to what is installed. |
+   | `theme/amir-al-afia/functions.php` → `AAA_VERSION` | The `?ver=` on the CSS and JS. Left behind, the new code ships to browsers still holding the old assets. |
+   | `VERSION` | What the tooling and the release tag read. |
+
+   `tools/build-theme.py` refuses to package if the three disagree.
 3. Build:
 
    ```bash

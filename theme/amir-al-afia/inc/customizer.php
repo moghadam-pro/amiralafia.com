@@ -21,6 +21,7 @@ function aaa_defaults(): array {
 		'aaa_phone'          => '+968 98059195',
 		'aaa_whatsapp'       => '+968 98059195',
 		'aaa_telegram'       => 'amiralafia',
+		'aaa_instagram'      => 'amiralafia',
 		'aaa_email'          => '',
 		'aaa_city'           => 'Muscat, Oman',
 		'aaa_currency'       => '$',
@@ -175,6 +176,7 @@ function aaa_customize_register( $wp_customize ): void {
 	$add( 'aaa_contact', 'aaa_phone', __( 'Phone number', 'amir-al-afia' ) );
 	$add( 'aaa_contact', 'aaa_whatsapp', __( 'WhatsApp number', 'amir-al-afia' ) );
 	$add( 'aaa_contact', 'aaa_telegram', __( 'Telegram username', 'amir-al-afia' ) );
+	$add( 'aaa_contact', 'aaa_instagram', __( 'Instagram username', 'amir-al-afia' ) );
 	$add( 'aaa_contact', 'aaa_email', __( 'Public email address', 'amir-al-afia' ), 'email' );
 	$add( 'aaa_contact', 'aaa_notify_email', __( 'Send new leads to', 'amir-al-afia' ), 'email' );
 	$add( 'aaa_contact', 'aaa_city', __( 'City label', 'amir-al-afia' ) );

@@ -28,9 +28,13 @@ site, so read what you wrote before shipping it.
 ## Shipping a change
 
 1. Edit under `theme/amir-al-afia/`.
-2. Bump `Version:` in `theme/amir-al-afia/style.css` **and** `VERSION`, and add
-   a `CHANGELOG.md` entry. WordPress compares that header on re-upload; an
-   unchanged version makes the installer treat the zip as identical.
+2. Bump the version in all **three** places and add a `CHANGELOG.md` entry:
+   `Version:` in `theme/amir-al-afia/style.css`, `AAA_VERSION` in
+   `theme/amir-al-afia/functions.php`, and `VERSION`. The build refuses to
+   package if they disagree. WordPress compares the `style.css` header on
+   re-upload, so an unchanged version makes the installer treat the zip as
+   identical; `AAA_VERSION` is the `?ver=` that busts the CSS and JS caches, so
+   leaving it behind ships new code to browsers still holding the old assets.
 3. `python tools/build-theme.py`
 4. Commit the source **and** the rebuilt `dist/amir-al-afia.zip` together. The
    zip is tracked on purpose — see `docs/DEPLOYMENT.md`.

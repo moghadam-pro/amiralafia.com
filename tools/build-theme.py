@@ -25,10 +25,34 @@ SKIP_NAMES = {".DS_Store", "Thumbs.db", "desktop.ini"}
 SKIP_DIRS = {".git", "node_modules", "__pycache__"}
 
 
+# The same version is written in three places and all three have to agree.
+# style.css is what the WordPress installer compares on re-upload, AAA_VERSION
+# is the `?ver=` that busts the CSS and JS caches, and VERSION is what the
+# tooling and the tag read. A fourth copy used to live in the theme directory
+# and quietly drifted eight releases behind, because nothing checked.
+VERSION_SOURCES = (
+    ("theme/amir-al-afia/style.css", r"^Version:\s*(.+)$"),
+    ("theme/amir-al-afia/functions.php", r"AAA_VERSION',\s*'([^']+)'"),
+    ("VERSION", r"^(.+)$"),
+)
+
+
 def theme_version() -> str:
-    header = (SRC / "style.css").read_text(encoding="utf-8")
-    match = re.search(r"^Version:\s*(.+)$", header, re.M)
-    return match.group(1).strip() if match else "unknown"
+    """The agreed version, or exit if the three disagree."""
+    found = {}
+
+    for relative, pattern in VERSION_SOURCES:
+        path = ROOT / relative
+        match = re.search(pattern, path.read_text(encoding="utf-8").strip(), re.M)
+        found[relative] = match.group(1).strip() if match else "missing"
+
+    if len(set(found.values())) != 1:
+        print("version mismatch - these must agree:", file=sys.stderr)
+        for relative, value in found.items():
+            print(f"  {value:<12} {relative}", file=sys.stderr)
+        raise SystemExit(1)
+
+    return next(iter(found.values()))
 
 
 def main() -> int:
@@ -43,6 +67,8 @@ def main() -> int:
     )
     if check.returncode != 0:
         return check.returncode
+
+    version = theme_version()
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.unlink(missing_ok=True)
@@ -60,7 +86,7 @@ def main() -> int:
             count += 1
 
     size_kb = OUT.stat().st_size / 1024
-    print(f"built {OUT.relative_to(ROOT)}  v{theme_version()}  {count} files  {size_kb:.0f} KB")
+    print(f"built {OUT.relative_to(ROOT)}  v{version}  {count} files  {size_kb:.0f} KB")
     return 0
 
 

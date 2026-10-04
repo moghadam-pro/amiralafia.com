@@ -11,6 +11,110 @@ upload as identical to what is already there.
 
 ## [Unreleased]
 
+## [1.9.5] - 2026-10-04
+
+### Removed
+
+- `theme/amir-al-afia/VERSION`, a fourth copy of the version number that
+  shipped inside the zip. Nothing read it and nothing checked it, so it had sat
+  at 1.7.2 for eight releases while the other three moved on. `style.css` is
+  what WordPress reads and the root `VERSION` is what the tooling reads; a
+  third copy inside the theme added nothing but a way to be wrong.
+
+### Added
+
+- `tools/build-theme.py` refuses to package when `style.css`, `AAA_VERSION` and
+  `VERSION` disagree, and prints which is which. This is the check whose
+  absence let the fourth copy rot.
+- Changelog entries for **1.3.2** and **1.3.3**, tagged in August but never
+  written up. The log now runs unbroken from 1.0.0.
+
+### Changed
+
+- `NOTES.md` and `docs/DEPLOYMENT.md` named two of the three version strings.
+  They name all three now, and say what each one breaks when it is missed -
+  `AAA_VERSION` in particular, which is what busts the CSS and JS caches.
+
+## [1.9.4] - 2026-09-08
+
+### Fixed
+
+- **The header did not actually stick.** It has been `position: sticky` since
+  1.0.0 and the root carries a comment warning that `overflow-x: hidden` there
+  would break it - and then `body` two rules below did exactly that.
+  `overflow-x: hidden` forces the other axis to `auto`, so the body computed to
+  `hidden auto`, became a scroll container of its own, and the header stuck to
+  a box that never scrolls. Measured: at `scrollY` 1600 the header sat at
+  `top: -1600`. `overflow-x: clip` clips the same way without touching
+  `overflow-y`.
+
+## [1.9.3] - 2026-09-08
+
+### Fixed
+
+- The headline highlight painted a full-width rectangle across both wrapped
+  lines instead of hugging the words. `.hero-heading span` was blocking every
+  descendant span, the highlight included, and `box-decoration-break` has
+  nothing to do once the box is no longer inline. Scoped to direct children.
+
+## [1.9.2] - 2026-09-08
+
+### Fixed
+
+- The scroll spy still would not move off *Our Team* onto *Contact*. An
+  IntersectionObserver only reports threshold crossings, and at every boundary
+  two sections share the band without either crossing anything: scrolling from
+  the middle of one section to the middle of the next fires no entry at all,
+  so the measurement added in 1.9.1 never ran. It is measured on scroll now,
+  throttled to a frame.
+
+## [1.9.1] - 2026-09-08
+
+### Fixed
+
+- The scroll spy lit *Our Team* while the contact section was being read.
+  Two sections share the band at every boundary and 1.9.0 chose the upper
+  one; measured on the live page, `#team` held 15px of the band and
+  `#contact` held 200px. It now lights whichever fills more of it, so a tall
+  section keeps the highlight only while it is actually the one in view.
+
+## [1.9.0] - 2026-09-08
+
+### Added
+
+- **The headline's last line highlights on hover.** "On Your Dream Land" fills
+  left to right as if it were being selected. It is a background sweep rather
+  than a positioned box, so it follows the text when the line wraps on a phone
+  instead of painting one rectangle over both fragments.
+- **Section headings move on hover** - a small nudge and an accent rule that
+  draws itself under the words. The nudge uses `translate` rather than
+  `transform`, because the scroll reveal owns `transform` on those same
+  headings and its `.sr-armed .sr.is-visible` rule outranks a `:hover`.
+- **Instagram in the header**, replacing Telegram, with an `Instagram username`
+  field beside the others under Contact details. Telegram stays on the agent
+  cards and in the schema; Instagram joins it in `sameAs`.
+
+### Changed
+
+- **The scroll spy lights every menu item, not three of five.** It matched
+  links on their fragment, and *Properties* and *Oman* point at real archives
+  (`/properties/`, `/oman/`), so those two never lit however far you scrolled
+  past their sections. Menu anchors now carry `data-section`, printed by both
+  the fallback menu and a `nav_menu_link_attributes` filter so a menu built in
+  the admin behaves the same.
+- The spy tracks which sections are in the band rather than reacting to
+  whichever observer entry fired last, and lights the topmost. With the old
+  code a short section scrolling out could steal the highlight from the tall
+  one still being read. It also mirrors onto the mobile drawer and sets
+  `aria-current`.
+- **Nav items are plain until they are hovered or current**, and then they take
+  the primary button's fill instead of the pale grey wash - one state, not a
+  third treatment.
+- **The hero collage is back on phones**, as a 200px full-bleed band under the
+  call to action: the same three columns at the same three speeds, about a
+  fifth of the screen rather than a second screenful. It had been hidden
+  outright since 1.7.0. Tiles are lazy, so only the few on screen are fetched.
+
 ## [1.8.3] - 2026-09-01
 
 ### Changed
@@ -231,6 +335,32 @@ upload as identical to what is already there.
   transcribed. Two exceptions: Heroicons carries no brand marks, so WhatsApp
   and Telegram keep their own glyphs; and it carries no furniture, so bed and
   bath are drawn to the same spec.
+
+## [1.3.3] - 2026-08-26
+
+### Fixed
+
+- **Cloudflare kept serving the old share card.** Static assets are sent with
+  `cache-control: max-age=315360000`. CSS and JS survive a release because
+  WordPress appends `?ver=` from the theme version, but `share-default.png`
+  keeps its filename, so the rebranded card sat on the server while the edge
+  served the navy one - at the exact URL WhatsApp and Telegram scrape.
+  `aaa_share_image()` appends the theme version now.
+
+### Added
+
+- `docs/DEPLOYMENT.md` covers it, including how to tell a stale edge copy from
+  a deploy that never landed.
+
+## [1.3.2] - 2026-08-26
+
+### Fixed
+
+- The font preload list still named `barlow-condensed-900` and `barlow-400`,
+  deleted in the rebrand, so every page load fired two 404s and preloaded
+  nothing. It names the faces the theme actually ships.
+- Leading on the listing price and the hero statistics raised to 1.3; 1.16 was
+  cropping the caps by 3px at 40px.
 
 ## [1.3.1] - 2026-08-26
 
