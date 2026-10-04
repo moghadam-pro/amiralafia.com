@@ -13,6 +13,12 @@ upload as identical to what is already there.
 
 ## [1.9.5] - 2026-10-04
 
+Tagged as `v1.9.5`. The entries for 1.9.0 through 1.9.4 below are the
+in-development builds this release was assembled from - each was installed on
+the live site to verify it and the next one corrected what that verification
+found. They were never tagged, and `main` goes from 1.8.3 to 1.9.5 in one
+commit. They are kept because each records a real defect and why it happened.
+
 ### Removed
 
 - `theme/amir-al-afia/VERSION`, a fourth copy of the version number that
